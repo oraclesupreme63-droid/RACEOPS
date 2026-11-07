@@ -1,0 +1,68 @@
+[build-system]
+requires = ["setuptools>=84,<85"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "raceops"
+version = "0.1.0"
+description = "Motorsport team operations and performance management platform."
+readme = "README.md"
+requires-python = ">=3.12,<3.15"
+dependencies = [
+    "alembic>=1.20,<2",
+    "fastapi>=0.158.1,<0.159",
+    "psycopg[binary]>=3.3.6,<3.4",
+    "pydantic-settings>=2.16.1,<3",
+    "sqlalchemy>=2.1.6,<2.2",
+    "uvicorn[standard]>=0.54,<0.55",
+]
+
+[project.optional-dependencies]
+dev = [
+    "httpx>=0.28.1,<1",
+    "mypy>=2.4,<3",
+    "pytest>=9.1.1,<10",
+    "pytest-cov>=7.1,<8",
+    "ruff>=0.16.9,<0.17",
+]
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+minversion = "9.1"
+addopts = "-ra --strict-config --strict-markers"
+testpaths = ["tests"]
+markers = [
+    "integration: requires external infrastructure such as PostgreSQL",
+]
+
+[tool.coverage.run]
+branch = true
+source = ["raceops"]
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = true
+
+[tool.ruff]
+target-version = "py312"
+line-length = 88
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["B", "E", "F", "I", "UP"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "lf"
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+files = ["src", "tests"]
+
