@@ -39,7 +39,7 @@
 |---|---|---|---|
 | Team | `team_id` | nombre, estado | Propietario de recursos operativos |
 | User | `user_id` | email normalizado, password hash, estado | Identidad autenticable; email único según estrategia técnica |
-| TeamMembership | `membership_id` | user, team, role, estado | V1: una membresía activa y un rol principal por User |
+| TeamMembership | `membership_id` | user, team, role, estado | Una por par User/Team; un rol principal; el token selecciona una activa |
 
 ### 4.2 Operations
 
@@ -95,7 +95,7 @@
 |---|---|---|
 | Team | configuración del equipo | propiedad e identidad del equipo |
 | User | credenciales y estado | autenticación segura |
-| TeamMembership | rol y estado | una membresía activa/rol principal en V1 |
+| TeamMembership | rol y estado | unicidad User/Team y un rol principal |
 | Driver | perfil y actividad | preservación histórica |
 | Vehicle | identidad y estado | disponibilidad y transiciones |
 | Track | datos mínimos | ownership |
@@ -182,7 +182,7 @@ Session anticipadamente y añadiría fricción sin evidencia.
 
 ## 12. Preguntas para validar durante implementación
 
-- ¿Un User necesita múltiples Memberships activas?
+- ¿Los usuarios reales necesitan cambiar frecuentemente entre Teams?
 - ¿Priority y Action requieren un destinatario User además del Role?
 - ¿Debe existir más de un ConditionSnapshot por Session?
 - ¿Una Action necesita varias evaluaciones o sólo un Outcome final?

@@ -21,8 +21,8 @@ Identidad que puede autenticarse. Un User no es automáticamente un Driver.
 ### Team Membership
 
 Relación que concede a un User acceso a un Team y un rol principal. V1
-permite una membresía activa y un rol principal por usuario; esta
-restricción puede revisarse con evidencia.
+permite una membresía por Team y varias membresías activas en Teams distintos,
+pero cada access token selecciona exactamente una de ellas.
 
 ### Role
 

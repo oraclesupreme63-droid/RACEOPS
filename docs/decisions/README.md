@@ -16,6 +16,11 @@ historia: un ADR posterior la sustituye cuando cambie la evidencia.
 | [ADR-008](ADR-008-no-generic-repository.md) | Sin repository genérico | Aceptado |
 | [ADR-009](ADR-009-backend-first-thin-client.md) | Backend-first y cliente web ligero | Aceptado |
 | [ADR-010](ADR-010-integer-time-durations.md) | Duraciones enteras en microsegundos | Aceptado |
+| [ADR-011](ADR-011-membership-scoped-access-token.md) | Access token limitado a una TeamMembership | Propuesto |
+| [ADR-012](ADR-012-bootstrap-without-public-registration.md) | Bootstrap administrativo sin registro público | Propuesto |
 
 Aceptados mediante Gate G4 el 22 de octubre de 2026.
+
+ADR-011 y ADR-012 pertenecen al Bloque 6.1 y esperan aprobación antes de
+implementar persistencia.
 

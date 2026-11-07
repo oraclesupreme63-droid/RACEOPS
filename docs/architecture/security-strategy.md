@@ -18,9 +18,10 @@ un control suficiente.
 - Passwords se almacenan con Argon2id mediante una biblioteca mantenida.
 - Nunca se limita silenciosamente el password antes de aplicar el hash.
 - Login devuelve un JWT de acceso firmado, con expiración breve configurable.
-- Claims mínimos: `sub`, `jti`, `iat` y `exp`. El token no contiene datos
-  técnicos ni se considera fuente definitiva del Role.
-- Cada petición resuelve en base de datos el User y TeamMembership activos;
+- Claims mínimos: `sub`, `mid`, `jti`, `iat` y `exp`. `mid` selecciona una
+  TeamMembership; el token no contiene Role, Team ID, email, permisos ni datos
+  técnicos.
+- Cada petición resuelve en base de datos el User, TeamMembership y Team activos;
   así, desactivar una cuenta o cambiar un rol surte efecto sin esperar al
   vencimiento de un token largo.
 - La API recibe `Authorization: Bearer`. El cliente web P0 mantiene el token
@@ -29,6 +30,8 @@ un control suficiente.
   sesión otra vez; se reevaluará con usuarios antes de agregar complejidad.
 - Logout P0 descarta el token del cliente. El servidor continúa verificando
   que el usuario y membership estén activos.
+- Si un User tiene varias Memberships activas, login selecciona una por token;
+  no existe token multi-Team ni cambio de contexto implícito en P0.
 
 HTTPS será obligatorio fuera del entorno local. La clave JWT viene del
 entorno, tiene suficiente entropía, no posee valor productivo predeterminado

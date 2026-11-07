@@ -50,11 +50,15 @@ válida.
 
 1. El actor proporciona sus credenciales.
 2. RaceOps verifica la contraseña almacenada mediante hash seguro.
-3. RaceOps verifica el estado del usuario y su membresía.
-4. RaceOps crea una sesión o token con identidad y contexto autorizados.
+3. RaceOps verifica el estado del usuario y sus membresías.
+4. Si existe una sola membresía activa, RaceOps la selecciona; si existen
+   varias, exige seleccionar el Team autorizado.
+5. RaceOps crea un token limitado a la membresía elegida.
 
-**Alternativas:** Credenciales incorrectas o usuario desactivado producen
-una respuesta genérica y no revelan qué dato falló.
+**Alternativas:** Credenciales incorrectas, identidad inactiva o Team no
+autorizado producen una respuesta genérica y no revelan qué dato falló. Con
+credenciales válidas y varias membresías sin selección, RaceOps solicita el
+contexto de Team sin emitir todavía un token.
 
 **Postcondición:** El actor puede operar únicamente dentro de su equipo y
 permisos.

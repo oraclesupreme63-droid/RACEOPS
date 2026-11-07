@@ -62,7 +62,9 @@ El roadmap permite aprobar G3 cuando:
 
 1. Team será la frontera de ownership, sin implementar todavía SaaS
    multi-tenant comercial.
-2. V1 comenzará con una TeamMembership activa y un Role principal por User.
+2. V1 comenzará con un Role principal por TeamMembership. El Bloque 6.1
+   refinó la cardinalidad para permitir una Membership por Team y seleccionar
+   una activa por access token, según ADR-011.
 3. Driver será una entidad separada y podrá existir sin User.
 4. Event conservará su Track; no cambiará normalmente después de crear
    Sessions.
@@ -80,7 +82,8 @@ El roadmap permite aprobar G3 cuando:
 
 ## 7. Riesgos y preguntas abiertas
 
-- Nuevas entrevistas pueden exigir varios Roles o Teams por User.
+- La necesidad real de cambiar entre varios Teams sigue siendo una hipótesis;
+  el modelo la tolera sin construir una experiencia multi-Team compleja.
 - La cardinalidad de Condition Snapshot podría aumentar después de pruebas.
 - Puede ser necesario limitar Action a un Outcome final o permitir varias
   evaluaciones; el modelo acepta varias sin obligarlas.

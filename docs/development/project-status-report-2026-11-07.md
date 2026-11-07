@@ -4,8 +4,9 @@
 
 - **Fecha de corte:** 7 de noviembre de 2026
 - **Versión técnica actual:** `v0.1 — Foundation`
-- **Fase completada:** Fase 5 — Fundación técnica
-- **Siguiente fase:** Fase 6 — Identidad y autorización
+- **Última fase completada:** Fase 5 — Fundación técnica
+- **Fase en progreso:** Fase 6 — Identidad y autorización
+- **Bloque actual:** 6.1 — contrato preparado para aprobación
 - **Repositorio:** `oraclesupreme63-droid/RACEOPS`
 - **Estado de publicación:** versión pública sin registros individuales;
   investigación completa preservada en repositorio privado
@@ -16,6 +17,10 @@ RaceOps ya cuenta con una fundación backend ejecutable, reproducible y
 verificada tanto en la máquina de desarrollo como en GitHub Actions. API,
 PostgreSQL, migraciones, manejo de errores, logging, pruebas y contenedores
 funcionan de forma integrada.
+
+La Fase 6 ya inició. El Bloque 6.1 definió el contrato de identidad, el
+bootstrap administrativo, el contexto de Team por token y los contratos HTTP;
+la persistencia todavía no comenzó porque requiere aprobación del propietario.
 
 Gate G5 — Foundation Running quedó aprobado mediante la ejecución
 [CI 42399043070](https://github.com/oraclesupreme63-droid/RACEOPS/actions/runs/42399043070).
@@ -161,11 +166,12 @@ fundación técnica, no un producto demostrable.
 
 ### Bloque 6.1 — Contrato de identidad
 
-- confirmar `User`, `Team`, `TeamMembership` y `Role`;
-- decidir cómo se crea el primer Administrator;
-- decidir si un User puede pertenecer a varios Teams en v1;
-- definir contratos de login, identidad actual y errores;
-- registrar decisiones que requieran ADR.
+- **Estado:** preparado para aprobación.
+- se confirmaron `User`, `Team`, `TeamMembership` y `Role`;
+- el primer Administrator se crea mediante bootstrap transaccional;
+- un User puede tener una Membership por Team y el token selecciona una;
+- se definieron login, identidad actual y errores;
+- se registraron ADR-011 y ADR-012 como propuestas.
 
 ### Bloque 6.2 — Persistencia
 
@@ -205,7 +211,7 @@ fundación técnica, no un producto demostrable.
 - revisión de seguridad;
 - aprobación antes de comenzar recursos operativos.
 
-## 8. Decisiones necesarias antes de programar Fase 6
+## 8. Decisiones propuestas en el Bloque 6.1
 
 1. **Provisionamiento inicial recomendado:** no ofrecer registro público en
    v1; crear el primer Administrator mediante un comando de bootstrap y dejar
@@ -217,7 +223,9 @@ fundación técnica, no un producto demostrable.
 4. **Frontend recomendado:** mantener el cliente mínimo; validar primero los
    contratos mediante OpenAPI y pruebas HTTP.
 
-Estas recomendaciones siguen pendientes de aprobación del propietario.
+Estas decisiones ya están materializadas en
+`docs/identity/identity-contract.md`, pero siguen pendientes de aprobación del
+propietario antes de comenzar modelos y migraciones.
 
 ## 9. Publicación del repositorio
 

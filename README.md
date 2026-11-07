@@ -187,6 +187,8 @@ including both the Python quality job and the container smoke test.
 - [Development runbook](docs/development/runbook.md)
 - [Gate G5 assessment](docs/development/gate-g5-assessment.md)
 - [Project status report](docs/development/project-status-report-2026-11-07.md)
+- [Phase 6 checklist](docs/development/phase-6-checklist.md)
+- [Identity and authorization contract](docs/identity/identity-contract.md)
 - [Technical learning roadmap](docs/development/learning-roadmap.md)
 - [Domain package](docs/domain/README.md)
 - [Requirements package](docs/requirements/README.md)

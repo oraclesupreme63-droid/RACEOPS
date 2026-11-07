@@ -36,7 +36,8 @@ Team
 ## Decisiones principales
 
 - Team es frontera de ownership, no SaaS multi-tenant comercial.
-- V1 usa una Membership activa y un Role principal por User.
+- V1 permite una Membership por Team y selecciona una activa por access token;
+  cada Membership conserva un Role principal.
 - Driver puede existir sin User.
 - Session Status y Results Status son independientes.
 - Lap es Aggregate Root y contiene Sectors.

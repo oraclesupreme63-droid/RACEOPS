@@ -19,6 +19,9 @@ And establece su contexto de equipo y rol
 And nunca devuelve la contraseña ni su hash
 ```
 
+Cuando el usuario tenga varias membresías activas, el contexto se selecciona
+explícitamente. Un access token representa solamente una membresía.
+
 ### AC-002 — Credenciales inválidas
 
 ```gherkin

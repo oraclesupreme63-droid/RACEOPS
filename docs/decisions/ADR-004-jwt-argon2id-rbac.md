@@ -2,6 +2,7 @@
 
 - **Estado:** Aceptado
 - **Fecha:** 2026-10-22
+- **Refinada por:** ADR-011 para seleccionar una TeamMembership por token
 
 ## Contexto
 
