@@ -9,12 +9,11 @@ not a telemetry acquisition or professional analysis replacement.
 
 ## Current status
 
-Phase 5 — Technical foundation, complete with Gate G5 approved. The API
-separates process health from
-PostgreSQL readiness, loads typed environment configuration and manages its
-database schema through Alembic. HTTP failures use RFC 9457 Problem Details,
-and each request receives a correlation ID and a safe structured log. GitHub
-Actions verifies quality, tests, migrations and the production container.
+Phase 6 — Identity and authorization, in progress through Block 6.3. RaceOps
+now persists teams, users and team-scoped memberships; hashes passwords with
+Argon2id; issues short-lived membership-scoped JWTs; re-resolves identity and
+role state from PostgreSQL; and provides an atomic local administrator
+bootstrap. Login, `/auth/me` and RBAC endpoints remain pending.
 
 ## Technology
 
@@ -23,6 +22,7 @@ Actions verifies quality, tests, migrations and the production container.
 - SQLAlchemy 2.x and Psycopg 3
 - PostgreSQL
 - Alembic
+- pwdlib with Argon2 and PyJWT
 - pytest, HTTPX, Ruff and mypy
 - Docker and Docker Compose
 
@@ -117,6 +117,23 @@ Copy-Item .env.example .env
 `.env` is ignored by Git. Known development database credentials and the
 example JWT secret are rejected automatically when `RACEOPS_ENV=production`.
 
+## Bootstrap the first administrator
+
+Apply migrations first, then run the local bootstrap command. The password is
+requested twice through hidden terminal input and is never accepted as a
+command-line argument:
+
+```powershell
+.\.venv\Scripts\python.exe -m alembic upgrade head
+.\.venv\Scripts\python.exe -m raceops.iam.bootstrap_admin `
+  --email admin@example.com `
+  --team-name "Example Racing Team"
+```
+
+Team, User and Administrator Membership are committed in one transaction. A
+conflict rolls back all three records. This command is intended for the first
+controlled local setup; it is not public registration.
+
 ## Errors and request correlation
 
 Every HTTP response includes `X-Request-ID`. A valid UUID supplied in that
@@ -189,6 +206,7 @@ including both the Python quality job and the container smoke test.
 - [Project status report](docs/development/project-status-report-2026-11-07.md)
 - [Phase 6 checklist](docs/development/phase-6-checklist.md)
 - [Phase 6 Block 6.2 report](docs/development/phase-6-block-6.2-report-2026-11-08.md)
+- [Phase 6 Block 6.3 report](docs/development/phase-6-block-6.3-report-2026-11-08.md)
 - [Identity and authorization contract](docs/identity/identity-contract.md)
 - [Technical learning roadmap](docs/development/learning-roadmap.md)
 - [Domain package](docs/domain/README.md)
@@ -197,7 +215,7 @@ including both the Python quality job and the container smoke test.
 
 ## Scope discipline
 
-The first programming milestone is only the technical foundation. Identity,
-operational resources and the Session Learning Loop are later milestones and
-will not be implemented before the foundation is verified.
+RaceOps remains a modular monolith. Phase 6 is limited to identity and
+authorization infrastructure; operational resources and the Session Learning
+Loop remain later milestones.
 

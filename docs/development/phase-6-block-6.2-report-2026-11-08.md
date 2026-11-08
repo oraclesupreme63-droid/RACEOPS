@@ -5,7 +5,8 @@
 - **Fecha:** 8 de noviembre de 2026
 - **Fase:** 6 — Identidad y autorización
 - **Bloque:** 6.2 — Persistencia
-- **Resultado:** Implementado y verificado; pendiente de aprobación
+- **Resultado:** Implementado, verificado y aprobado
+- **Fecha de aprobación:** 8 de noviembre de 2026
 - **Siguiente bloque:** 6.3 — Credenciales y tokens
 
 ## 2. Resultado implementado

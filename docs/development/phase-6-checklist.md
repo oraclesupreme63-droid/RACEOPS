@@ -28,15 +28,18 @@
 - [x] Round-trip `upgrade → downgrade → upgrade`.
 - [x] `alembic check` sin diferencias entre modelos y esquema.
 - [x] Suite completa con cobertura superior al 90 %.
-- [ ] Aprobación del propietario.
+- [x] Aprobación del propietario.
 
 ### 6.3 — Credenciales y tokens
 
-- [ ] Argon2id y política de password.
-- [ ] Emisión y validación JWT.
-- [ ] Resolución server-side de identidad actual.
-- [ ] Casos válido, vencido, manipulado e inactivo.
-- [ ] Comando seguro de bootstrap.
+- [x] Argon2id y política de password.
+- [x] Emisión y validación JWT.
+- [x] Resolución server-side de identidad actual.
+- [x] Casos válido, vencido, manipulado e inactivo.
+- [x] Comando seguro de bootstrap.
+- [x] Rollback transaccional ante conflicto.
+- [x] Suite completa con cobertura superior al 90 %.
+- [ ] Aprobación del propietario.
 
 ### 6.4 — API de identidad
 
@@ -64,6 +67,6 @@
 
 ## Condición para avanzar
 
-El Bloque 6.3 no comienza hasta aprobar el
-[`reporte del Bloque 6.2`](phase-6-block-6.2-report-2026-11-08.md).
+El Bloque 6.4 no comienza hasta aprobar el
+[`reporte del Bloque 6.3`](phase-6-block-6.3-report-2026-11-08.md).
 

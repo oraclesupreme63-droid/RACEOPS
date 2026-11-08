@@ -8,9 +8,10 @@ Tests are organized by responsibility rather than by implementation file:
 - `acceptance/`: complete user-visible flows;
 - `factories/`: deterministic synthetic test data.
 
-Identity persistence currently has unit metadata contracts and PostgreSQL
-integration coverage for multi-Team membership, normalized email, uniqueness
-and migration round-trips.
+Identity coverage includes persistence, Argon2id credentials, JWT claim and
+signature validation, current server-side identity resolution, role changes,
+inactive boundaries, atomic administrative bootstrap and migration
+round-trips.
 
 Database integration tests are opt-in so the ordinary unit suite remains
 usable without Docker. With the PostgreSQL service healthy, run:

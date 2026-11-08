@@ -219,7 +219,7 @@ Ninguna respuesta serializa `password`, `password_hash`, parámetros Argon2id,
 
 - formato JWT firmado;
 - TTL configurable, 15 minutos por defecto y máximo 60;
-- algoritmo y librería se fijarán en el Bloque 6.3;
+- algoritmo `HS256` implementado con PyJWT 2.x;
 - claims: `sub`, `mid`, `jti`, `iat`, `exp`;
 - `sub`: `user_id`;
 - `mid`: `membership_id` seleccionada;

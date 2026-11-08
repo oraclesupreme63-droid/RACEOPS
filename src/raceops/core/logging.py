@@ -19,6 +19,9 @@ _STRUCTURED_FIELDS: Final = (
     "status_code",
     "duration_ms",
     "error_code",
+    "user_id",
+    "membership_id",
+    "team_id",
 )
 
 
