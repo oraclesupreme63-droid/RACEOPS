@@ -39,14 +39,18 @@
 - [x] Comando seguro de bootstrap.
 - [x] Rollback transaccional ante conflicto.
 - [x] Suite completa con cobertura superior al 90 %.
-- [ ] Aprobación del propietario.
+- [x] Aprobación del propietario.
 
 ### 6.4 — API de identidad
 
-- [ ] `POST /api/v1/auth/login`.
-- [ ] `GET /api/v1/auth/me`.
-- [ ] Schemas que excluyen credenciales y hashes.
-- [ ] OpenAPI y respuestas RFC 9457.
+- [x] `POST /api/v1/auth/login`.
+- [x] `GET /api/v1/auth/me`.
+- [x] Selección segura entre múltiples Teams.
+- [x] Schemas que excluyen credenciales y hashes.
+- [x] OpenAPI y respuestas RFC 9457.
+- [x] Pruebas HTTP positivas, negativas y de no filtración.
+- [x] Suite completa con cobertura superior al 90 %.
+- [ ] Aprobación del propietario.
 
 ### 6.5 — RBAC y aislamiento
 
@@ -67,6 +71,6 @@
 
 ## Condición para avanzar
 
-El Bloque 6.4 no comienza hasta aprobar el
-[`reporte del Bloque 6.3`](phase-6-block-6.3-report-2026-11-08.md).
+El Bloque 6.5 no comienza hasta aprobar el
+[`reporte del Bloque 6.4`](phase-6-block-6.4-report-2026-11-08.md).
 

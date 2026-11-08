@@ -9,11 +9,12 @@ not a telemetry acquisition or professional analysis replacement.
 
 ## Current status
 
-Phase 6 — Identity and authorization, in progress through Block 6.3. RaceOps
+Phase 6 — Identity and authorization, in progress through Block 6.4. RaceOps
 now persists teams, users and team-scoped memberships; hashes passwords with
 Argon2id; issues short-lived membership-scoped JWTs; re-resolves identity and
 role state from PostgreSQL; and provides an atomic local administrator
-bootstrap. Login, `/auth/me` and RBAC endpoints remain pending.
+bootstrap. Login and `/auth/me` are available; RBAC and resource isolation
+remain pending.
 
 ## Technology
 
@@ -134,6 +135,32 @@ Team, User and Administrator Membership are committed in one transaction. A
 conflict rolls back all three records. This command is intended for the first
 controlled local setup; it is not public registration.
 
+## Authenticate and inspect the active identity
+
+With the API running, authenticate the bootstrapped administrator:
+
+```powershell
+$loginBody = @{
+  email = "admin@example.com"
+  password = "your-administrator-password"
+} | ConvertTo-Json
+
+$login = Invoke-RestMethod `
+  -Method Post `
+  -Uri "http://127.0.0.1:8000/api/v1/auth/login" `
+  -ContentType "application/json" `
+  -Body $loginBody
+
+Invoke-RestMethod `
+  -Method Get `
+  -Uri "http://127.0.0.1:8000/api/v1/auth/me" `
+  -Headers @{ Authorization = "Bearer $($login.access_token)" }
+```
+
+The same flow is available interactively at `http://127.0.0.1:8000/docs`.
+When a user belongs to multiple active teams, login returns
+`team_context_required`; repeat the request with one returned `team_id`.
+
 ## Errors and request correlation
 
 Every HTTP response includes `X-Request-ID`. A valid UUID supplied in that
@@ -207,6 +234,7 @@ including both the Python quality job and the container smoke test.
 - [Phase 6 checklist](docs/development/phase-6-checklist.md)
 - [Phase 6 Block 6.2 report](docs/development/phase-6-block-6.2-report-2026-11-08.md)
 - [Phase 6 Block 6.3 report](docs/development/phase-6-block-6.3-report-2026-11-08.md)
+- [Phase 6 Block 6.4 report](docs/development/phase-6-block-6.4-report-2026-11-08.md)
 - [Identity and authorization contract](docs/identity/identity-contract.md)
 - [Technical learning roadmap](docs/development/learning-roadmap.md)
 - [Domain package](docs/domain/README.md)

@@ -46,6 +46,24 @@ class ProblemDefinition:
     detail: str
 
 
+class ApiProblemError(Exception):
+    """Controlled application error translated to RFC 9457 at the boundary."""
+
+    def __init__(
+        self,
+        *,
+        status_code: int,
+        definition: ProblemDefinition,
+        headers: Mapping[str, str] | None = None,
+        extensions: Mapping[str, Any] | None = None,
+    ) -> None:
+        super().__init__(definition.code)
+        self.status_code = status_code
+        self.definition = definition
+        self.headers = headers
+        self.extensions = extensions
+
+
 HTTP_PROBLEMS: Mapping[int, ProblemDefinition] = {
     400: ProblemDefinition(
         "bad-request",
@@ -103,6 +121,7 @@ INTERNAL_PROBLEM = ProblemDefinition(
 def register_exception_handlers(application: FastAPI) -> None:
     """Install the expected HTTP and request-validation translators."""
     application.add_exception_handler(HTTPException, http_exception_handler)
+    application.add_exception_handler(ApiProblemError, api_problem_exception_handler)
     application.add_exception_handler(
         RequestValidationError,
         validation_exception_handler,
@@ -131,6 +150,23 @@ async def http_exception_handler(
         status_code=exception.status_code,
         definition=definition,
         headers=exception.headers,
+    )
+
+
+async def api_problem_exception_handler(
+    request: Request,
+    exception: Exception,
+) -> JSONResponse:
+    """Translate a controlled application problem without exposing internals."""
+    if not isinstance(exception, ApiProblemError):
+        raise exception
+
+    return problem_response(
+        request=request,
+        status_code=exception.status_code,
+        definition=exception.definition,
+        headers=exception.headers,
+        extensions=exception.extensions,
     )
 
 
@@ -174,6 +210,7 @@ def problem_response(
     definition: ProblemDefinition,
     errors: list[FieldError] | None = None,
     headers: Mapping[str, str] | None = None,
+    extensions: Mapping[str, Any] | None = None,
 ) -> JSONResponse:
     """Build one RFC 9457 response and expose its code to request logging."""
     request_id = _request_id_from(request)
@@ -188,9 +225,13 @@ def problem_response(
         trace_id=request_id,
         errors=errors,
     )
+    content = problem.model_dump(exclude_none=True)
+    if extensions is not None:
+        content.update(extensions)
+
     return JSONResponse(
         status_code=status_code,
-        content=problem.model_dump(exclude_none=True),
+        content=content,
         headers=dict(headers) if headers is not None else None,
         media_type="application/problem+json",
     )

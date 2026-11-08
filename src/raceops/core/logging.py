@@ -22,6 +22,7 @@ _STRUCTURED_FIELDS: Final = (
     "user_id",
     "membership_id",
     "team_id",
+    "auth_failure_reason",
 )
 
 
