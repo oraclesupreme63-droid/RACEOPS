@@ -1,7 +1,6 @@
 # RaceOps tests
 
-Tests will be organized by responsibility rather than by implementation
-file:
+Tests are organized by responsibility rather than by implementation file:
 
 - `unit/`: pure domain rules and value objects;
 - `integration/`: PostgreSQL, mappings, transactions and migrations;
@@ -9,8 +8,9 @@ file:
 - `acceptance/`: complete user-visible flows;
 - `factories/`: deterministic synthetic test data.
 
-Directories will be created when their first real test is added. Empty test
-packages are intentionally avoided.
+Identity persistence currently has unit metadata contracts and PostgreSQL
+integration coverage for multi-Team membership, normalized email, uniqueness
+and migration round-trips.
 
 Database integration tests are opt-in so the ordinary unit suite remains
 usable without Docker. With the PostgreSQL service healthy, run:

@@ -1,7 +1,8 @@
 # ADR-011 — Access token limitado a una TeamMembership
 
-- **Estado:** Propuesto para aprobación
+- **Estado:** Aceptado
 - **Fecha:** 2026-11-07
+- **Fecha de aprobación:** 2026-11-08
 - **Refina:** ADR-004
 
 ## Contexto

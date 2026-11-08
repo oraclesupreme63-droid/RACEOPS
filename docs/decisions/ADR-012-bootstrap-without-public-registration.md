@@ -1,7 +1,8 @@
 # ADR-012 — Bootstrap administrativo sin registro público
 
-- **Estado:** Propuesto para aprobación
+- **Estado:** Aceptado
 - **Fecha:** 2026-11-07
+- **Fecha de aprobación:** 2026-11-08
 
 ## Contexto
 

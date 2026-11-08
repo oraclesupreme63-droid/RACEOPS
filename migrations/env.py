@@ -8,6 +8,9 @@ from sqlalchemy.engine import Connection
 
 from raceops.core.config import Settings
 from raceops.db.base import Base
+from raceops.iam import models as iam_models
+
+_ = iam_models
 
 config = context.config
 

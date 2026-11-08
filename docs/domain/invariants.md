@@ -12,7 +12,7 @@
 |---|---|---|
 | INV-001 | Todo recurso operativo tiene `team_id` no nulo | Modelo y base de datos |
 | INV-002 | Ninguna relación operativa cruza Teams | Dominio, aplicación y constraints cuando sea posible |
-| INV-003 | TeamMembership activa referencia User y Team activos | Dominio y DB |
+| INV-003 | TeamMembership activa referencia User y Team activos | Servicio de aplicación y FK |
 | INV-004 | Cada TeamMembership tiene un rol principal y el par User/Team es único | Dominio y DB |
 | INV-005 | Driver vinculado con User comparte Team | Dominio |
 | INV-006 | Desactivación no elimina autoría histórica | Dominio y política de borrado |

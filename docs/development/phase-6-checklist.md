@@ -3,7 +3,7 @@
 ## Estado general
 
 - **Fase:** en progreso
-- **Última actualización:** 7 de noviembre de 2026
+- **Última actualización:** 8 de noviembre de 2026
 - **Gate objetivo:** G6 — Vertical Alpha, junto con Fases 7 y 8
 
 ## Bloques
@@ -17,15 +17,18 @@
 - [x] Definir bootstrap administrativo sin registro público.
 - [x] Registrar ADR-011 y ADR-012.
 - [x] Actualizar documentos refinados por la decisión.
-- [ ] Aprobación del propietario.
+- [x] Aprobación del propietario.
 
 ### 6.2 — Persistencia
 
-- [ ] Enums y modelos SQLAlchemy.
-- [ ] Constraints, índices y timestamps.
-- [ ] Migración Alembic.
-- [ ] Pruebas de constraints.
-- [ ] Round-trip `upgrade → downgrade → upgrade`.
+- [x] Enums y modelos SQLAlchemy.
+- [x] Constraints, índices y timestamps.
+- [x] Migración Alembic.
+- [x] Pruebas de constraints.
+- [x] Round-trip `upgrade → downgrade → upgrade`.
+- [x] `alembic check` sin diferencias entre modelos y esquema.
+- [x] Suite completa con cobertura superior al 90 %.
+- [ ] Aprobación del propietario.
 
 ### 6.3 — Credenciales y tokens
 
@@ -61,6 +64,6 @@
 
 ## Condición para avanzar
 
-El Bloque 6.2 no comienza hasta aprobar
-[`identity-contract.md`](../identity/identity-contract.md), ADR-011 y ADR-012.
+El Bloque 6.3 no comienza hasta aprobar el
+[`reporte del Bloque 6.2`](phase-6-block-6.2-report-2026-11-08.md).
 

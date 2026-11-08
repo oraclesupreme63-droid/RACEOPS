@@ -1,7 +1,9 @@
-"""Declarative base and deterministic database naming conventions."""
+"""Declarative base, shared columns, and database naming conventions."""
 
-from sqlalchemy import MetaData
-from sqlalchemy.orm import DeclarativeBase
+from datetime import datetime
+
+from sqlalchemy import DateTime, MetaData, func
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
 NAMING_CONVENTION = {
     "ix": "ix_%(column_0_label)s",
@@ -16,3 +18,19 @@ class Base(DeclarativeBase):
     """Base class shared by all RaceOps SQLAlchemy models."""
 
     metadata = MetaData(naming_convention=NAMING_CONVENTION)
+
+
+class TimestampMixin:
+    """Server-backed UTC timestamps shared by persisted domain records."""
+
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        nullable=False,
+        server_default=func.now(),
+    )
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        nullable=False,
+        server_default=func.now(),
+        onupdate=func.now(),
+    )

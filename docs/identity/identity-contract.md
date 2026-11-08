@@ -5,7 +5,8 @@
 - **Fase:** 6 — Identidad y autorización
 - **Bloque:** 6.1 — Contrato de identidad
 - **Versión:** 0.1
-- **Estado:** Preparado para aprobación
+- **Estado:** Aprobado
+- **Fecha de aprobación:** 8 de noviembre de 2026
 - **Alcance:** P0; monolito modular; API `/api/v1`
 
 Este documento fija el comportamiento que implementarán los bloques 6.2 a
@@ -88,6 +89,10 @@ Restricciones:
 - una membresía `ACTIVE` exige User y Team activos;
 - no existe borrado físico mediante el flujo normal;
 - un cambio de Role no modifica historia creada anteriormente.
+
+Las FK garantizan existencia. La compatibilidad de estados entre filas se
+valida dentro del servicio de aplicación y su transacción; no se simula con un
+`CHECK` de PostgreSQL que no puede consultar otras filas.
 
 ### 4.4 Role
 

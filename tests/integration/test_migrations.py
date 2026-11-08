@@ -11,7 +11,7 @@ from sqlalchemy.engine import Engine
 from raceops.core.config import Settings
 
 RUN_DATABASE_TESTS = os.getenv("RACEOPS_RUN_DB_TESTS") == "1"
-BASELINE_REVISION = "20261024_0001"
+HEAD_REVISION = "20261108_0002_identity"
 
 
 @pytest.mark.integration
@@ -31,13 +31,13 @@ def test_migrations_upgrade_downgrade_and_upgrade() -> None:
 
     try:
         command.upgrade(alembic_config, "head")
-        assert _current_revision(engine) == BASELINE_REVISION
+        assert _current_revision(engine) == HEAD_REVISION
 
         command.downgrade(alembic_config, "base")
         assert _current_revision(engine) is None
 
         command.upgrade(alembic_config, "head")
-        assert _current_revision(engine) == BASELINE_REVISION
+        assert _current_revision(engine) == HEAD_REVISION
     finally:
         command.upgrade(alembic_config, "head")
         engine.dispose()
