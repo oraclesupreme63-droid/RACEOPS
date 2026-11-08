@@ -4,11 +4,13 @@ import os
 from pathlib import Path
 
 import pytest
-from pydantic import ValidationError
+from pydantic import SecretStr, ValidationError
 
 from raceops.core.config import (
+    COMPOSE_DEVELOPMENT_DATABASE_URL,
     DEFAULT_DATABASE_URL,
     DEFAULT_JWT_SECRET,
+    EXAMPLE_JWT_SECRET,
     Settings,
 )
 
@@ -59,3 +61,53 @@ def test_production_rejects_known_development_secrets(
 
     with pytest.raises(ValidationError, match="production requires secure values"):
         Settings(env="production")
+
+
+@pytest.mark.parametrize(
+    ("database_url", "jwt_secret"),
+    [
+        (
+            "postgresql+psycopg://user:secure-password@database:5432/raceops",
+            EXAMPLE_JWT_SECRET,
+        ),
+        (
+            "postgresql+psycopg://user:secure-password@database:5432/raceops",
+            "too-short",
+        ),
+        (
+            COMPOSE_DEVELOPMENT_DATABASE_URL,
+            "a-production-jwt-secret-with-at-least-32-characters",
+        ),
+    ],
+)
+def test_production_rejects_example_or_weak_configuration(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+    database_url: str,
+    jwt_secret: str,
+) -> None:
+    monkeypatch.chdir(tmp_path)
+
+    with pytest.raises(ValidationError, match="production requires secure values"):
+        Settings(
+            env="production",
+            database_url=SecretStr(database_url),
+            jwt_secret=SecretStr(jwt_secret),
+        )
+
+
+def test_production_accepts_external_non_placeholder_secrets(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+) -> None:
+    monkeypatch.chdir(tmp_path)
+
+    settings = Settings(
+        env="production",
+        database_url=SecretStr(
+            "postgresql+psycopg://user:secure-password@database:5432/raceops"
+        ),
+        jwt_secret=SecretStr("a-production-jwt-secret-with-at-least-32-characters"),
+    )
+
+    assert settings.env == "production"

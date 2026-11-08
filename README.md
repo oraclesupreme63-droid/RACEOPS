@@ -9,13 +9,15 @@ not a telemetry acquisition or professional analysis replacement.
 
 ## Current status
 
-Phase 6 — Identity and authorization, in progress through Block 6.5. RaceOps
-now persists teams, users and team-scoped memberships; hashes passwords with
-Argon2id; issues short-lived membership-scoped JWTs; re-resolves identity and
-role state from PostgreSQL; and provides an atomic local administrator
-bootstrap. Login and `/auth/me` are available. Deny-by-default RBAC, Team
-scope and Visibility policies are ready for the operational resources that
-begin in Phase 7.
+Phase 6 — Identity and authorization, implemented and pending final owner
+approval. RaceOps persists teams, users and team-scoped memberships; hashes
+passwords with Argon2id; issues short-lived membership-scoped JWTs; re-resolves
+identity and role state from PostgreSQL; and provides an atomic local
+administrator bootstrap. Login and `/auth/me` are available. Deny-by-default
+RBAC, Team scope and Visibility policies are ready for the operational
+resources that begin in Phase 7. Production configuration rejects known
+development credentials, placeholder or short JWT secrets, and CORS permits
+only explicitly configured origins.
 
 ## Technology
 
@@ -116,8 +118,9 @@ RaceOps reads variables prefixed with `RACEOPS_`. To customize local values:
 Copy-Item .env.example .env
 ```
 
-`.env` is ignored by Git. Known development database credentials and the
-example JWT secret are rejected automatically when `RACEOPS_ENV=production`.
+`.env` is ignored by Git. Known development database credentials, the example
+JWT secret and JWT secrets shorter than 32 characters are rejected
+automatically when `RACEOPS_ENV=production`.
 
 ## Bootstrap the first administrator
 
@@ -237,6 +240,7 @@ including both the Python quality job and the container smoke test.
 - [Phase 6 Block 6.3 report](docs/development/phase-6-block-6.3-report-2026-11-08.md)
 - [Phase 6 Block 6.4 report](docs/development/phase-6-block-6.4-report-2026-11-08.md)
 - [Phase 6 Block 6.5 report](docs/development/phase-6-block-6.5-report-2026-11-08.md)
+- [Phase 6 closure report](docs/development/phase-6-block-6.6-report-2026-11-08.md)
 - [Identity and authorization contract](docs/identity/identity-contract.md)
 - [Technical learning roadmap](docs/development/learning-roadmap.md)
 - [Domain package](docs/domain/README.md)

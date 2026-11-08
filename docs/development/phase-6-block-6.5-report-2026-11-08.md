@@ -5,7 +5,8 @@
 - **Fecha:** 8 de noviembre de 2026
 - **Fase:** 6 — Identidad y autorización
 - **Bloque:** 6.5 — RBAC y aislamiento
-- **Resultado:** Implementado y verificado; pendiente de aprobación
+- **Resultado:** Implementado, verificado y aprobado por el propietario
+- **Aprobación:** 8 de noviembre de 2026
 - **Siguiente bloque:** 6.6 — Cierre de la Fase 6
 
 ## 2. Resultado implementado

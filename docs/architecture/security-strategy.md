@@ -2,8 +2,8 @@
 
 ## 1. Información del documento
 
-- **Versión:** 1.0
-- **Estado:** Preparado para Gate G4
+- **Versión:** 1.1
+- **Estado:** Implementado hasta el alcance de Fase 6
 - **Modelo inicial:** JWT + RBAC + ownership por Team + Visibility
 
 ## 2. Límites
@@ -35,7 +35,10 @@ un control suficiente.
 
 HTTPS será obligatorio fuera del entorno local. La clave JWT viene del
 entorno, tiene suficiente entropía, no posee valor productivo predeterminado
-y puede rotarse mediante un procedimiento documentado.
+y puede rotarse mediante un procedimiento documentado. En producción, el
+arranque rechaza los marcadores conocidos y secretos JWT menores de 32
+caracteres; la longitud es un mínimo defensivo y no sustituye la generación
+aleatoria del secreto.
 
 ## 4. Autorización
 
@@ -76,6 +79,8 @@ autorizado de detalle técnico confidencial.
 - Uploads no pertenecen a P0. Las referencias de telemetría P1 no permiten
   rutas locales arbitrarias.
 - CORS usa allowlist explícita por entorno; nunca wildcard con credenciales.
+- La API aplica esa allowlist, limita métodos y encabezados admitidos y expone
+  `X-Request-ID` al origen autorizado.
 - OpenAPI de producción puede permanecer accesible sólo si no expone datos o
   mecanismos internos sensibles.
 
@@ -110,4 +115,20 @@ retención, exportación y eliminación conforme al contexto aplicable.
 - [FastAPI — OAuth2 with Password and JWT](https://fastapi.tiangolo.com/tutorial/security/oauth2-jwt/)
 - [OWASP — Password Storage Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html)
 - [OWASP — Session Management Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html)
+
+## 11. Estado de controles después de Fase 6
+
+Implementados y probados:
+
+- Argon2id, JWT breve y resolución server-side de identidad activa;
+- RBAC de menor privilegio, ownership por Team y base de Visibility;
+- errores y logs sin cuerpos, tokens ni mensajes internos;
+- rechazo productivo de configuración de desarrollo o JWT débil;
+- allowlist CORS explícita;
+- ejecución del contenedor como usuario no root.
+
+Antes de exponer RaceOps públicamente todavía se requieren rate limiting,
+TLS/headers del proxy, lock de dependencias y análisis de vulnerabilidades de
+dependencias e imagen. Son controles de publicación/robustez de Fase 13, no se
+declaran cumplidos por el cierre de identidad.
 

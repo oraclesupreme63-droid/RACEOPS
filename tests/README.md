@@ -15,7 +15,9 @@ round-trips. HTTP integration tests exercise login, multiple-team selection,
 current identity, indistinguishable credential failures, token rejection and
 immediate Role changes against PostgreSQL. Authorization tests cover all five
 Roles, deny-by-default permissions, Team isolation, relationship checks and
-the three Visibility levels.
+the three Visibility levels. Configuration and HTTP tests also verify that
+production rejects development or weak secrets and that CORS allows only
+configured origins while exposing the request correlation header.
 
 Database integration tests are opt-in so the ordinary unit suite remains
 usable without Docker. With the PostgreSQL service healthy, run:

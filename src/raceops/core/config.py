@@ -8,6 +8,11 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 DEFAULT_DATABASE_URL = "postgresql+psycopg://raceops:raceops@localhost:55432/raceops"
 DEFAULT_JWT_SECRET = "local-development-only-change-me"
+EXAMPLE_JWT_SECRET = "replace-with-a-long-random-secret"
+COMPOSE_DEVELOPMENT_DATABASE_URL = (
+    "postgresql+psycopg://raceops:raceops@db:5432/raceops"
+)
+MIN_PRODUCTION_JWT_SECRET_LENGTH = 32
 
 
 class Settings(BaseSettings):
@@ -36,9 +41,17 @@ class Settings(BaseSettings):
             return self
 
         unsafe_fields: list[str] = []
-        if self.database_url.get_secret_value() == DEFAULT_DATABASE_URL:
+        database_url = self.database_url.get_secret_value()
+        jwt_secret = self.jwt_secret.get_secret_value()
+        if database_url in {
+            DEFAULT_DATABASE_URL,
+            COMPOSE_DEVELOPMENT_DATABASE_URL,
+        }:
             unsafe_fields.append("RACEOPS_DATABASE_URL")
-        if self.jwt_secret.get_secret_value() == DEFAULT_JWT_SECRET:
+        if (
+            jwt_secret in {DEFAULT_JWT_SECRET, EXAMPLE_JWT_SECRET}
+            or len(jwt_secret) < MIN_PRODUCTION_JWT_SECRET_LENGTH
+        ):
             unsafe_fields.append("RACEOPS_JWT_SECRET")
 
         if unsafe_fields:

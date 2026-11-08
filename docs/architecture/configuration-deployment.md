@@ -2,8 +2,8 @@
 
 ## 1. Información del documento
 
-- **Versión:** 1.0
-- **Estado:** Preparado para Gate G4
+- **Versión:** 1.1
+- **Estado:** Implementado hasta el alcance de Fase 6
 - **Alcance:** desarrollo y primer entorno desplegable
 
 ## 2. Configuración
@@ -27,6 +27,11 @@ Los nombres pueden ajustarse durante la fundación, pero los principios no:
 - sin secretos productivos por defecto;
 - `.env.example` sin valores privados;
 - test settings independientes.
+
+En `production`, RaceOps rechaza las URLs de base de desarrollo conocidas,
+los marcadores JWT documentales y cualquier secreto JWT menor de 32
+caracteres. `RACEOPS_CORS_ORIGINS` se aplica como allowlist exacta; no activa
+cookies y sólo admite los métodos y encabezados necesarios para la API.
 
 ## 3. Desarrollo local
 
