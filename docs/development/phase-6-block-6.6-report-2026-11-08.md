@@ -5,7 +5,7 @@
 - **Fecha:** 8 de noviembre de 2026
 - **Fase:** 6 — Identidad y autorización
 - **Bloque:** 6.6 — Cierre
-- **Resultado:** Implementado y verificado localmente; pendiente de CI y
+- **Resultado:** Implementado y verificado localmente y en CI; pendiente de
   aprobación final del propietario
 - **Siguiente fase propuesta:** 7 — Base operativa
 
@@ -44,6 +44,8 @@ ni claves privadas reales.
 - round-trip de migraciones aprobado dentro de la suite;
 - `alembic check`: sin nuevas operaciones;
 - `git diff --check`: sin errores de whitespace.
+- GitHub Actions: [run 42504411450](https://github.com/oraclesupreme63-droid/RACEOPS/actions/runs/42504411450)
+  aprobado en sus dos jobs.
 
 ## 5. Contenedor y ejecución
 

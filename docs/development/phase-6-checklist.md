@@ -67,7 +67,7 @@
 
 - [x] Suite completa, cobertura, Ruff y mypy.
 - [x] Migraciones y contenedores.
-- [ ] CI en verde.
+- [x] CI en verde.
 - [x] Trazabilidad y documentación actualizadas.
 - [x] Revisión de seguridad.
 - [ ] Aprobación de Fase 6.
