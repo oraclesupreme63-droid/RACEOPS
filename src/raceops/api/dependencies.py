@@ -1,6 +1,6 @@
 """HTTP dependency providers."""
 
-from collections.abc import Iterator
+from collections.abc import Callable, Iterator
 from typing import Annotated, cast
 
 from fastapi import Request, Security
@@ -10,6 +10,7 @@ from sqlalchemy.orm import Session, sessionmaker
 from raceops.api.errors import ApiProblemError, ProblemDefinition
 from raceops.core.config import Settings
 from raceops.db.health import DatabaseHealthChecker
+from raceops.iam.authorization import Permission, enforce_permission
 from raceops.iam.errors import InvalidAccessTokenError
 from raceops.iam.identity import CurrentIdentity, resolve_current_identity
 from raceops.iam.tokens import decode_access_token
@@ -67,6 +68,20 @@ def get_current_identity(
             return resolve_current_identity(session, claims)
     except InvalidAccessTokenError as error:
         raise _invalid_access_token_problem() from error
+
+
+def require_permission(
+    permission: Permission,
+) -> Callable[[CurrentIdentity], CurrentIdentity]:
+    """Build a FastAPI dependency that returns an authorized current actor."""
+
+    def dependency(
+        identity: Annotated[CurrentIdentity, Security(get_current_identity)],
+    ) -> CurrentIdentity:
+        enforce_permission(identity, permission)
+        return identity
+
+    return dependency
 
 
 def _invalid_access_token_problem() -> ApiProblemError:

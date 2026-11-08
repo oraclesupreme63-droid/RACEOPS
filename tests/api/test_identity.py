@@ -4,22 +4,29 @@ import os
 from collections.abc import Iterator
 from dataclasses import dataclass
 from datetime import UTC, datetime, timedelta
+from typing import Annotated
 from uuid import UUID, uuid4
 
 import jwt
 import pytest
 from alembic import command
 from alembic.config import Config
-from fastapi import FastAPI
+from fastapi import Depends, FastAPI
 from httpx import ASGITransport, AsyncClient
 from pydantic import SecretStr
 from sqlalchemy import create_engine
 from sqlalchemy.engine import Engine
 from sqlalchemy.orm import Session
 
+from raceops.api.dependencies import require_permission
 from raceops.core.config import Settings
+from raceops.iam.authorization import (
+    Permission,
+    enforce_team_scope,
+)
 from raceops.iam.credentials import hash_password
 from raceops.iam.enums import IdentityStatus, Role
+from raceops.iam.identity import CurrentIdentity
 from raceops.iam.models import Team, TeamMembership, User
 from raceops.iam.tokens import JWT_ALGORITHM, issue_access_token
 from raceops.main import create_app
@@ -308,6 +315,117 @@ async def test_me_reads_role_change_without_reissuing_token(
 
     assert first.json()["membership"]["role"] == "DRIVER"
     assert second.json()["membership"]["role"] == "ENGINEER"
+
+
+@pytest.mark.anyio
+@pytest.mark.integration
+@requires_database
+async def test_rbac_dependency_applies_least_privilege_to_every_role(
+    application: FastAPI,
+    database_engine: Engine,
+) -> None:
+    manage_members = require_permission(Permission.MANAGE_MEMBERS)
+    read_team_configuration = require_permission(Permission.READ_TEAM_CONFIGURATION)
+
+    @application.get("/api/v1/testing/manage-members")
+    def manage_members_probe(
+        actor: Annotated[CurrentIdentity, Depends(manage_members)],
+    ) -> dict[str, str]:
+        return {"role": actor.role}
+
+    @application.get("/api/v1/testing/team-configuration")
+    def team_configuration_probe(
+        actor: Annotated[CurrentIdentity, Depends(read_team_configuration)],
+    ) -> dict[str, str]:
+        return {"role": actor.role}
+
+    seeded_by_role = {role: _seed_identity(database_engine, role=role) for role in Role}
+    tokens = {
+        role: issue_access_token(
+            user_id=seeded.user_id,
+            membership_id=seeded.membership_id,
+            secret=JWT_SECRET,
+            ttl=timedelta(minutes=15),
+        )
+        for role, seeded in seeded_by_role.items()
+    }
+    transport = ASGITransport(app=application)
+
+    async with AsyncClient(transport=transport, base_url="http://testserver") as client:
+        for role, token in tokens.items():
+            headers = {"Authorization": f"Bearer {token}"}
+            manage_response = await client.get(
+                "/api/v1/testing/manage-members",
+                headers=headers,
+            )
+            configuration_response = await client.get(
+                "/api/v1/testing/team-configuration",
+                headers=headers,
+            )
+
+            expected_manage_status = 200 if role is Role.ADMINISTRATOR else 403
+            assert manage_response.status_code == expected_manage_status
+            if expected_manage_status == 403:
+                assert manage_response.json()["code"] == "insufficient_permissions"
+            assert configuration_response.status_code == 200
+
+        driver = seeded_by_role[Role.DRIVER]
+        with Session(database_engine) as session:
+            membership = session.get_one(TeamMembership, driver.membership_id)
+            membership.role = Role.ADMINISTRATOR
+            session.commit()
+        changed_role_response = await client.get(
+            "/api/v1/testing/manage-members",
+            headers={"Authorization": f"Bearer {tokens[Role.DRIVER]}"},
+        )
+
+    assert changed_role_response.status_code == 200
+    assert changed_role_response.json()["role"] == "ADMINISTRATOR"
+
+
+@pytest.mark.anyio
+@pytest.mark.integration
+@requires_database
+async def test_cross_team_resource_is_hidden_with_not_found(
+    application: FastAPI,
+    database_engine: Engine,
+) -> None:
+    read_team_configuration = require_permission(Permission.READ_TEAM_CONFIGURATION)
+
+    @application.get("/api/v1/testing/team-resources/{resource_team_id}")
+    def team_resource_probe(
+        resource_team_id: UUID,
+        actor: Annotated[CurrentIdentity, Depends(read_team_configuration)],
+    ) -> dict[str, str]:
+        enforce_team_scope(actor, resource_team_id)
+        return {"team_id": str(resource_team_id)}
+
+    actor = _seed_identity(database_engine, role=Role.TEAM_MANAGER)
+    other = _seed_identity(database_engine, role=Role.TEAM_MANAGER)
+    token = issue_access_token(
+        user_id=actor.user_id,
+        membership_id=actor.membership_id,
+        secret=JWT_SECRET,
+        ttl=timedelta(minutes=15),
+    )
+    headers = {"Authorization": f"Bearer {token}"}
+    transport = ASGITransport(app=application)
+
+    async with AsyncClient(transport=transport, base_url="http://testserver") as client:
+        own_response = await client.get(
+            f"/api/v1/testing/team-resources/{actor.team_id}",
+            headers=headers,
+        )
+        cross_team_response = await client.get(
+            f"/api/v1/testing/team-resources/{other.team_id}",
+            headers=headers,
+        )
+
+    assert own_response.status_code == 200
+    assert cross_team_response.status_code == 404
+    assert cross_team_response.headers["content-type"] == "application/problem+json"
+    assert cross_team_response.json()["code"] == "resource_not_found"
+    assert other.team_name not in cross_team_response.text
 
 
 def test_openapi_documents_identity_contract_without_hashes() -> None:

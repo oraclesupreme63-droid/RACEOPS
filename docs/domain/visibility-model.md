@@ -154,3 +154,19 @@ V1 no incluye:
 - acceso entre Teams.
 
 Estas exclusiones mantienen implementable y auditable la seguridad inicial.
+
+## 13. Evidencia de implementación
+
+El Bloque 6.5 materializó los tres niveles como políticas server-side:
+
+- `TEAM` exige Team coincidente y, para Driver, relación con el recurso;
+- `ROLE_RESTRICTED` exige Role destinatario o relación explícita;
+- `ENGINEERING_CONFIDENTIAL` permite Engineer y solamente permite Mechanic
+  cuando exista autorización explícita;
+- Administrator, Team Manager y Driver no reciben detalle de ingeniería por
+  jerarquía ni por autoría;
+- una falla de Team, relación o Visibility produce el mismo resultado oculto.
+
+La política fue probada con datos sintéticos. El filtrado de campos concretos
+como `technical_detail` se integrará y probará con los modelos de Analysis y
+Action; esos modelos todavía no existen y no se simulan en la API pública.

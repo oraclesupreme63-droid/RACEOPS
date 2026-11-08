@@ -13,7 +13,9 @@ signature validation, current server-side identity resolution, role changes,
 inactive boundaries, atomic administrative bootstrap and migration
 round-trips. HTTP integration tests exercise login, multiple-team selection,
 current identity, indistinguishable credential failures, token rejection and
-immediate Role changes against PostgreSQL.
+immediate Role changes against PostgreSQL. Authorization tests cover all five
+Roles, deny-by-default permissions, Team isolation, relationship checks and
+the three Visibility levels.
 
 Database integration tests are opt-in so the ordinary unit suite remains
 usable without Docker. With the PostgreSQL service healthy, run:

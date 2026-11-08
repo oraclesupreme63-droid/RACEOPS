@@ -11,6 +11,10 @@ from starlette.exceptions import HTTPException
 from starlette.responses import JSONResponse
 
 from raceops.core.request_context import create_request_id
+from raceops.iam.errors import (
+    InsufficientPermissionsError,
+    ResourceNotFoundError,
+)
 
 PROBLEM_TYPE_BASE = "https://raceops.local/problems"
 
@@ -117,11 +121,33 @@ INTERNAL_PROBLEM = ProblemDefinition(
     "An unexpected error occurred.",
 )
 
+INSUFFICIENT_PERMISSIONS_PROBLEM = ProblemDefinition(
+    "insufficient-permissions",
+    "Insufficient permissions",
+    "insufficient_permissions",
+    "The authenticated actor is not allowed to perform this operation.",
+)
+
+HIDDEN_RESOURCE_PROBLEM = ProblemDefinition(
+    "resource-not-found",
+    "Resource not found",
+    "resource_not_found",
+    "The requested resource was not found.",
+)
+
 
 def register_exception_handlers(application: FastAPI) -> None:
     """Install the expected HTTP and request-validation translators."""
     application.add_exception_handler(HTTPException, http_exception_handler)
     application.add_exception_handler(ApiProblemError, api_problem_exception_handler)
+    application.add_exception_handler(
+        InsufficientPermissionsError,
+        authorization_exception_handler,
+    )
+    application.add_exception_handler(
+        ResourceNotFoundError,
+        authorization_exception_handler,
+    )
     application.add_exception_handler(
         RequestValidationError,
         validation_exception_handler,
@@ -168,6 +194,26 @@ async def api_problem_exception_handler(
         headers=exception.headers,
         extensions=exception.extensions,
     )
+
+
+async def authorization_exception_handler(
+    request: Request,
+    exception: Exception,
+) -> JSONResponse:
+    """Map deny-by-default policy failures without exposing resource existence."""
+    if isinstance(exception, InsufficientPermissionsError):
+        return problem_response(
+            request=request,
+            status_code=403,
+            definition=INSUFFICIENT_PERMISSIONS_PROBLEM,
+        )
+    if isinstance(exception, ResourceNotFoundError):
+        return problem_response(
+            request=request,
+            status_code=404,
+            definition=HIDDEN_RESOURCE_PROBLEM,
+        )
+    raise exception
 
 
 async def validation_exception_handler(

@@ -50,15 +50,18 @@
 - [x] OpenAPI y respuestas RFC 9457.
 - [x] Pruebas HTTP positivas, negativas y de no filtración.
 - [x] Suite completa con cobertura superior al 90 %.
-- [ ] Aprobación del propietario.
+- [x] Aprobación del propietario.
 
 ### 6.5 — RBAC y aislamiento
 
-- [ ] Contexto de actor reutilizable.
-- [ ] Políticas de menor privilegio.
-- [ ] Aislamiento entre Teams con `404` seguro.
-- [ ] Pruebas positivas y negativas por Role.
-- [ ] Base de Visibility para módulos posteriores.
+- [x] Contexto de actor reutilizable.
+- [x] Políticas de menor privilegio.
+- [x] Aislamiento entre Teams con `404` seguro.
+- [x] Pruebas positivas y negativas por Role.
+- [x] Base de Visibility para módulos posteriores.
+- [x] Administrator sin acceso técnico confidencial por jerarquía.
+- [x] Suite completa con cobertura superior al 90 %.
+- [ ] Aprobación del propietario.
 
 ### 6.6 — Cierre
 
@@ -71,6 +74,6 @@
 
 ## Condición para avanzar
 
-El Bloque 6.5 no comienza hasta aprobar el
-[`reporte del Bloque 6.4`](phase-6-block-6.4-report-2026-11-08.md).
+El Bloque 6.6 no comienza hasta aprobar el
+[`reporte del Bloque 6.5`](phase-6-block-6.5-report-2026-11-08.md).
 

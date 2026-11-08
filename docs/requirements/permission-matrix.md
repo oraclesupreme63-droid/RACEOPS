@@ -130,3 +130,19 @@ Las pruebas deberán comprobar, como mínimo:
 - búsqueda que pudiera revelar identificadores confidenciales;
 - modificación de resultados bloqueados;
 - escalamiento de rol no autorizado.
+
+## 9. Evidencia de implementación
+
+La base ejecutable de esta matriz se implementó en el Bloque 6.5 mediante:
+
+- `Permission` y asignaciones inmutables por `Role`;
+- denegación predeterminada para capacidades no concedidas;
+- dependencia FastAPI que devuelve el actor actual autorizado;
+- separación entre `403 insufficient_permissions` y el `404` utilizado para
+  ocultar recursos de otro Team;
+- pruebas positivas y negativas para los cinco Roles.
+
+Los permisos relacionados con ownership, Session, Driver y Action se
+completarán al existir esos recursos. La tabla continúa siendo la fuente de
+verdad; la implementación no convierte una capacidad general en autorización
+para omitir relación, Visibility o invariantes del recurso.
