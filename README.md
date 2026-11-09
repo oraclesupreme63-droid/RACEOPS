@@ -9,8 +9,9 @@ not a telemetry acquisition or professional analysis replacement.
 
 ## Current status
 
-Phase 6 — Identity and authorization, implemented and pending final owner
-approval. RaceOps persists teams, users and team-scoped memberships; hashes
+Phase 6 — Identity and authorization, completed and approved. Phase 7 —
+Operational Base, in progress through Block 7.1. RaceOps persists teams, users
+and team-scoped memberships; hashes
 passwords with Argon2id; issues short-lived membership-scoped JWTs; re-resolves
 identity and role state from PostgreSQL; and provides an atomic local
 administrator bootstrap. Login and `/auth/me` are available. Deny-by-default
@@ -241,6 +242,9 @@ including both the Python quality job and the container smoke test.
 - [Phase 6 Block 6.4 report](docs/development/phase-6-block-6.4-report-2026-11-08.md)
 - [Phase 6 Block 6.5 report](docs/development/phase-6-block-6.5-report-2026-11-08.md)
 - [Phase 6 closure report](docs/development/phase-6-block-6.6-report-2026-11-08.md)
+- [Phase 7 checklist](docs/development/phase-7-checklist.md)
+- [Phase 7 operational contract](docs/operations/operational-base-contract.md)
+- [Phase 7 Block 7.1 report](docs/development/phase-7-block-7.1-report-2026-11-08.md)
 - [Identity and authorization contract](docs/identity/identity-contract.md)
 - [Technical learning roadmap](docs/development/learning-roadmap.md)
 - [Domain package](docs/domain/README.md)

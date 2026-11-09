@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- **Fase:** implementada; pendiente de aprobación final
+- **Fase:** completada y aprobada
 - **Última actualización:** 8 de noviembre de 2026
 - **Gate objetivo:** G6 — Vertical Alpha, junto con Fases 7 y 8
 
@@ -70,12 +70,11 @@
 - [x] CI en verde.
 - [x] Trazabilidad y documentación actualizadas.
 - [x] Revisión de seguridad.
-- [ ] Aprobación de Fase 6.
+- [x] Aprobación de Fase 6.
 
 ## Condición para avanzar
 
-El Bloque 6.6 comenzó después de aprobar el
-[`reporte del Bloque 6.5`](phase-6-block-6.5-report-2026-11-08.md). La Fase 7
-no comienza hasta que CI valide el cierre y el propietario apruebe el
-[`reporte del Bloque 6.6`](phase-6-block-6.6-report-2026-11-08.md).
+El cierre fue validado por CI y el propietario aprobó el
+[`reporte del Bloque 6.6`](phase-6-block-6.6-report-2026-11-08.md) el 8 de
+noviembre de 2026. La Fase 7 puede comenzar.
 

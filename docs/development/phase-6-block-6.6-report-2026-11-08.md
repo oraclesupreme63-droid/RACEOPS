@@ -5,8 +5,8 @@
 - **Fecha:** 8 de noviembre de 2026
 - **Fase:** 6 — Identidad y autorización
 - **Bloque:** 6.6 — Cierre
-- **Resultado:** Implementado y verificado localmente y en CI; pendiente de
-  aprobación final del propietario
+- **Resultado:** Implementado, verificado y aprobado por el propietario
+- **Aprobación:** 8 de noviembre de 2026
 - **Siguiente fase propuesta:** 7 — Base operativa
 
 ## 2. Alcance revisado
