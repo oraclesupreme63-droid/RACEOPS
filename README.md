@@ -10,8 +10,9 @@ not a telemetry acquisition or professional analysis replacement.
 ## Current status
 
 Phase 6 — Identity and authorization, completed and approved. Phase 7 —
-Operational Base, in progress through Block 7.1. RaceOps persists teams, users
-and team-scoped memberships; hashes
+Operational Base, in progress through Block 7.2. RaceOps now persists Drivers,
+Vehicles, Tracks and Events with database-enforced Team isolation, in addition
+to teams, users and team-scoped memberships; hashes
 passwords with Argon2id; issues short-lived membership-scoped JWTs; re-resolves
 identity and role state from PostgreSQL; and provides an atomic local
 administrator bootstrap. Login and `/auth/me` are available. Deny-by-default
@@ -245,6 +246,7 @@ including both the Python quality job and the container smoke test.
 - [Phase 7 checklist](docs/development/phase-7-checklist.md)
 - [Phase 7 operational contract](docs/operations/operational-base-contract.md)
 - [Phase 7 Block 7.1 report](docs/development/phase-7-block-7.1-report-2026-11-08.md)
+- [Phase 7 Block 7.2 report](docs/development/phase-7-block-7.2-report-2026-11-08.md)
 - [Identity and authorization contract](docs/identity/identity-contract.md)
 - [Technical learning roadmap](docs/development/learning-roadmap.md)
 - [Domain package](docs/domain/README.md)
@@ -253,7 +255,7 @@ including both the Python quality job and the container smoke test.
 
 ## Scope discipline
 
-RaceOps remains a modular monolith. Phase 6 is limited to identity and
-authorization infrastructure; operational resources and the Session Learning
-Loop remain later milestones.
+RaceOps remains a modular monolith. Phase 7 builds the minimum operational
+resources required by Session; the Session Learning Loop remains a later
+milestone and is not being anticipated inside these models.
 

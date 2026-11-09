@@ -3,7 +3,7 @@
 ## 1. Información del documento
 
 - **Versión:** 1.0
-- **Estado:** propuesto para aprobación del Bloque 7.1
+- **Estado:** Bloque 7.1 aprobado; persistencia implementada en Bloque 7.2
 - **Alcance:** Driver, Vehicle, Track y Event
 - **Fuera de alcance:** Session, resultados, telemetría y mantenimiento
 
@@ -207,3 +207,13 @@ AC-005 y AC-006 se completarán de extremo a extremo al crear Session en Fase
 8. Durante Fase 7 se probarán los estados y predicados de asignabilidad sin
 crear una Session ficticia. Track inmutable después de la primera Session se
 probará también en Fase 8.
+
+## 13. Evidencia de implementación
+
+El Bloque 7.2 materializa este contrato en cuatro modelos SQLAlchemy y la
+revisión Alembic `20261108_0003_operations`. PostgreSQL aplica ownership por
+Team, vínculos Driver/User y Event/Track del mismo Team, unicidad acotada,
+fechas válidas y referencias históricas restrictivas. Las pruebas unitarias y
+de integración cubren los constraints y el recorrido upgrade/downgrade de la
+migración. El comportamiento HTTP permanece intencionalmente pendiente para
+los Bloques 7.3–7.5.

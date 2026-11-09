@@ -5,7 +5,7 @@
 - **Fecha:** 8 de noviembre de 2026
 - **Fase:** 7 — Base operativa
 - **Bloque:** 7.1 — Contrato operativo
-- **Resultado:** documentado; pendiente de aprobación del propietario
+- **Resultado:** aprobado por el propietario
 - **Siguiente bloque:** 7.2 — Persistencia operativa
 
 ## 2. Trabajo realizado
@@ -55,6 +55,6 @@ asignabilidad sin inventar una Session temporal.
 
 ## 6. Punto de aprobación
 
-Al aprobar este reporte comienza el Bloque 7.2. Ese bloque será el inicio del
-código de Fase 7: enums, modelos SQLAlchemy, constraints, migración Alembic y
+El propietario aprobó este reporte el 8 de noviembre de 2026. El Bloque 7.2
+continuó con enums, modelos SQLAlchemy, constraints, migración Alembic y
 pruebas de persistencia.

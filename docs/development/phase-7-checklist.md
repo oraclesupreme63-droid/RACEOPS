@@ -17,16 +17,16 @@
 - [x] Definir estados y preservación histórica.
 - [x] Definir ownership, permisos y errores esperados.
 - [x] Clasificar decisiones por nivel de evidencia.
-- [ ] Aprobación del propietario.
+- [x] Aprobación del propietario.
 
 ### 7.2 — Persistencia operativa
 
-- [ ] Enums y modelos SQLAlchemy.
-- [ ] Constraints, índices y FKs de Team.
-- [ ] Migración Alembic.
-- [ ] Validación de vínculos Driver/User y Event/Track.
-- [ ] Pruebas de constraints y round-trip de migración.
-- [ ] `alembic check` sin diferencias.
+- [x] Enums y modelos SQLAlchemy.
+- [x] Constraints, índices y FKs de Team.
+- [x] Migración Alembic.
+- [x] Validación de vínculos Driver/User y Event/Track.
+- [x] Pruebas de constraints y round-trip de migración.
+- [x] `alembic check` sin diferencias.
 - [ ] Aprobación del propietario.
 
 ### 7.3 — API de Drivers
@@ -68,7 +68,7 @@
 
 ## Condición para avanzar
 
-El Bloque 7.2 no comienza hasta aprobar el
-[`reporte del Bloque 7.1`](phase-7-block-7.1-report-2026-11-08.md). Cada API
+El Bloque 7.2 está técnicamente completo y espera aprobación en el
+[`reporte del Bloque 7.2`](phase-7-block-7.2-report-2026-11-08.md). Cada API
 se construye sobre persistencia aprobada y no se inicia la Fase 8 hasta cerrar
 esta checklist.
