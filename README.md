@@ -10,7 +10,8 @@ not a telemetry acquisition or professional analysis replacement.
 ## Current status
 
 Phase 6 — Identity and authorization, completed and approved. Phase 7 —
-Operational Base, in progress through Block 7.5. RaceOps now exposes
+Operational Base, technically complete and awaiting final approval. The
+backend identifies itself as the `v0.2.0` release candidate. RaceOps exposes
 operational APIs for Drivers, Vehicles, Tracks and Events
 with database-enforced Team isolation, in addition to teams, users and
 team-scoped memberships; hashes
@@ -285,7 +286,7 @@ including both the Python quality job and the container smoke test.
 - [Architecture decisions](docs/decisions/README.md)
 - [Development runbook](docs/development/runbook.md)
 - [Gate G5 assessment](docs/development/gate-g5-assessment.md)
-- [Project status report](docs/development/project-status-report-2026-11-08.md)
+- [Current project status report](docs/development/project-status-report-2026-11-09.md)
 - [Phase 6 checklist](docs/development/phase-6-checklist.md)
 - [Phase 6 Block 6.2 report](docs/development/phase-6-block-6.2-report-2026-11-08.md)
 - [Phase 6 Block 6.3 report](docs/development/phase-6-block-6.3-report-2026-11-08.md)
@@ -299,6 +300,8 @@ including both the Python quality job and the container smoke test.
 - [Phase 7 Block 7.3 report](docs/development/phase-7-block-7.3-report-2026-11-08.md)
 - [Phase 7 Block 7.4 report](docs/development/phase-7-block-7.4-report-2026-11-08.md)
 - [Phase 7 Block 7.5 report](docs/development/phase-7-block-7.5-report-2026-11-09.md)
+- [Phase 7 closure report](docs/development/phase-7-block-7.6-report-2026-11-09.md)
+- [Phase 7 implementation traceability](docs/development/phase-7-traceability.md)
 - [Identity and authorization contract](docs/identity/identity-contract.md)
 - [Technical learning roadmap](docs/development/learning-roadmap.md)
 - [Domain package](docs/domain/README.md)
@@ -307,7 +310,7 @@ including both the Python quality job and the container smoke test.
 
 ## Scope discipline
 
-RaceOps remains a modular monolith. Phase 7 builds the minimum operational
-resources required by Session; the Session Learning Loop remains a later
-milestone and is not being anticipated inside these models.
+RaceOps remains a modular monolith. Phase 7 has built the minimum operational
+resources required by Session. Phase 8 will implement the Session Learning
+Loop; it has not been anticipated inside these catalog models.
 

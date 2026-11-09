@@ -37,7 +37,7 @@ COPY --from=builder /wheels /wheels
 RUN python -m pip install \
         --no-index \
         --find-links=/wheels \
-        raceops==0.1.0 \
+        raceops \
     && rm -rf /wheels
 
 COPY --chown=raceops:raceops alembic.ini ./

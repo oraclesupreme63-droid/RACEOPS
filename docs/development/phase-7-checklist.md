@@ -2,8 +2,8 @@
 
 ## Estado general
 
-- **Fase:** en progreso
-- **Última actualización:** 8 de noviembre de 2026
+- **Fase:** cierre técnico completo; pendiente de aprobación final
+- **Última actualización:** 9 de noviembre de 2026
 - **Entregable:** `v0.2 — Operational Base`
 - **Gate objetivo:** G6 — Vertical Alpha, junto con Fase 8
 
@@ -55,20 +55,20 @@
 - [x] Fechas y estado de Event válidos.
 - [x] Sin borrado físico mediante la API normal.
 - [x] RBAC y pruebas entre Teams.
-- [ ] Aprobación del propietario.
+- [x] Aprobación del propietario.
 
 ### 7.6 — Cierre
 
-- [ ] Suite completa y cobertura superior al 90 %.
-- [ ] Ruff, mypy, migraciones y contenedores.
-- [ ] CI en verde.
-- [ ] Trazabilidad y documentación actualizadas.
-- [ ] Tag o evidencia de `v0.2 — Operational Base` según estado del release.
+- [x] Suite completa y cobertura superior al 90 %.
+- [x] Ruff, mypy, migraciones y contenedores.
+- [x] CI en verde.
+- [x] Trazabilidad y documentación actualizadas.
+- [x] Evidencia de `v0.2 — Operational Base`; el tag espera aprobación final.
 - [ ] Aprobación de Fase 7.
 
 ## Condición para avanzar
 
-El Bloque 7.5 está técnicamente completo y espera aprobación en el
-[`reporte del Bloque 7.5`](phase-7-block-7.5-report-2026-11-09.md). Cada API
-se construye sobre el bloque anterior aprobado y no se inicia la Fase 8 hasta
-cerrar esta checklist.
+Los seis bloques están técnicamente completos. La evidencia se resume en el
+[`reporte de cierre`](phase-7-block-7.6-report-2026-11-09.md). No se crea el
+tag `v0.2.0` ni se inicia la Fase 8 hasta recibir la aprobación final del
+propietario.

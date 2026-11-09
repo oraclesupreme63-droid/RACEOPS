@@ -5,7 +5,7 @@
 - **Fecha:** 9 de noviembre de 2026
 - **Fase:** 7 — Base operativa
 - **Bloque:** 7.5 — API de Tracks y Events
-- **Resultado:** implementado y verificado; pendiente de aprobación del propietario
+- **Resultado:** implementado, verificado y aprobado por el propietario
 - **Siguiente bloque:** 7.6 — Cierre de Fase 7 y evidencia de `v0.2`
 
 ## 2. Resultado funcional
@@ -55,7 +55,8 @@ Un UUID ajeno o un Track ajeno utilizado al crear o actualizar Event responde
 - runtime con UID `10001`, sin pytest, y siete rutas Track/Event en OpenAPI;
 - `/health` y `/ready` respondieron HTTP 200.
 
-El enlace de CI se añadirá al publicar el bloque.
+La verificación completa también pasó en
+[GitHub Actions, ejecución 42638867811](https://github.com/oraclesupreme63-droid/RACEOPS/actions/runs/42638867811).
 
 ## 5. Control de alcance
 
@@ -64,8 +65,9 @@ telemetría ni frontend. Cambiar el Track de un Event sigue permitido mientras
 no existe Session; la inmovilidad después de la primera Session se aplicará en
 Fase 8. El ciclo de Event continúa marcado como hipótesis de dominio revisable.
 
-## 6. Punto de aprobación
+## 6. Aprobación
 
-Con aprobación del propietario comienza el Bloque 7.6. Ese bloque no agrega
-funciones: ejecuta el cierre integral de la Fase 7, actualiza trazabilidad y
-prepara la evidencia de `v0.2 — Operational Base` antes de iniciar Fase 8.
+El propietario aprobó este bloque y autorizó el Bloque 7.6. Ese bloque no
+agrega funciones: ejecuta el cierre integral de la Fase 7, actualiza
+trazabilidad y prepara la evidencia de `v0.2 — Operational Base` antes de
+iniciar Fase 8.

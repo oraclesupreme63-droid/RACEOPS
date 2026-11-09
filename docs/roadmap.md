@@ -284,6 +284,8 @@ ejecución real de los jobs de calidad y contenedores en GitHub Actions.
 - accesos denegados cuentan con pruebas;
 - un equipo no puede consultar recursos de otro.
 
+**Estado:** Completada y aprobada el 8 de noviembre de 2026.
+
 ---
 
 ## Fase 7 — Base operativa
@@ -306,6 +308,10 @@ ejecución real de los jobs de calidad y contenedores en GitHub Actions.
 
 - pueden crearse los recursos necesarios para una sesión;
 - los recursos inactivos o no disponibles son rechazados correctamente.
+
+**Estado:** Cierre técnico completado el 9 de noviembre de 2026; pendiente de
+aprobación final y tag `v0.2.0`. La validación de asignación completa ocurre
+en Fase 8, cuando exista Session.
 
 ---
 
