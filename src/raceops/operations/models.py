@@ -39,6 +39,11 @@ class Driver(TimestampMixin, Base):
             "user_id",
             name="uq_drivers_team_user",
         ),
+        UniqueConstraint(
+            "driver_id",
+            "team_id",
+            name="uq_drivers_driver_team",
+        ),
         ForeignKeyConstraint(
             ["user_id", "team_id"],
             ["team_memberships.user_id", "team_memberships.team_id"],
@@ -77,6 +82,11 @@ class Vehicle(TimestampMixin, Base):
             "team_id",
             "identifier",
             name="uq_vehicles_team_identifier",
+        ),
+        UniqueConstraint(
+            "vehicle_id",
+            "team_id",
+            name="uq_vehicles_vehicle_team",
         ),
     )
 
@@ -151,6 +161,11 @@ class Event(TimestampMixin, Base):
             ["tracks.track_id", "tracks.team_id"],
             name="fk_events_track_team",
             ondelete="RESTRICT",
+        ),
+        UniqueConstraint(
+            "event_id",
+            "team_id",
+            name="uq_events_event_team",
         ),
         Index("ix_events_team_starts_on", "team_id", "starts_on"),
     )

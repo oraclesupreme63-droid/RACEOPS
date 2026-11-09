@@ -71,8 +71,14 @@ def test_driver_and_vehicle_uniqueness_is_scoped_to_team() -> None:
         if isinstance(constraint, UniqueConstraint)
     }
 
-    assert driver_unique == {"uq_drivers_team_user"}
-    assert vehicle_unique == {"uq_vehicles_team_identifier"}
+    assert driver_unique == {
+        "uq_drivers_driver_team",
+        "uq_drivers_team_user",
+    }
+    assert vehicle_unique == {
+        "uq_vehicles_team_identifier",
+        "uq_vehicles_vehicle_team",
+    }
 
 
 def test_cross_team_links_are_protected_by_composite_foreign_keys() -> None:

@@ -112,7 +112,7 @@ erDiagram
         datetime ended_at_nullable
         string status
         string results_status
-        uuid results_locked_by_nullable
+        uuid results_locked_by_user_id_nullable FK
         datetime results_locked_at_nullable
     }
 
@@ -302,8 +302,9 @@ erDiagram
 - unidad interna de Duration;
 - normalización de MeasuredValue;
 - auditoría como tablas propias o columnas selectivas;
-- estrategia para impedir FK cruzadas entre Team mediante constraints,
-  claves compuestas y validación de dominio.
+- estrategia para impedir futuras FK cruzadas entre Team. Session ya utiliza
+  claves compuestas para Event, Driver y Vehicle; cada módulo posterior deberá
+  elegir la misma protección o justificar otra equivalente.
 
 Estas decisiones pertenecen principalmente a Fase 4 y no cambian el modelo
 conceptual.

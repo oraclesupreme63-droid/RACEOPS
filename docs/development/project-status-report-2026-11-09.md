@@ -5,13 +5,13 @@
 - **Fecha:** 9 de noviembre de 2026
 - **Versión alcanzada:** `v0.2.0 — Operational Base`, publicada
 - **Fase actual:** 8 — Session Learning Loop
-- **Bloque actual:** 8.1 — Contrato y secuencia de implementación
+- **Bloque actual:** 8.2 — Persistencia de Session implementada; espera aprobación
 - **Bloqueador técnico actual:** ninguno
 
 RaceOps ya es un backend ejecutable con identidad, permisos y cuatro recursos
 operativos completos: Drivers, Vehicles, Tracks y Events. La Fase 7 fue
-aprobada y publicada. La Fase 8 comenzó por su contrato para no convertir el
-flujo central en una entrega monolítica. No se asigna un porcentaje global
+aprobada y publicada. La Fase 8 ya cuenta con contrato aprobado y persistencia
+de Session verificada, todavía sin API. No se asigna un porcentaje global
 artificial porque las fases futuras tienen alcances y validaciones diferentes.
 
 ## 2. Estado por etapa
@@ -22,7 +22,7 @@ artificial porque las fases futuras tienen alcances y validaciones diferentes.
 | Fase 5 | Fundación técnica completada; Gate G5 aprobado |
 | Fase 6 | Identidad y autorización completadas y aprobadas |
 | Fase 7 | Completada, aprobada y publicada como `v0.2.0` |
-| Fase 8 | Bloque 8.1 preparado; espera aprobación antes de persistencia |
+| Fase 8 | Contrato aprobado; Bloque 8.2 implementado y pendiente de aprobación |
 | Gate G6 | Pendiente hasta completar el flujo entre sesiones |
 
 ## 3. Qué funciona hoy
@@ -33,17 +33,20 @@ artificial porque las fases futuras tienen alcances y validaciones diferentes.
 - Drivers con vínculo opcional a User, activación y desactivación;
 - Vehicles con disponibilidad y estados explícitos;
 - Tracks y Events con fechas, filtros y ciclo de estado;
-- 136 pruebas, 94.84 % de cobertura y controles estáticos en verde;
+- Session persistida con asignación protegida por Team, estados independientes
+  y bloqueo coherente de resultados;
+- 145 pruebas, 94.95 % de cobertura y controles estáticos en verde;
 - preservación de datos: no hay DELETE normal para estos recursos.
 
 ## 4. Qué falta
 
-### Próximo objetivo: Fase 8
+### Próximo objetivo: API de Session
 
-Implementar el flujo Event → Session → Driver + Vehicle → vueltas/sectores →
-feedback → observaciones → análisis/hipótesis → hasta tres prioridades y
-acciones → siguiente Session → resultado y conclusión. Aquí RaceOps empezará a
-demostrar su propuesta de valor, no sólo su base administrativa.
+Tras aprobar la persistencia, el Bloque 8.3 implementará crear, listar,
+consultar y editar Sessions planificadas, asignación atómica, RBAC, alcance del
+Driver y bloqueo del Track de Event. Después continuará el flujo Event →
+Session → resultados → feedback → análisis → acciones → siguiente Session →
+conclusión.
 
 ### Después del flujo central
 
@@ -64,8 +67,9 @@ la feria.
   está demostrada; hay contraevidencia válida.
 - Swagger es la interfaz de prueba actual; todavía no existe frontend de uso
   cotidiano.
-- El acceso de Driver a Vehicle y Event espera una relación demostrable por
-  Session para respetar mínimo privilegio.
+- El acceso relacionado de Driver a Vehicle y Event ya puede sustentarse en la
+  tabla Session, pero no se expondrá hasta aplicar los filtros HTTP del Bloque
+  8.3.
 - Las pruebas locales completas tardan varios minutos por Argon2 y PostgreSQL;
   por eficiencia se ejecutan al cierre de cada bloque y CI las confirma.
 - La fecha oficial de la feria sigue sin publicarse.

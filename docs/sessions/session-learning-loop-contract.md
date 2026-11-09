@@ -4,7 +4,7 @@
 
 - **Versión:** 1.0
 - **Fecha:** 9 de noviembre de 2026
-- **Estado:** preparado para aprobación del Bloque 8.1
+- **Estado:** aprobado; persistencia implementada en el Bloque 8.2
 - **Alcance inmediato:** Session, asignación, ciclo de actividad y bloqueo de
   resultados
 - **Alcance total de Fase 8:** cadena observación → hipótesis → acción → resultado
@@ -213,3 +213,22 @@ Este contrato está listo para persistencia cuando el propietario apruebe:
 - dos máquinas de estado independientes;
 - límites de lectura del Driver;
 - entregas pequeñas descritas en la checklist de Fase 8.
+
+## 13. Evidencia de implementación
+
+El Bloque 8.2 materializó Session como `RaceSession` para distinguirla de la
+clase `Session` de SQLAlchemy. La tabla continúa llamándose `sessions` y sigue
+el lenguaje del dominio.
+
+La revisión `20261109_0004_sessions` añadió:
+
+- enums PostgreSQL independientes para actividad y resultados;
+- referencias compuestas que impiden mezclar Event, Driver o Vehicle de otro
+  Team;
+- checks para tipo, timestamps, orden temporal y bloqueo coherente;
+- índices por Team para fecha, Event, Driver y Vehicle;
+- FKs restrictivas y migración reversible.
+
+La elegibilidad `Driver ACTIVE` y `Vehicle READY` cruza filas y se aplicará
+transaccionalmente en el servicio del Bloque 8.3; la base de datos ya protege
+ownership, nulabilidad y estados internos de Session.

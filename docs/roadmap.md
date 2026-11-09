@@ -352,8 +352,8 @@ Resultado y conclusión
 
 Este hito tiene prioridad sobre cualquier integración externa.
 
-**Estado:** En progreso. El Bloque 8.1 define el contrato y la secuencia de
-implementación antes de modificar la persistencia.
+**Estado:** En progreso. Contrato aprobado; el Bloque 8.2 implementó la
+persistencia de Session y espera aprobación antes de exponer la API.
 
 ---
 

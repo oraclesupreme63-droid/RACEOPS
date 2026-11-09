@@ -18,15 +18,15 @@
 - [x] Delimitar `sessions` y `learning`.
 - [x] Clasificar decisiones por evidencia.
 - [x] Dividir la fase en entregas verificables.
-- [ ] Aprobación del propietario.
+- [x] Aprobación del propietario.
 
 ### 8.2 — Persistencia de Session
 
-- [ ] Enums y modelo Session.
-- [ ] FKs, constraints e índices por Team.
-- [ ] Migración reversible.
-- [ ] Pruebas de invariantes y round-trip.
-- [ ] `alembic check` sin diferencias.
+- [x] Enums y modelo Session.
+- [x] FKs, constraints e índices por Team.
+- [x] Migración reversible.
+- [x] Pruebas de invariantes y round-trip.
+- [x] `alembic check` sin diferencias.
 - [ ] Aprobación del propietario.
 
 ### 8.3 — API y asignación
@@ -117,7 +117,7 @@
 
 ## Condición para avanzar
 
-El Bloque 8.1 espera aprobación en el
-[`reporte del bloque`](phase-8-block-8.1-report-2026-11-09.md). No se modifica
-la persistencia de Session antes de aprobar el contrato. Cada bloque funcional
-terminará con una sola verificación completa y su punto de aprobación.
+El Bloque 8.2 está técnicamente completo y espera aprobación en su
+[`reporte`](phase-8-block-8.2-report-2026-11-09.md). No se crea la API de
+Session antes de aprobar la persistencia. Cada bloque funcional termina con
+una sola verificación completa y su punto de aprobación.

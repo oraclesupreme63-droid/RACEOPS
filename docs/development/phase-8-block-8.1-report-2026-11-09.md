@@ -5,7 +5,7 @@
 - **Fecha:** 9 de noviembre de 2026
 - **Fase:** 8 — Session Learning Loop
 - **Bloque:** 8.1 — Contrato y secuencia
-- **Resultado:** preparado; pendiente de aprobación del propietario
+- **Resultado:** aprobado por el propietario
 - **Siguiente bloque:** 8.2 — Persistencia de Session
 
 ## 2. Trabajo realizado
@@ -34,8 +34,8 @@ repite localmente la suite completa de 136 pruebas. La CI del commit validará
 que documentación y cambios de guía no alteraron el backend; la última suite
 funcional y el tag `v0.2.0` permanecen verdes.
 
-## 5. Punto de aprobación
+## 5. Aprobación
 
-Con aprobación comienza el Bloque 8.2: enums, modelo SQLAlchemy, constraints,
-migración Alembic y pruebas de persistencia de Session. Todavía no se expondrá
-la API; eso permite revisar la integridad antes de añadir rutas y permisos.
+El propietario aprobó el contrato y autorizó el Bloque 8.2: enums, modelo
+SQLAlchemy, constraints, migración Alembic y pruebas de persistencia. La API
+permanece en un bloque separado para revisar primero la integridad.
