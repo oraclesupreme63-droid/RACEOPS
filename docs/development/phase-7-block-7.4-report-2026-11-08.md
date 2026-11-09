@@ -62,9 +62,9 @@ equipos reales.
 - `alembic check` sin operaciones pendientes y dependencias sanas;
 - stack Docker saludable, migración en `20261108_0003_operations (head)`;
 - runtime con UID `10001`, sin pytest, y seis rutas Vehicle en OpenAPI;
-- `/health` y `/ready` respondieron HTTP 200.
-
-El enlace de CI se incorporará al publicar el commit.
+- `/health` y `/ready` respondieron HTTP 200;
+- [GitHub Actions 42557211152](https://github.com/oraclesupreme63-droid/RACEOPS/actions/runs/42557211152)
+  aprobó calidad, pruebas y smoke test del contenedor en Linux.
 
 ## 6. Control de alcance
 
