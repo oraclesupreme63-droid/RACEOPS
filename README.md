@@ -10,9 +10,10 @@ not a telemetry acquisition or professional analysis replacement.
 ## Current status
 
 Phase 6 — Identity and authorization, completed and approved. Phase 7 —
-Operational Base, in progress through Block 7.2. RaceOps now persists Drivers,
-Vehicles, Tracks and Events with database-enforced Team isolation, in addition
-to teams, users and team-scoped memberships; hashes
+Operational Base, in progress through Block 7.3. RaceOps now exposes its first
+operational API for Drivers and persists Drivers, Vehicles, Tracks and Events
+with database-enforced Team isolation, in addition to teams, users and
+team-scoped memberships; hashes
 passwords with Argon2id; issues short-lived membership-scoped JWTs; re-resolves
 identity and role state from PostgreSQL; and provides an atomic local
 administrator bootstrap. Login and `/auth/me` are available. Deny-by-default
@@ -167,6 +168,22 @@ The same flow is available interactively at `http://127.0.0.1:8000/docs`.
 When a user belongs to multiple active teams, login returns
 `team_context_required`; repeat the request with one returned `team_id`.
 
+## Manage Drivers
+
+With a valid membership token, the Driver API is available at:
+
+- `POST /api/v1/drivers`;
+- `GET /api/v1/drivers` with `status`, `limit` and `offset` filters;
+- `GET /api/v1/drivers/{driver_id}`;
+- `PATCH /api/v1/drivers/{driver_id}`;
+- `POST /api/v1/drivers/{driver_id}/activate`;
+- `POST /api/v1/drivers/{driver_id}/deactivate`.
+
+Administrator and Team Manager can manage Drivers. Engineer and Mechanic can
+read same-Team Drivers. A Driver can only read the profile linked to the
+current User. Ownership always comes from the token; `team_id` is rejected in
+request bodies. There is intentionally no DELETE endpoint.
+
 ## Errors and request correlation
 
 Every HTTP response includes `X-Request-ID`. A valid UUID supplied in that
@@ -247,6 +264,7 @@ including both the Python quality job and the container smoke test.
 - [Phase 7 operational contract](docs/operations/operational-base-contract.md)
 - [Phase 7 Block 7.1 report](docs/development/phase-7-block-7.1-report-2026-11-08.md)
 - [Phase 7 Block 7.2 report](docs/development/phase-7-block-7.2-report-2026-11-08.md)
+- [Phase 7 Block 7.3 report](docs/development/phase-7-block-7.3-report-2026-11-08.md)
 - [Identity and authorization contract](docs/identity/identity-contract.md)
 - [Technical learning roadmap](docs/development/learning-roadmap.md)
 - [Domain package](docs/domain/README.md)

@@ -19,6 +19,7 @@ class Permission(StrEnum):
 
     MANAGE_MEMBERS = "MANAGE_MEMBERS"
     READ_TEAM_CONFIGURATION = "READ_TEAM_CONFIGURATION"
+    READ_DRIVERS = "READ_DRIVERS"
     MANAGE_DRIVERS = "MANAGE_DRIVERS"
     MANAGE_VEHICLES = "MANAGE_VEHICLES"
     WRITE_TRACKS = "WRITE_TRACKS"
@@ -48,6 +49,7 @@ _ADMINISTRATOR_PERMISSIONS = frozenset(
     {
         Permission.MANAGE_MEMBERS,
         Permission.READ_TEAM_CONFIGURATION,
+        Permission.READ_DRIVERS,
         Permission.MANAGE_DRIVERS,
         Permission.MANAGE_VEHICLES,
         Permission.WRITE_TRACKS,
@@ -61,6 +63,7 @@ _ADMINISTRATOR_PERMISSIONS = frozenset(
 _TEAM_MANAGER_PERMISSIONS = frozenset(
     {
         Permission.READ_TEAM_CONFIGURATION,
+        Permission.READ_DRIVERS,
         Permission.MANAGE_DRIVERS,
         Permission.MANAGE_VEHICLES,
         Permission.WRITE_TRACKS,
@@ -79,6 +82,7 @@ _TEAM_MANAGER_PERMISSIONS = frozenset(
 _ENGINEER_PERMISSIONS = frozenset(
     {
         Permission.READ_TEAM_CONFIGURATION,
+        Permission.READ_DRIVERS,
         Permission.WRITE_TRACKS,
         Permission.WRITE_EVENTS,
         Permission.WRITE_SESSIONS,
@@ -97,6 +101,7 @@ _ENGINEER_PERMISSIONS = frozenset(
 _MECHANIC_PERMISSIONS = frozenset(
     {
         Permission.READ_TEAM_CONFIGURATION,
+        Permission.READ_DRIVERS,
         Permission.WRITE_CONDITIONS,
         Permission.CREATE_DRIVER_FEEDBACK,
         Permission.WRITE_OBSERVATIONS,
@@ -109,6 +114,7 @@ _MECHANIC_PERMISSIONS = frozenset(
 _DRIVER_PERMISSIONS = frozenset(
     {
         Permission.READ_TEAM_CONFIGURATION,
+        Permission.READ_DRIVERS,
         Permission.CREATE_DRIVER_FEEDBACK,
         Permission.UPDATE_ASSIGNED_ACTIONS,
         Permission.READ_HISTORY,

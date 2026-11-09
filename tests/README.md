@@ -24,6 +24,12 @@ defaults, timestamps, Team-scoped uniqueness, same-Team Driver/User and
 Event/Track relations, valid Event dates, restrictive historical references
 and the Alembic migration round-trip.
 
+Driver HTTP coverage exercises create, list, read, update, activate and
+deactivate; stable pagination; status filtering; same-Team User links; all
+five Roles; Driver self-scope; cross-Team hiding; safe link conflicts; request
+validation and the deliberate absence of DELETE. Logging tests also verify
+that Alembic cannot leave the RaceOps logger namespace disabled.
+
 Database integration tests are opt-in so the ordinary unit suite remains
 usable without Docker. With the PostgreSQL service healthy, run:
 

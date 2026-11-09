@@ -22,6 +22,8 @@ _STRUCTURED_FIELDS: Final = (
     "user_id",
     "membership_id",
     "team_id",
+    "driver_id",
+    "driver_status",
     "auth_failure_reason",
 )
 
@@ -62,6 +64,18 @@ class JsonLogFormatter(logging.Formatter):
         return json.dumps(payload, separators=(",", ":"), ensure_ascii=False)
 
 
+class DynamicStdoutHandler(logging.Handler):
+    """Write to the active stdout without retaining a replaced capture stream."""
+
+    def emit(self, record: logging.LogRecord) -> None:
+        """Resolve stdout at emission time for app reloads and test capture."""
+        try:
+            sys.stdout.write(f"{self.format(record)}\n")
+            sys.stdout.flush()
+        except Exception:
+            self.handleError(record)
+
+
 def _safe_stack(exception_traceback: TracebackType | None) -> list[dict[str, object]]:
     """Return stack locations without exception messages or local values."""
     if exception_traceback is None:
@@ -80,14 +94,19 @@ def _safe_stack(exception_traceback: TracebackType | None) -> list[dict[str, obj
 def configure_logging(*, level: str, environment: str) -> None:
     """Configure the RaceOps logger without replacing third-party handlers."""
     raceops_logger = logging.getLogger("raceops")
+    raceops_logger.disabled = False
     raceops_logger.setLevel(level)
     raceops_logger.propagate = False
+
+    for logger_name in list(logging.Logger.manager.loggerDict):
+        if logger_name.startswith("raceops."):
+            logging.getLogger(logger_name).disabled = False
 
     for handler in list(raceops_logger.handlers):
         if getattr(handler, "_raceops_handler", False):
             raceops_logger.removeHandler(handler)
 
-    handler = logging.StreamHandler(sys.stdout)
+    handler = DynamicStdoutHandler()
     handler.setFormatter(JsonLogFormatter(environment))
     handler._raceops_handler = True  # type: ignore[attr-defined]
     raceops_logger.addHandler(handler)

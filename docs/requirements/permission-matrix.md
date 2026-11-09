@@ -146,3 +146,9 @@ Los permisos relacionados con ownership, Session, Driver y Action se
 completarán al existir esos recursos. La tabla continúa siendo la fuente de
 verdad; la implementación no convierte una capacidad general en autorización
 para omitir relación, Visibility o invariantes del recurso.
+
+El Bloque 7.3 añadió `READ_DRIVERS` como capacidad explícita para los cinco
+roles y conservó `MANAGE_DRIVERS` sólo para Administrator y Team Manager. La
+capacidad de lectura no amplía por sí sola el alcance: el query de un actor
+Driver exige además `Driver.user_id == CurrentIdentity.user_id`, y todos los
+demás queries conservan el filtro del Team activo.

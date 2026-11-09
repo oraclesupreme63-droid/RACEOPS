@@ -5,7 +5,7 @@
 - **Fecha:** 8 de noviembre de 2026
 - **Fase:** 7 — Base operativa
 - **Bloque:** 7.2 — Persistencia operativa
-- **Resultado:** implementado y verificado; pendiente de aprobación del propietario
+- **Resultado:** aprobado por el propietario
 - **Siguiente bloque:** 7.3 — API de Drivers
 
 ## 2. Trabajo realizado
@@ -57,7 +57,6 @@ la API de Drivers en una superficie pequeña y verificable.
 
 ## 6. Punto de aprobación
 
-Al aprobar este reporte comienza el Bloque 7.3. Allí se implementarán los
-casos de uso y endpoints de Driver, con RBAC, aislamiento por Team, vínculo
-opcional con User, activación/desactivación y pruebas HTTP. Sin aprobación no
-se inicia esa API.
+El propietario aprobó este reporte el 8 de noviembre de 2026. El Bloque 7.3
+continuó con los casos de uso y endpoints de Driver, RBAC, aislamiento por
+Team, vínculo opcional con User, activación/desactivación y pruebas HTTP.

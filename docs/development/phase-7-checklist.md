@@ -27,15 +27,15 @@
 - [x] Validación de vínculos Driver/User y Event/Track.
 - [x] Pruebas de constraints y round-trip de migración.
 - [x] `alembic check` sin diferencias.
-- [ ] Aprobación del propietario.
+- [x] Aprobación del propietario.
 
 ### 7.3 — API de Drivers
 
-- [ ] Crear, consultar, listar y actualizar Driver.
-- [ ] Activar y desactivar sin borrado físico.
-- [ ] Vínculo opcional con User autorizado del mismo Team.
-- [ ] RBAC, aislamiento y alcance propio del Driver.
-- [ ] Pruebas HTTP positivas, negativas y entre Teams.
+- [x] Crear, consultar, listar y actualizar Driver.
+- [x] Activar y desactivar sin borrado físico.
+- [x] Vínculo opcional con User autorizado del mismo Team.
+- [x] RBAC, aislamiento y alcance propio del Driver.
+- [x] Pruebas HTTP positivas, negativas y entre Teams.
 - [ ] Aprobación del propietario.
 
 ### 7.4 — API de Vehicles
@@ -68,7 +68,7 @@
 
 ## Condición para avanzar
 
-El Bloque 7.2 está técnicamente completo y espera aprobación en el
-[`reporte del Bloque 7.2`](phase-7-block-7.2-report-2026-11-08.md). Cada API
-se construye sobre persistencia aprobada y no se inicia la Fase 8 hasta cerrar
-esta checklist.
+El Bloque 7.3 está técnicamente completo y espera aprobación en el
+[`reporte del Bloque 7.3`](phase-7-block-7.3-report-2026-11-08.md). Cada API
+se construye sobre el bloque anterior aprobado y no se inicia la Fase 8 hasta
+cerrar esta checklist.

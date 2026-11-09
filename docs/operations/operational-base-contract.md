@@ -3,7 +3,7 @@
 ## 1. Información del documento
 
 - **Versión:** 1.0
-- **Estado:** Bloque 7.1 aprobado; persistencia implementada en Bloque 7.2
+- **Estado:** contrato y persistencia aprobados; API de Driver implementada
 - **Alcance:** Driver, Vehicle, Track y Event
 - **Fuera de alcance:** Session, resultados, telemetría y mantenimiento
 
@@ -216,4 +216,11 @@ Team, vínculos Driver/User y Event/Track del mismo Team, unicidad acotada,
 fechas válidas y referencias históricas restrictivas. Las pruebas unitarias y
 de integración cubren los constraints y el recorrido upgrade/downgrade de la
 migración. El comportamiento HTTP permanece intencionalmente pendiente para
-los Bloques 7.3–7.5.
+Vehicle, Track y Event en los Bloques 7.4–7.5.
+
+El Bloque 7.3 implementa el contrato HTTP de Driver. Administrator y Team
+Manager administran; Engineer y Mechanic consultan; Driver sólo recibe el
+perfil vinculado con su User. Los listados filtran por Team y relación antes
+de calcular `total`, no aceptan `team_id`, y los recursos ajenos comparten la
+respuesta `404 resource_not_found`. Activar y desactivar son operaciones
+explícitas e idempotentes; no existe endpoint de borrado.

@@ -29,6 +29,12 @@ def test_role_permission_map_covers_every_role_and_is_deny_by_default() -> None:
     assert has_permission(Role.ENGINEER, Permission.WRITE_ANALYSIS) is True
     assert has_permission(Role.MECHANIC, Permission.WRITE_OBSERVATIONS) is True
     assert has_permission(Role.DRIVER, Permission.WRITE_ANALYSIS) is False
+    assert all(has_permission(role, Permission.READ_DRIVERS) for role in Role)
+    assert has_permission(Role.ADMINISTRATOR, Permission.MANAGE_DRIVERS) is True
+    assert has_permission(Role.TEAM_MANAGER, Permission.MANAGE_DRIVERS) is True
+    assert has_permission(Role.ENGINEER, Permission.MANAGE_DRIVERS) is False
+    assert has_permission(Role.MECHANIC, Permission.MANAGE_DRIVERS) is False
+    assert has_permission(Role.DRIVER, Permission.MANAGE_DRIVERS) is False
 
 
 @pytest.mark.parametrize(
