@@ -121,7 +121,7 @@ async def test_access_log_uses_route_template_instead_of_concrete_url(
 ) -> None:
     application = create_app()
 
-    @application.get("/api/v1/vehicles/{vehicle_id}")
+    @application.get("/api/v1/log-probe/vehicles/{vehicle_id}")
     async def get_vehicle(vehicle_id: str) -> dict[str, str]:
         return {"vehicle_id": vehicle_id}
 
@@ -132,7 +132,9 @@ async def test_access_log_uses_route_template_instead_of_concrete_url(
         transport=transport,
         base_url="http://testserver",
     ) as client:
-        response = await client.get(f"/api/v1/vehicles/{concrete_id}?token=secret")
+        response = await client.get(
+            f"/api/v1/log-probe/vehicles/{concrete_id}?token=secret"
+        )
 
     output = capsys.readouterr().out
     events = [json.loads(line) for line in output.splitlines() if line]
@@ -141,7 +143,7 @@ async def test_access_log_uses_route_template_instead_of_concrete_url(
     )
 
     assert response.status_code == 200
-    assert access_event["route"] == "/api/v1/vehicles/{vehicle_id}"
+    assert access_event["route"] == "/api/v1/log-probe/vehicles/{vehicle_id}"
     assert concrete_id not in output
     assert "token" not in output
     assert "secret" not in output

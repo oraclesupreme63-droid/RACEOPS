@@ -5,7 +5,7 @@
 - **Fecha:** 8 de noviembre de 2026
 - **Fase:** 7 — Base operativa
 - **Bloque:** 7.3 — API de Drivers
-- **Resultado:** implementado y verificado; pendiente de aprobación del propietario
+- **Resultado:** implementado, verificado y aprobado por el propietario
 - **Siguiente bloque:** 7.4 — API de Vehicles
 
 ## 2. Resultado funcional
@@ -76,7 +76,5 @@ asignación ficticia.
 
 ## 8. Punto de aprobación
 
-Al aprobar este reporte comienza el Bloque 7.4. Allí se implementará la API de
-Vehicles con transiciones válidas, `RETIRED` terminal, `READY` como único
-estado asignable, RBAC, aislamiento por Team y pruebas HTTP. Sin aprobación no
-se inicia ese bloque.
+El propietario aprobó este bloque y autorizó el inicio del Bloque 7.4. La API
+de Vehicles se documenta en su reporte independiente.

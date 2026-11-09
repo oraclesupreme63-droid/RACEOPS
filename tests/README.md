@@ -30,6 +30,13 @@ five Roles; Driver self-scope; cross-Team hiding; safe link conflicts; request
 validation and the deliberate absence of DELETE. Logging tests also verify
 that Alembic cannot leave the RaceOps logger namespace disabled.
 
+Vehicle HTTP coverage exercises create, list, read, rename and every explicit
+availability command; the complete transition matrix; terminal retirement;
+same-Team identifier uniqueness; Administrator and Team Manager management;
+Engineer and Mechanic read-only access; Driver denial until a Session
+relationship exists; cross-Team hiding; request validation and the deliberate
+absence of DELETE. Unit tests keep `READY` as the only assignable state.
+
 Database integration tests are opt-in so the ordinary unit suite remains
 usable without Docker. With the PostgreSQL service healthy, run:
 

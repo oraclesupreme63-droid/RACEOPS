@@ -3,7 +3,7 @@
 ## 1. Información del documento
 
 - **Versión:** 1.0
-- **Estado:** contrato y persistencia aprobados; API de Driver implementada
+- **Estado:** contrato y persistencia aprobados; APIs de Driver y Vehicle implementadas
 - **Alcance:** Driver, Vehicle, Track y Event
 - **Fuera de alcance:** Session, resultados, telemetría y mantenimiento
 
@@ -143,10 +143,10 @@ se materializará en Fase 8 porque aún no existe Session.
 - Administrator y Team Manager administran los cuatro recursos.
 - Engineer consulta Drivers/Vehicles y administra Tracks/Events.
 - Mechanic consulta Drivers, Vehicles, Tracks y Events.
-- Driver consulta únicamente su Driver y Events relacionados; como esa
-  relación nace con Session, en Fase 7 no se le concede por aproximación un
-  listado general de Events. Track sí puede consultarse como catálogo del
-  Team según la matriz vigente.
+- Driver consulta únicamente su Driver, Vehicles y Events relacionados; como
+  esas relaciones nacen con Session, en Fase 7 no se le concede por
+  aproximación un listado general de Vehicles o Events. Track sí puede
+  consultarse como catálogo del Team según la matriz vigente.
 - Las lecturas se implementarán con permisos explícitos, relación y Team
   scope; `READ_HISTORY` no servirá para saltar esas comprobaciones.
 
@@ -215,8 +215,8 @@ revisión Alembic `20261108_0003_operations`. PostgreSQL aplica ownership por
 Team, vínculos Driver/User y Event/Track del mismo Team, unicidad acotada,
 fechas válidas y referencias históricas restrictivas. Las pruebas unitarias y
 de integración cubren los constraints y el recorrido upgrade/downgrade de la
-migración. El comportamiento HTTP permanece intencionalmente pendiente para
-Vehicle, Track y Event en los Bloques 7.4–7.5.
+migración. El comportamiento HTTP permanece pendiente para Track y Event en
+el Bloque 7.5.
 
 El Bloque 7.3 implementa el contrato HTTP de Driver. Administrator y Team
 Manager administran; Engineer y Mechanic consultan; Driver sólo recibe el
@@ -224,3 +224,11 @@ perfil vinculado con su User. Los listados filtran por Team y relación antes
 de calcular `total`, no aceptan `team_id`, y los recursos ajenos comparten la
 respuesta `404 resource_not_found`. Activar y desactivar son operaciones
 explícitas e idempotentes; no existe endpoint de borrado.
+
+El Bloque 7.4 implementa el contrato HTTP de Vehicle. Administrator y Team
+Manager administran; Engineer y Mechanic consultan. El permiso de Driver se
+mantiene denegado hasta que Session permita comprobar una relación real. La
+API filtra por Team antes de contar, inicia cada Vehicle en `READY`, ejecuta
+transiciones mediante comandos explícitos y rechaza cambios repetidos o desde
+`RETIRED` sin modificar el registro. El predicado de asignabilidad confirma
+que solamente `READY` podrá usarse en la Fase 8. No existe endpoint de borrado.

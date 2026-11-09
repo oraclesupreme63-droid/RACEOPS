@@ -6,8 +6,8 @@ from uuid import UUID
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
-from raceops.operations.enums import DriverStatus
-from raceops.operations.models import Driver
+from raceops.operations.enums import DriverStatus, VehicleStatus
+from raceops.operations.models import Driver, Vehicle
 
 
 class DriverCreateRequest(BaseModel):
@@ -80,6 +80,67 @@ class DriverPageResponse(BaseModel):
     """Stable offset page calculated after authorization filtering."""
 
     items: list[DriverResponse]
+    total: int = Field(ge=0)
+    limit: int = Field(ge=1, le=100)
+    offset: int = Field(ge=0)
+
+
+class VehicleCreateRequest(BaseModel):
+    """Fields accepted when an authorized actor creates a Vehicle."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    identifier: str = Field(min_length=1, max_length=80)
+
+    @field_validator("identifier")
+    @classmethod
+    def normalize_identifier(cls, value: str) -> str:
+        normalized = value.strip()
+        if not normalized:
+            raise ValueError("identifier must not be blank")
+        return normalized
+
+
+class VehicleUpdateRequest(BaseModel):
+    """Allowed Vehicle identity change; status has dedicated commands."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    identifier: str = Field(min_length=1, max_length=80)
+
+    @field_validator("identifier")
+    @classmethod
+    def normalize_identifier(cls, value: str) -> str:
+        normalized = value.strip()
+        if not normalized:
+            raise ValueError("identifier must not be blank")
+        return normalized
+
+
+class VehicleResponse(BaseModel):
+    """Authorized Vehicle representation without ownership internals."""
+
+    vehicle_id: UUID
+    identifier: str
+    status: VehicleStatus
+    created_at: datetime
+    updated_at: datetime
+
+    @classmethod
+    def from_model(cls, vehicle: Vehicle) -> Self:
+        return cls(
+            vehicle_id=vehicle.vehicle_id,
+            identifier=vehicle.identifier,
+            status=vehicle.status,
+            created_at=vehicle.created_at,
+            updated_at=vehicle.updated_at,
+        )
+
+
+class VehiclePageResponse(BaseModel):
+    """Stable offset page calculated after Team authorization filtering."""
+
+    items: list[VehicleResponse]
     total: int = Field(ge=0)
     limit: int = Field(ge=1, le=100)
     offset: int = Field(ge=0)
