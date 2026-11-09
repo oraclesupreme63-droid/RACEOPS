@@ -45,6 +45,22 @@ def test_role_permission_map_covers_every_role_and_is_deny_by_default() -> None:
     assert has_permission(Role.ENGINEER, Permission.MANAGE_VEHICLES) is False
     assert has_permission(Role.MECHANIC, Permission.MANAGE_VEHICLES) is False
     assert has_permission(Role.DRIVER, Permission.MANAGE_VEHICLES) is False
+    assert all(has_permission(role, Permission.READ_TRACKS) for role in Role)
+    assert has_permission(Role.ADMINISTRATOR, Permission.WRITE_TRACKS) is True
+    assert has_permission(Role.TEAM_MANAGER, Permission.WRITE_TRACKS) is True
+    assert has_permission(Role.ENGINEER, Permission.WRITE_TRACKS) is True
+    assert has_permission(Role.MECHANIC, Permission.WRITE_TRACKS) is False
+    assert has_permission(Role.DRIVER, Permission.WRITE_TRACKS) is False
+    assert has_permission(Role.ADMINISTRATOR, Permission.READ_EVENTS) is True
+    assert has_permission(Role.TEAM_MANAGER, Permission.READ_EVENTS) is True
+    assert has_permission(Role.ENGINEER, Permission.READ_EVENTS) is True
+    assert has_permission(Role.MECHANIC, Permission.READ_EVENTS) is True
+    assert has_permission(Role.DRIVER, Permission.READ_EVENTS) is False
+    assert has_permission(Role.ADMINISTRATOR, Permission.WRITE_EVENTS) is True
+    assert has_permission(Role.TEAM_MANAGER, Permission.WRITE_EVENTS) is True
+    assert has_permission(Role.ENGINEER, Permission.WRITE_EVENTS) is True
+    assert has_permission(Role.MECHANIC, Permission.WRITE_EVENTS) is False
+    assert has_permission(Role.DRIVER, Permission.WRITE_EVENTS) is False
 
 
 @pytest.mark.parametrize(

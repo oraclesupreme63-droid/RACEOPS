@@ -11,3 +11,11 @@ class VehicleIdentifierConflictError(RuntimeError):
 
 class InvalidVehicleStatusTransitionError(RuntimeError):
     """Raised when the requested Vehicle lifecycle transition is forbidden."""
+
+
+class EventDateRangeError(RuntimeError):
+    """Raised when an Event end date precedes its start date."""
+
+
+class InvalidEventStatusTransitionError(RuntimeError):
+    """Raised when the requested Event lifecycle transition is forbidden."""

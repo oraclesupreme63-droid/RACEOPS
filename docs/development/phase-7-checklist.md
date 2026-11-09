@@ -45,16 +45,16 @@
 - [x] `RETIRED` terminal y sólo `READY` asignable.
 - [x] RBAC y aislamiento entre Teams.
 - [x] Pruebas HTTP y de transiciones.
-- [ ] Aprobación del propietario.
+- [x] Aprobación del propietario.
 
 ### 7.5 — API de Tracks y Events
 
-- [ ] Crear, consultar, listar y actualizar Track.
-- [ ] Crear, consultar, listar y actualizar Event.
-- [ ] Track y Event obligatoriamente del mismo Team.
-- [ ] Fechas y estado de Event válidos.
-- [ ] Sin borrado físico mediante la API normal.
-- [ ] RBAC y pruebas entre Teams.
+- [x] Crear, consultar, listar y actualizar Track.
+- [x] Crear, consultar, listar y actualizar Event.
+- [x] Track y Event obligatoriamente del mismo Team.
+- [x] Fechas y estado de Event válidos.
+- [x] Sin borrado físico mediante la API normal.
+- [x] RBAC y pruebas entre Teams.
 - [ ] Aprobación del propietario.
 
 ### 7.6 — Cierre
@@ -68,7 +68,7 @@
 
 ## Condición para avanzar
 
-El Bloque 7.4 está técnicamente completo y espera aprobación en el
-[`reporte del Bloque 7.4`](phase-7-block-7.4-report-2026-11-08.md). Cada API
+El Bloque 7.5 está técnicamente completo y espera aprobación en el
+[`reporte del Bloque 7.5`](phase-7-block-7.5-report-2026-11-09.md). Cada API
 se construye sobre el bloque anterior aprobado y no se inicia la Fase 8 hasta
 cerrar esta checklist.

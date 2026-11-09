@@ -5,7 +5,7 @@
 - **Fecha:** 8 de noviembre de 2026
 - **Fase:** 7 — Base operativa
 - **Bloque:** 7.4 — API de Vehicles
-- **Resultado:** implementado y verificado; pendiente de aprobación del propietario
+- **Resultado:** implementado, verificado y aprobado por el propietario
 - **Siguiente bloque:** 7.5 — API de Tracks y Events
 
 ## 2. Resultado funcional
@@ -75,6 +75,5 @@ de mantenimiento para Fase 10.
 
 ## 7. Punto de aprobación
 
-Este bloque queda listo para revisión del propietario una vez que la suite
-final y CI estén verdes. Con aprobación comienza el Bloque 7.5: APIs de Tracks
-y Events, vínculo obligatorio dentro del mismo Team, fechas y estados válidos.
+El propietario aprobó este bloque y autorizó el Bloque 7.5. Las APIs de Tracks
+y Events se documentan en su reporte independiente.

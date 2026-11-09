@@ -23,7 +23,9 @@ class Permission(StrEnum):
     MANAGE_DRIVERS = "MANAGE_DRIVERS"
     READ_VEHICLES = "READ_VEHICLES"
     MANAGE_VEHICLES = "MANAGE_VEHICLES"
+    READ_TRACKS = "READ_TRACKS"
     WRITE_TRACKS = "WRITE_TRACKS"
+    READ_EVENTS = "READ_EVENTS"
     WRITE_EVENTS = "WRITE_EVENTS"
     WRITE_SESSIONS = "WRITE_SESSIONS"
     WRITE_RESULTS = "WRITE_RESULTS"
@@ -54,7 +56,9 @@ _ADMINISTRATOR_PERMISSIONS = frozenset(
         Permission.MANAGE_DRIVERS,
         Permission.READ_VEHICLES,
         Permission.MANAGE_VEHICLES,
+        Permission.READ_TRACKS,
         Permission.WRITE_TRACKS,
+        Permission.READ_EVENTS,
         Permission.WRITE_EVENTS,
         Permission.WRITE_SESSIONS,
         Permission.WRITE_RESULTS,
@@ -69,7 +73,9 @@ _TEAM_MANAGER_PERMISSIONS = frozenset(
         Permission.MANAGE_DRIVERS,
         Permission.READ_VEHICLES,
         Permission.MANAGE_VEHICLES,
+        Permission.READ_TRACKS,
         Permission.WRITE_TRACKS,
+        Permission.READ_EVENTS,
         Permission.WRITE_EVENTS,
         Permission.WRITE_SESSIONS,
         Permission.WRITE_RESULTS,
@@ -87,7 +93,9 @@ _ENGINEER_PERMISSIONS = frozenset(
         Permission.READ_TEAM_CONFIGURATION,
         Permission.READ_DRIVERS,
         Permission.READ_VEHICLES,
+        Permission.READ_TRACKS,
         Permission.WRITE_TRACKS,
+        Permission.READ_EVENTS,
         Permission.WRITE_EVENTS,
         Permission.WRITE_SESSIONS,
         Permission.WRITE_RESULTS,
@@ -107,6 +115,8 @@ _MECHANIC_PERMISSIONS = frozenset(
         Permission.READ_TEAM_CONFIGURATION,
         Permission.READ_DRIVERS,
         Permission.READ_VEHICLES,
+        Permission.READ_TRACKS,
+        Permission.READ_EVENTS,
         Permission.WRITE_CONDITIONS,
         Permission.CREATE_DRIVER_FEEDBACK,
         Permission.WRITE_OBSERVATIONS,
@@ -120,6 +130,7 @@ _DRIVER_PERMISSIONS = frozenset(
     {
         Permission.READ_TEAM_CONFIGURATION,
         Permission.READ_DRIVERS,
+        Permission.READ_TRACKS,
         Permission.CREATE_DRIVER_FEEDBACK,
         Permission.UPDATE_ASSIGNED_ACTIONS,
         Permission.READ_HISTORY,

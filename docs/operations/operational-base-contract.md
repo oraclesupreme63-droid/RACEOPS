@@ -3,7 +3,7 @@
 ## 1. Información del documento
 
 - **Versión:** 1.0
-- **Estado:** contrato y persistencia aprobados; APIs de Driver y Vehicle implementadas
+- **Estado:** contrato aprobado; APIs de Driver, Vehicle, Track y Event implementadas
 - **Alcance:** Driver, Vehicle, Track y Event
 - **Fuera de alcance:** Session, resultados, telemetría y mantenimiento
 
@@ -232,3 +232,10 @@ API filtra por Team antes de contar, inicia cada Vehicle en `READY`, ejecuta
 transiciones mediante comandos explícitos y rechaza cambios repetidos o desde
 `RETIRED` sin modificar el registro. El predicado de asignabilidad confirma
 que solamente `READY` podrá usarse en la Fase 8. No existe endpoint de borrado.
+
+El Bloque 7.5 implementa Track y Event. Todos los Roles consultan el catálogo
+de Tracks del Team; Administrator, Team Manager y Engineer lo administran.
+Mechanic consulta Events y Driver espera a que Session permita comprobar una
+relación real. Cada Event exige un Track del mismo Team, fechas coherentes y
+transiciones explícitas. `COMPLETED` y `CANCELLED` son terminales, un cambio
+inválido conserva el estado y no existe endpoint de borrado.

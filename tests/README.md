@@ -37,6 +37,11 @@ Engineer and Mechanic read-only access; Driver denial until a Session
 relationship exists; cross-Team hiding; request validation and the deliberate
 absence of DELETE. Unit tests keep `READY` as the only assignable state.
 
+Track and Event HTTP coverage exercises catalog creation and updates, optional
+location, same-Team Track links, date validation, filtering, the complete
+Event transition matrix, terminal states, all five Roles, Driver relationship
+deferral, cross-Team hiding, request validation and the absence of DELETE.
+
 Database integration tests are opt-in so the ordinary unit suite remains
 usable without Docker. With the PostgreSQL service healthy, run:
 
