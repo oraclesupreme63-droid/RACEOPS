@@ -23,13 +23,13 @@ Las transiciones no se realizan permitiendo escribir libremente el campo
 `status`. Utilizan comandos explícitos:
 
 ```text
-POST /api/v1/sessions/{id}/commands/start
-POST /api/v1/sessions/{id}/commands/pause
-POST /api/v1/sessions/{id}/commands/resume
-POST /api/v1/sessions/{id}/commands/complete
-POST /api/v1/sessions/{id}/commands/cancel
-POST /api/v1/sessions/{id}/commands/lock-results
-POST /api/v1/actions/{id}/commands/complete
+POST /api/v1/sessions/{id}/start
+POST /api/v1/sessions/{id}/pause
+POST /api/v1/sessions/{id}/resume
+POST /api/v1/sessions/{id}/complete
+POST /api/v1/sessions/{id}/cancel
+POST /api/v1/sessions/{id}/lock-results
+POST /api/v1/actions/{id}/complete
 ```
 
 Esto hace visibles reglas, permisos y conflictos de estado.
@@ -60,12 +60,13 @@ Esto hace visibles reglas, permisos y conflictos de estado.
 
 ## 6. Paginación y filtros
 
-V1 utilizará `page` y `page_size`:
+V1 utiliza `limit` y `offset`, de acuerdo con las APIs operativas ya
+publicadas:
 
-- `page` inicia en 1;
-- `page_size` tiene valor por defecto y máximo documentados;
-- respuesta incluye `items`, `page`, `page_size` y `total_visible`;
-- `total_visible` se calcula después de autorización;
+- `limit` tiene valor predeterminado 50 y máximo 100;
+- `offset` inicia en 0;
+- respuesta incluye `items`, `limit`, `offset` y `total`;
+- `total` se calcula después de autorización;
 - filtros se documentan y usan parámetros explícitos;
 - orden predeterminado es estable e incluye desempate por ID.
 

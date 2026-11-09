@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- **Fase:** cierre técnico completo; pendiente de aprobación final
+- **Fase:** completada y aprobada
 - **Última actualización:** 9 de noviembre de 2026
 - **Entregable:** `v0.2 — Operational Base`
 - **Gate objetivo:** G6 — Vertical Alpha, junto con Fase 8
@@ -64,11 +64,10 @@
 - [x] CI en verde.
 - [x] Trazabilidad y documentación actualizadas.
 - [x] Evidencia de `v0.2 — Operational Base`; el tag espera aprobación final.
-- [ ] Aprobación de Fase 7.
+- [x] Aprobación de Fase 7.
 
 ## Condición para avanzar
 
-Los seis bloques están técnicamente completos. La evidencia se resume en el
-[`reporte de cierre`](phase-7-block-7.6-report-2026-11-09.md). No se crea el
-tag `v0.2.0` ni se inicia la Fase 8 hasta recibir la aprobación final del
-propietario.
+Los seis bloques fueron aprobados. La evidencia se resume en el
+[`reporte de cierre`](phase-7-block-7.6-report-2026-11-09.md) y el release se
+publicó como `v0.2.0`. La Fase 8 puede avanzar bloque por bloque.

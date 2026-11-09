@@ -5,8 +5,8 @@
 - **Fecha:** 9 de noviembre de 2026
 - **Fase:** 7 — Base operativa
 - **Bloque:** 7.6 — Cierre
-- **Resultado:** cierre técnico completo; pendiente de aprobación final
-- **Versión:** `0.2.0`, candidato a tag `v0.2.0`
+- **Resultado:** completado y aprobado por el propietario
+- **Versión:** `v0.2.0 — Operational Base`, publicada
 
 ## 2. Resultado alcanzado
 
@@ -45,8 +45,7 @@ de cierre.
 
 ## 4. Decisiones de cierre
 
-- `v0.2.0` es un candidato hasta la aprobación del propietario; todavía no se
-  crea el tag.
+- `v0.2.0` fue aprobado y publicado sobre el commit de cierre verificado.
 - G6 no se declara aprobado: necesita el flujo vertical de Fase 8.
 - Driver todavía no consulta Events o Vehicles sin una Session que pruebe la
   relación.
@@ -67,8 +66,8 @@ Durante el smoke de cierre se detectó que el Dockerfile todavía exigía
 `raceops==0.1.0`. Se eliminó esa segunda fuente de versión y la reconstrucción
 con `0.2.0` quedó incluida en la verificación final.
 
-## 6. Punto de aprobación
+## 6. Aprobación
 
-La aprobación final permite crear el tag `v0.2.0`, cerrar la última casilla de
-la checklist e iniciar Fase 8. El siguiente bloque debe diseñar el contrato de
-Session y dividir el flujo vertical en entregas pequeñas antes de programarlo.
+El propietario aprobó la Fase 7 y autorizó el inicio de la Fase 8. El tag
+`v0.2.0` se publicó en GitHub. El siguiente bloque diseña el contrato de
+Session y divide el flujo vertical en entregas pequeñas antes de programarlo.

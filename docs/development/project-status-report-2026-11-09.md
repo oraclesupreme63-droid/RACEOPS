@@ -3,16 +3,16 @@
 ## 1. Corte ejecutivo
 
 - **Fecha:** 9 de noviembre de 2026
-- **Versión alcanzada:** `v0.2.0 — Operational Base`, candidata a aprobación
-- **Fase actual:** cierre de Fase 7
-- **Siguiente fase:** 8 — Session Learning Loop
+- **Versión alcanzada:** `v0.2.0 — Operational Base`, publicada
+- **Fase actual:** 8 — Session Learning Loop
+- **Bloque actual:** 8.1 — Contrato y secuencia de implementación
 - **Bloqueador técnico actual:** ninguno
 
 RaceOps ya es un backend ejecutable con identidad, permisos y cuatro recursos
-operativos completos: Drivers, Vehicles, Tracks y Events. La Fase 7 terminó
-técnicamente; sólo faltan la aprobación del propietario y el tag. No se asigna
-un porcentaje global artificial porque las fases futuras tienen alcances y
-validaciones diferentes.
+operativos completos: Drivers, Vehicles, Tracks y Events. La Fase 7 fue
+aprobada y publicada. La Fase 8 comenzó por su contrato para no convertir el
+flujo central en una entrega monolítica. No se asigna un porcentaje global
+artificial porque las fases futuras tienen alcances y validaciones diferentes.
 
 ## 2. Estado por etapa
 
@@ -21,8 +21,8 @@ validaciones diferentes.
 | Fases 0–4 | Definición, investigación inicial, requisitos, dominio y arquitectura aprobados; la investigación continúa |
 | Fase 5 | Fundación técnica completada; Gate G5 aprobado |
 | Fase 6 | Identidad y autorización completadas y aprobadas |
-| Fase 7 | Seis bloques técnicamente completos; espera aprobación final |
-| Fase 8 | No iniciada; es el siguiente trabajo |
+| Fase 7 | Completada, aprobada y publicada como `v0.2.0` |
+| Fase 8 | Bloque 8.1 preparado; espera aprobación antes de persistencia |
 | Gate G6 | Pendiente hasta completar el flujo entre sesiones |
 
 ## 3. Qué funciona hoy

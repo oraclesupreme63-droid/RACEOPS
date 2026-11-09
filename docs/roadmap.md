@@ -309,9 +309,9 @@ ejecución real de los jobs de calidad y contenedores en GitHub Actions.
 - pueden crearse los recursos necesarios para una sesión;
 - los recursos inactivos o no disponibles son rechazados correctamente.
 
-**Estado:** Cierre técnico completado el 9 de noviembre de 2026; pendiente de
-aprobación final y tag `v0.2.0`. La validación de asignación completa ocurre
-en Fase 8, cuando exista Session.
+**Estado:** Completada, aprobada y publicada como `v0.2.0` el 9 de noviembre
+de 2026. La validación de asignación completa ocurre en Fase 8, cuando exista
+Session.
 
 ---
 
@@ -351,6 +351,9 @@ Resultado y conclusión
 - puede recuperarse la cadena de aprendizaje.
 
 Este hito tiene prioridad sobre cualquier integración externa.
+
+**Estado:** En progreso. El Bloque 8.1 define el contrato y la secuencia de
+implementación antes de modificar la persistencia.
 
 ---
 

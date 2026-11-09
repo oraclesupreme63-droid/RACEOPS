@@ -10,8 +10,8 @@ not a telemetry acquisition or professional analysis replacement.
 ## Current status
 
 Phase 6 — Identity and authorization, completed and approved. Phase 7 —
-Operational Base, technically complete and awaiting final approval. The
-backend identifies itself as the `v0.2.0` release candidate. RaceOps exposes
+Operational Base, completed, approved and published as `v0.2.0`. Phase 8 has
+started with the Session Learning Loop contract. RaceOps exposes
 operational APIs for Drivers, Vehicles, Tracks and Events
 with database-enforced Team isolation, in addition to teams, users and
 team-scoped memberships; hashes
@@ -302,6 +302,9 @@ including both the Python quality job and the container smoke test.
 - [Phase 7 Block 7.5 report](docs/development/phase-7-block-7.5-report-2026-11-09.md)
 - [Phase 7 closure report](docs/development/phase-7-block-7.6-report-2026-11-09.md)
 - [Phase 7 implementation traceability](docs/development/phase-7-traceability.md)
+- [Phase 8 checklist](docs/development/phase-8-checklist.md)
+- [Phase 8 Block 8.1 report](docs/development/phase-8-block-8.1-report-2026-11-09.md)
+- [Session Learning Loop contract](docs/sessions/session-learning-loop-contract.md)
 - [Identity and authorization contract](docs/identity/identity-contract.md)
 - [Technical learning roadmap](docs/development/learning-roadmap.md)
 - [Domain package](docs/domain/README.md)
@@ -310,7 +313,7 @@ including both the Python quality job and the container smoke test.
 
 ## Scope discipline
 
-RaceOps remains a modular monolith. Phase 7 has built the minimum operational
-resources required by Session. Phase 8 will implement the Session Learning
-Loop; it has not been anticipated inside these catalog models.
+RaceOps remains a modular monolith. Phase 7 built the minimum operational
+resources required by Session. Phase 8 now implements the Session Learning
+Loop in vertical, independently approved blocks.
 
