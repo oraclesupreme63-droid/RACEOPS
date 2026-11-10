@@ -152,6 +152,8 @@ OPEN → LOCKED
 | Consultar Session | Team | Team | Team | Team | Sólo asignadas |
 | Cambiar ciclo de actividad | Sí | Sí | Sí | No | No |
 | Bloquear resultados | Sí | Sí | Sí | No | No |
+| Leer Laps, Sectors y métricas | Team | Team | Team | Team | Sólo asignadas |
+| Crear o corregir Laps/Sectors | Sí | Sí | Sí | No | No |
 
 Se añadirá `READ_SESSIONS` como permiso explícito. `WRITE_SESSIONS` no se
 reutilizará para conceder lectura. Driver necesita un Driver Profile vinculado
@@ -174,6 +176,16 @@ POST /api/v1/sessions/{session_id}/resume
 POST /api/v1/sessions/{session_id}/complete
 POST /api/v1/sessions/{session_id}/cancel
 POST /api/v1/sessions/{session_id}/lock-results
+
+POST  /api/v1/sessions/{session_id}/laps
+GET   /api/v1/sessions/{session_id}/laps
+GET   /api/v1/sessions/{session_id}/results-summary
+GET   /api/v1/laps/{lap_id}
+PATCH /api/v1/laps/{lap_id}
+POST  /api/v1/laps/{lap_id}/sectors
+GET   /api/v1/laps/{lap_id}/sectors
+GET   /api/v1/sectors/{sector_id}
+PATCH /api/v1/sectors/{sector_id}
 ```
 
 El listado acepta filtros explícitos por Event, Driver, Vehicle, Session Status
@@ -191,6 +203,9 @@ de calcular `total`. No existe DELETE.
 | transición de actividad inválida | 409 | `invalid_session_status_transition` |
 | bloqueo inválido o repetido | 409 | `invalid_results_status_transition` |
 | cambiar Track de Event con Sessions | 409 | `event_track_locked` |
+| escribir después del cierre | 409 | `results_locked` |
+| lap number repetido en Session | 409 | `lap_number_conflict` |
+| sector order repetido en Lap | 409 | `sector_order_conflict` |
 | body inválido o campo prohibido | 422 | `REQUEST_VALIDATION_ERROR` |
 
 ## 11. Integridad y concurrencia
@@ -237,3 +252,9 @@ El Bloque 8.4 materializó ambas máquinas de estado mediante comandos
 explícitos. El inicio revalida la asignación; los timestamps, actor y momento de
 bloqueo son server-side; las filas se bloquean para serializar transiciones y
 los estados terminales no se reabren.
+
+El Bloque 8.5 añadió Laps y Sectors Team-safe, API de captura y consulta,
+clasificación de elegibilidad y métricas enteras reproducibles. El bloqueo de
+Session serializa con cada escritura y `LOCKED` vuelve inmutables ambos tipos
+de resultado. El detalle de fórmula y alcance vive en el
+[`contrato de resultados`](lap-sector-results-contract.md).

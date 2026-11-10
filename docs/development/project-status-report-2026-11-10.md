@@ -5,14 +5,15 @@
 - **Fecha:** 10 de noviembre de 2026
 - **Versión alcanzada:** `v0.2.0 — Operational Base`, publicada
 - **Fase actual:** 8 — Session Learning Loop
-- **Bloque actual:** 8.4 — ciclo y bloqueo de resultados; espera aprobación
+- **Bloque actual:** 8.5 — Laps, Sectors y métricas; espera aprobación
 - **Bloqueador técnico actual:** ninguno
 
 RaceOps ya es un backend ejecutable con identidad, permisos y cuatro recursos
 operativos completos: Drivers, Vehicles, Tracks y Events. La Fase 7 fue
 aprobada y publicada. La Fase 8 ya cuenta con contrato, persistencia y primera
-API de Session y sus ciclos de estado verificados. No se asigna un porcentaje global
-artificial porque las fases futuras tienen alcances y validaciones diferentes.
+API de Session, sus ciclos de estado y resultados de vuelta verificados. No se
+asigna un porcentaje global artificial porque las fases futuras tienen alcances
+y validaciones diferentes.
 
 ## 2. Estado por etapa
 
@@ -22,7 +23,7 @@ artificial porque las fases futuras tienen alcances y validaciones diferentes.
 | Fase 5 | Fundación técnica completada; Gate G5 aprobado |
 | Fase 6 | Identidad y autorización completadas y aprobadas |
 | Fase 7 | Completada, aprobada y publicada como `v0.2.0` |
-| Fase 8 | Bloques 8.1–8.3 aprobados; Bloque 8.4 pendiente de aprobación |
+| Fase 8 | Bloques 8.1–8.4 aprobados; Bloque 8.5 pendiente de aprobación |
 | Gate G6 | Pendiente hasta completar el flujo entre sesiones |
 
 ## 3. Qué funciona hoy
@@ -38,17 +39,20 @@ artificial porque las fases futuras tienen alcances y validaciones diferentes.
 - Event no puede cambiar de Track después de tener su primera Session;
 - Session puede iniciar, pausar, reanudar, completar o cancelar con timestamps;
 - resultados terminales pueden bloquearse preservando actor y momento;
-- 155 pruebas registradas; CI exige al menos 90 % de cobertura;
+- Laps y Sectors permiten captura y consulta con duraciones en microsegundos;
+- métricas excluyen vueltas no válidas y no inventan datos insuficientes;
+- resultados bloqueados rechazan toda corrección normal;
+- 162 pruebas registradas; CI exige al menos 90 % de cobertura;
 - preservación de datos: no hay DELETE normal para estos recursos.
 
 ## 4. Qué falta
 
-### Próximo objetivo: Laps, Sectors y métricas
+### Próximo objetivo: Conditions
 
-Tras aprobar los ciclos, el Bloque 8.5 implementará resultados de vuelta y
-sectores con duraciones enteras, métricas simples y rechazo de escritura cuando
-Results esté `LOCKED`. Después continuará el flujo Event → Session → resultados
-→ feedback → análisis → acciones → siguiente Session → conclusión.
+Tras aprobar y publicar `v0.3.0`, el Bloque 8.6 añadirá un snapshot opcional de
+condiciones por Session, con unidades explícitas y datos parciales. Después
+continuará el flujo Event → Session → resultados → feedback → análisis →
+acciones → siguiente Session → conclusión.
 
 ### Después del flujo central
 
@@ -78,6 +82,6 @@ la feria.
 
 ## 6. Recomendación
 
-Mantener la dirección. No conviene añadir más catálogos. Tras aprobar este
-cierre, el trabajo debe añadir resultados medibles sin intentar importar
-telemetría completa, avanzando hacia observación → hipótesis → acción → resultado.
+Mantener la dirección. No conviene añadir más catálogos ni importar telemetría
+completa. Tras aprobar este cierre, el trabajo debe aportar el contexto mínimo
+de la Session y avanzar hacia observación → hipótesis → acción → resultado.

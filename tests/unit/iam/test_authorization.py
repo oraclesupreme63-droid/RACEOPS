@@ -62,6 +62,12 @@ def test_role_permission_map_covers_every_role_and_is_deny_by_default() -> None:
     assert has_permission(Role.MECHANIC, Permission.WRITE_EVENTS) is False
     assert has_permission(Role.DRIVER, Permission.WRITE_EVENTS) is False
     assert all(has_permission(role, Permission.READ_SESSIONS) for role in Role)
+    assert all(has_permission(role, Permission.READ_RESULTS) for role in Role)
+    assert has_permission(Role.ADMINISTRATOR, Permission.WRITE_RESULTS) is True
+    assert has_permission(Role.TEAM_MANAGER, Permission.WRITE_RESULTS) is True
+    assert has_permission(Role.ENGINEER, Permission.WRITE_RESULTS) is True
+    assert has_permission(Role.MECHANIC, Permission.WRITE_RESULTS) is False
+    assert has_permission(Role.DRIVER, Permission.WRITE_RESULTS) is False
     assert has_permission(Role.ADMINISTRATOR, Permission.WRITE_SESSIONS) is True
     assert has_permission(Role.TEAM_MANAGER, Permission.WRITE_SESSIONS) is True
     assert has_permission(Role.ENGINEER, Permission.WRITE_SESSIONS) is True

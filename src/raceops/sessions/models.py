@@ -5,21 +5,33 @@ from typing import Final
 from uuid import UUID, uuid4
 
 from sqlalchemy import (
+    BigInteger,
     CheckConstraint,
     DateTime,
     Enum,
     ForeignKey,
     ForeignKeyConstraint,
     Index,
+    Integer,
     String,
+    UniqueConstraint,
 )
 from sqlalchemy.orm import Mapped, mapped_column
 
 from raceops.db.base import Base, TimestampMixin
-from raceops.sessions.enums import ResultsStatus, SessionStatus
+from raceops.sessions.enums import (
+    LapClassification,
+    LapSource,
+    ResultsStatus,
+    SectorStatus,
+    SessionStatus,
+)
 
 SESSION_STATUS_ENUM_NAME: Final = "session_status"
 RESULTS_STATUS_ENUM_NAME: Final = "results_status"
+LAP_SOURCE_ENUM_NAME: Final = "lap_source"
+LAP_CLASSIFICATION_ENUM_NAME: Final = "lap_classification"
+SECTOR_STATUS_ENUM_NAME: Final = "sector_status"
 
 
 class RaceSession(TimestampMixin, Base):
@@ -76,6 +88,11 @@ class RaceSession(TimestampMixin, Base):
             name="fk_sessions_vehicle_team",
             ondelete="RESTRICT",
         ),
+        UniqueConstraint(
+            "session_id",
+            "team_id",
+            name="uq_sessions_session_team",
+        ),
         Index("ix_sessions_team_scheduled_at", "team_id", "scheduled_at"),
         Index("ix_sessions_team_event", "team_id", "event_id"),
         Index("ix_sessions_team_driver", "team_id", "driver_id"),
@@ -122,4 +139,84 @@ class RaceSession(TimestampMixin, Base):
     results_locked_at: Mapped[datetime | None] = mapped_column(
         DateTime(timezone=True),
         nullable=True,
+    )
+
+
+class Lap(TimestampMixin, Base):
+    """Canonical lap result and aggregate root for optional Sectors."""
+
+    __tablename__ = "laps"
+    __table_args__ = (
+        CheckConstraint("lap_number > 0", name="lap_number_positive"),
+        CheckConstraint("duration_us > 0", name="duration_us_positive"),
+        ForeignKeyConstraint(
+            ["session_id", "team_id"],
+            ["sessions.session_id", "sessions.team_id"],
+            name="fk_laps_session_team",
+            ondelete="RESTRICT",
+        ),
+        UniqueConstraint(
+            "session_id",
+            "lap_number",
+            name="uq_laps_session_lap_number",
+        ),
+        UniqueConstraint("lap_id", "team_id", name="uq_laps_lap_team"),
+        Index("ix_laps_team_session", "team_id", "session_id"),
+    )
+
+    lap_id: Mapped[UUID] = mapped_column(primary_key=True, default=uuid4)
+    team_id: Mapped[UUID] = mapped_column(nullable=False)
+    session_id: Mapped[UUID] = mapped_column(nullable=False)
+    lap_number: Mapped[int] = mapped_column(Integer, nullable=False)
+    duration_us: Mapped[int] = mapped_column(BigInteger, nullable=False)
+    source: Mapped[LapSource] = mapped_column(
+        Enum(LapSource, name=LAP_SOURCE_ENUM_NAME),
+        nullable=False,
+        default=LapSource.MANUAL,
+        server_default=LapSource.MANUAL.value,
+    )
+    classification: Mapped[LapClassification] = mapped_column(
+        Enum(LapClassification, name=LAP_CLASSIFICATION_ENUM_NAME),
+        nullable=False,
+        default=LapClassification.VALID,
+        server_default=LapClassification.VALID.value,
+    )
+
+    @property
+    def is_eligible(self) -> bool:
+        """Return whether this Lap participates in primary metrics."""
+        return self.classification == LapClassification.VALID
+
+
+class Sector(TimestampMixin, Base):
+    """Optional ordered timing segment contained by one Lap aggregate."""
+
+    __tablename__ = "sectors"
+    __table_args__ = (
+        CheckConstraint("sector_order > 0", name="sector_order_positive"),
+        CheckConstraint("duration_us > 0", name="duration_us_positive"),
+        ForeignKeyConstraint(
+            ["lap_id", "team_id"],
+            ["laps.lap_id", "laps.team_id"],
+            name="fk_sectors_lap_team",
+            ondelete="RESTRICT",
+        ),
+        UniqueConstraint(
+            "lap_id",
+            "sector_order",
+            name="uq_sectors_lap_sector_order",
+        ),
+        Index("ix_sectors_team_lap", "team_id", "lap_id"),
+    )
+
+    sector_id: Mapped[UUID] = mapped_column(primary_key=True, default=uuid4)
+    team_id: Mapped[UUID] = mapped_column(nullable=False)
+    lap_id: Mapped[UUID] = mapped_column(nullable=False)
+    sector_order: Mapped[int] = mapped_column(Integer, nullable=False)
+    duration_us: Mapped[int] = mapped_column(BigInteger, nullable=False)
+    status: Mapped[SectorStatus] = mapped_column(
+        Enum(SectorStatus, name=SECTOR_STATUS_ENUM_NAME),
+        nullable=False,
+        default=SectorStatus.VALID,
+        server_default=SectorStatus.VALID.value,
     )

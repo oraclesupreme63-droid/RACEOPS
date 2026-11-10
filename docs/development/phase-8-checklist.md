@@ -46,15 +46,15 @@
 - [x] Results `OPEN → LOCKED` con actor y momento.
 - [x] Conflictos y estados terminales.
 - [x] Pruebas de todas las transiciones.
-- [ ] Aprobación del propietario.
+- [x] Aprobación del propietario.
 
 ### 8.5 — Laps, Sectors y métricas (`v0.3`)
 
-- [ ] Persistencia y API de Laps.
-- [ ] Sectors opcionales y ordenados.
-- [ ] Duraciones enteras en microsegundos.
-- [ ] Elegibilidad, mejor vuelta, promedio y consistencia.
-- [ ] Bloqueo de escritura con Results `LOCKED`.
+- [x] Persistencia y API de Laps.
+- [x] Sectors opcionales y ordenados.
+- [x] Duraciones enteras en microsegundos.
+- [x] Elegibilidad, mejor vuelta, promedio y consistencia.
+- [x] Bloqueo de escritura con Results `LOCKED`.
 - [ ] Evidencia y tag `v0.3.0`.
 - [ ] Aprobación del propietario.
 
@@ -117,7 +117,8 @@
 
 ## Condición para avanzar
 
-El Bloque 8.4 está técnicamente completo y espera aprobación en su
-[`reporte`](phase-8-block-8.4-report-2026-11-10.md). Laps y Sectors no comienzan
-antes de aprobar los ciclos de actividad y resultados. Cada bloque funcional
-termina con una sola verificación completa y su punto de aprobación.
+El Bloque 8.5 está técnicamente completo y espera aprobación en su
+[`reporte`](phase-8-block-8.5-report-2026-11-10.md). Con esa aprobación se
+actualizará la versión, se publicará `v0.3.0` y comenzará Conditions. Cada
+bloque funcional termina con una sola verificación completa y su punto de
+aprobación.

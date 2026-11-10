@@ -5,7 +5,7 @@
 - **Fecha:** 10 de noviembre de 2026
 - **Fase:** 8 — Session Learning Loop
 - **Bloque:** 8.4 — Ciclo y bloqueo de resultados
-- **Resultado:** implementado y verificado; pendiente de aprobación del propietario
+- **Resultado:** implementado, verificado y aprobado por el propietario
 - **Siguiente bloque:** 8.5 — Laps, Sectors y métricas (`v0.3`)
 
 ## 2. Ciclo de actividad

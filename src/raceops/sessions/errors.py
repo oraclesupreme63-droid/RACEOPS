@@ -19,3 +19,15 @@ class InvalidSessionStatusTransitionError(RuntimeError):
 
 class InvalidResultsStatusTransitionError(RuntimeError):
     """Results cannot be locked from the current Session state."""
+
+
+class ResultsLockedError(RuntimeError):
+    """A write was attempted after Session results became immutable."""
+
+
+class LapNumberConflictError(RuntimeError):
+    """A Lap number is already used inside the Session."""
+
+
+class SectorOrderConflictError(RuntimeError):
+    """A Sector order is already used inside the Lap."""

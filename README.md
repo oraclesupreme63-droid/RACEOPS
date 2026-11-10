@@ -11,9 +11,10 @@ not a telemetry acquisition or professional analysis replacement.
 
 Phase 6 — Identity and authorization, completed and approved. Phase 7 —
 Operational Base, completed, approved and published as `v0.2.0`. Phase 8 has
-started: its contract, persistence and planning API are approved; the Session
-lifecycle is implemented and awaiting block approval. RaceOps exposes operational APIs
-for Drivers, Vehicles, Tracks, Events and planned Sessions
+started: its Session contract, persistence, planning API and lifecycle are
+approved; Laps, Sectors and simple result metrics are implemented and awaiting
+block approval. RaceOps exposes operational APIs for Drivers, Vehicles, Tracks,
+Events, Sessions and timing results
 with database-enforced Team isolation, in addition to teams, users and
 team-scoped memberships; hashes
 passwords with Argon2id; issues short-lived membership-scoped JWTs; re-resolves

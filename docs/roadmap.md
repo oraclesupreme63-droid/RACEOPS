@@ -352,8 +352,9 @@ Resultado y conclusión
 
 Este hito tiene prioridad sobre cualquier integración externa.
 
-**Estado:** En progreso. Contrato aprobado; el Bloque 8.2 implementó la
-persistencia de Session y espera aprobación antes de exponer la API.
+**Estado:** En progreso. Los Bloques 8.1–8.4 están aprobados. El Bloque 8.5
+implementó Laps, Sectors y métricas, y espera aprobación para publicar
+`v0.3.0`. Conditions comienza después de ese punto de control.
 
 ---
 
