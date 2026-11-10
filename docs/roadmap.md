@@ -352,9 +352,9 @@ Resultado y conclusión
 
 Este hito tiene prioridad sobre cualquier integración externa.
 
-**Estado:** En progreso. Los Bloques 8.1–8.4 están aprobados. El Bloque 8.5
-implementó Laps, Sectors y métricas, y espera aprobación para publicar
-`v0.3.0`. Conditions comienza después de ese punto de control.
+**Estado:** En progreso. Los Bloques 8.1–8.5 están aprobados y publicados como
+`v0.3.0 — Sessions & Results`. El Bloque 8.6 implementa Conditions opcionales
+por Session.
 
 ---
 

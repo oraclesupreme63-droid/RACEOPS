@@ -63,7 +63,7 @@ Resultado esperado de readiness:
   "status": "ready",
   "service": "raceops-api",
   "database": "up",
-  "version": "0.2.0"
+  "version": "0.3.0"
 }
 ```
 

@@ -55,8 +55,8 @@
 - [x] Duraciones enteras en microsegundos.
 - [x] Elegibilidad, mejor vuelta, promedio y consistencia.
 - [x] Bloqueo de escritura con Results `LOCKED`.
-- [ ] Evidencia y tag `v0.3.0`.
-- [ ] Aprobación del propietario.
+- [x] Evidencia y tag `v0.3.0`.
+- [x] Aprobación del propietario.
 
 ### 8.6 — Conditions
 
@@ -117,8 +117,6 @@
 
 ## Condición para avanzar
 
-El Bloque 8.5 está técnicamente completo y espera aprobación en su
-[`reporte`](phase-8-block-8.5-report-2026-11-10.md). Con esa aprobación se
-actualizará la versión, se publicará `v0.3.0` y comenzará Conditions. Cada
-bloque funcional termina con una sola verificación completa y su punto de
-aprobación.
+El Bloque 8.5 fue aprobado y publicado como `v0.3.0`. El Bloque 8.6 avanza con
+Conditions opcionales por Session. Cada bloque funcional termina con una sola
+verificación completa y su punto de aprobación.

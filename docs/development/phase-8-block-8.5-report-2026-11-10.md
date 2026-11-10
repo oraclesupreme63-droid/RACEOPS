@@ -5,8 +5,8 @@
 - **Fecha:** 10 de noviembre de 2026
 - **Fase:** 8 — Session Learning Loop
 - **Bloque:** 8.5 — Laps, Sectors y métricas
-- **Resultado:** implementado y verificado; pendiente de aprobación del propietario
-- **Hito:** cierre técnico de `v0.3 — Sessions & Results`
+- **Resultado:** implementado, verificado y aprobado por el propietario
+- **Hito:** `v0.3.0 — Sessions & Results`, publicado
 
 ## 2. Capacidad entregada
 
@@ -58,6 +58,5 @@ futuro ciclo de feedback → hipótesis → acción → resultado.
 
 ## 7. Punto de aprobación
 
-Con aprobación se declara el hito `v0.3.0`, se publica su tag y comienza el
-Bloque 8.6: Conditions parciales por Session. El tag permanece pendiente para
-que identifique exactamente el cierre aprobado.
+El propietario aprobó el cierre. El tag `v0.3.0` identifica exactamente la
+versión verificada y habilita el Bloque 8.6: Conditions parciales por Session.

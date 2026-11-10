@@ -3,9 +3,9 @@
 ## 1. Corte ejecutivo
 
 - **Fecha:** 10 de noviembre de 2026
-- **Versión alcanzada:** `v0.2.0 — Operational Base`, publicada
+- **Versión alcanzada:** `v0.3.0 — Sessions & Results`, publicada
 - **Fase actual:** 8 — Session Learning Loop
-- **Bloque actual:** 8.5 — Laps, Sectors y métricas; espera aprobación
+- **Bloque actual:** 8.6 — Conditions
 - **Bloqueador técnico actual:** ninguno
 
 RaceOps ya es un backend ejecutable con identidad, permisos y cuatro recursos
@@ -23,7 +23,7 @@ y validaciones diferentes.
 | Fase 5 | Fundación técnica completada; Gate G5 aprobado |
 | Fase 6 | Identidad y autorización completadas y aprobadas |
 | Fase 7 | Completada, aprobada y publicada como `v0.2.0` |
-| Fase 8 | Bloques 8.1–8.4 aprobados; Bloque 8.5 pendiente de aprobación |
+| Fase 8 | Bloques 8.1–8.5 aprobados; `v0.3.0` publicada; Bloque 8.6 activo |
 | Gate G6 | Pendiente hasta completar el flujo entre sesiones |
 
 ## 3. Qué funciona hoy
