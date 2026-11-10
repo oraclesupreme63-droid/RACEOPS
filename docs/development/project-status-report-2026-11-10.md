@@ -5,13 +5,13 @@
 - **Fecha:** 10 de noviembre de 2026
 - **Versión alcanzada:** `v0.2.0 — Operational Base`, publicada
 - **Fase actual:** 8 — Session Learning Loop
-- **Bloque actual:** 8.3 — API y asignación implementada; espera aprobación
+- **Bloque actual:** 8.4 — ciclo y bloqueo de resultados; espera aprobación
 - **Bloqueador técnico actual:** ninguno
 
 RaceOps ya es un backend ejecutable con identidad, permisos y cuatro recursos
 operativos completos: Drivers, Vehicles, Tracks y Events. La Fase 7 fue
 aprobada y publicada. La Fase 8 ya cuenta con contrato, persistencia y primera
-API de Session verificadas. No se asigna un porcentaje global
+API de Session y sus ciclos de estado verificados. No se asigna un porcentaje global
 artificial porque las fases futuras tienen alcances y validaciones diferentes.
 
 ## 2. Estado por etapa
@@ -22,7 +22,7 @@ artificial porque las fases futuras tienen alcances y validaciones diferentes.
 | Fase 5 | Fundación técnica completada; Gate G5 aprobado |
 | Fase 6 | Identidad y autorización completadas y aprobadas |
 | Fase 7 | Completada, aprobada y publicada como `v0.2.0` |
-| Fase 8 | Contrato y persistencia aprobados; Bloque 8.3 pendiente de aprobación |
+| Fase 8 | Bloques 8.1–8.3 aprobados; Bloque 8.4 pendiente de aprobación |
 | Gate G6 | Pendiente hasta completar el flujo entre sesiones |
 
 ## 3. Qué funciona hoy
@@ -36,17 +36,19 @@ artificial porque las fases futuras tienen alcances y validaciones diferentes.
 - Session planificada con API, asignación atómica, RBAC y filtros relacionados;
 - Driver consulta sólo sus Sessions, Events y Vehicles asociados;
 - Event no puede cambiar de Track después de tener su primera Session;
-- 152 pruebas registradas y 94.22 % de cobertura en la verificación del bloque;
+- Session puede iniciar, pausar, reanudar, completar o cancelar con timestamps;
+- resultados terminales pueden bloquearse preservando actor y momento;
+- 155 pruebas registradas; CI exige al menos 90 % de cobertura;
 - preservación de datos: no hay DELETE normal para estos recursos.
 
 ## 4. Qué falta
 
-### Próximo objetivo: ciclo de Session
+### Próximo objetivo: Laps, Sectors y métricas
 
-Tras aprobar la primera API, el Bloque 8.4 implementará start, pause, resume,
-complete, cancel y lock-results con timestamps server-side. Después continuará
-el flujo Event → Session → resultados → feedback → análisis → acciones →
-siguiente Session → conclusión.
+Tras aprobar los ciclos, el Bloque 8.5 implementará resultados de vuelta y
+sectores con duraciones enteras, métricas simples y rechazo de escritura cuando
+Results esté `LOCKED`. Después continuará el flujo Event → Session → resultados
+→ feedback → análisis → acciones → siguiente Session → conclusión.
 
 ### Después del flujo central
 
@@ -77,5 +79,5 @@ la feria.
 ## 6. Recomendación
 
 Mantener la dirección. No conviene añadir más catálogos. Tras aprobar este
-cierre, el trabajo debe completar el ciclo de Session y luego resultados,
-demostrando la cadena observación → hipótesis → acción → resultado.
+cierre, el trabajo debe añadir resultados medibles sin intentar importar
+telemetría completa, avanzando hacia observación → hipótesis → acción → resultado.

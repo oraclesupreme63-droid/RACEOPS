@@ -251,11 +251,16 @@ async def test_administrator_writes_and_mechanic_has_read_only_session_access(
             headers=_headers(mechanic),
             json={"session_type": "Forbidden edit"},
         )
+        command = await client.post(
+            f"/api/v1/sessions/{session_id}/start", headers=_headers(mechanic)
+        )
 
     assert created.status_code == 201
     assert read.status_code == 200
     assert write.status_code == 403
     assert write.json()["code"] == "insufficient_permissions"
+    assert command.status_code == 403
+    assert command.json()["code"] == "insufficient_permissions"
 
 
 @pytest.mark.anyio
@@ -400,6 +405,210 @@ async def test_non_planned_edit_and_event_track_move_are_rejected(
 @pytest.mark.anyio
 @pytest.mark.integration
 @requires_database
+async def test_session_activity_cycle_preserves_server_timestamps_and_locks_results(
+    application: FastAPI,
+    database_engine: Engine,
+) -> None:
+    context = _seed_context(database_engine, role=Role.TEAM_MANAGER)
+    with Session(database_engine) as session, session.begin():
+        race_session = _race_session(context)
+        session.add(race_session)
+        session.flush()
+        session_id = race_session.session_id
+
+    headers = _headers(context.identity)
+    transport = ASGITransport(app=application)
+    async with AsyncClient(transport=transport, base_url="http://testserver") as client:
+        invalid_pause = await client.post(
+            f"/api/v1/sessions/{session_id}/pause", headers=headers
+        )
+        started = await client.post(
+            f"/api/v1/sessions/{session_id}/start", headers=headers
+        )
+        started_at = started.json()["started_at"]
+        paused = await client.post(
+            f"/api/v1/sessions/{session_id}/pause", headers=headers
+        )
+        resumed = await client.post(
+            f"/api/v1/sessions/{session_id}/resume", headers=headers
+        )
+        completed = await client.post(
+            f"/api/v1/sessions/{session_id}/complete", headers=headers
+        )
+        invalid_terminal = await client.post(
+            f"/api/v1/sessions/{session_id}/start", headers=headers
+        )
+        locked = await client.post(
+            f"/api/v1/sessions/{session_id}/lock-results", headers=headers
+        )
+        repeated_lock = await client.post(
+            f"/api/v1/sessions/{session_id}/lock-results", headers=headers
+        )
+
+    assert invalid_pause.status_code == 409
+    assert invalid_pause.json()["code"] == "invalid_session_status_transition"
+    assert started.status_code == 200
+    assert started.json()["status"] == "ACTIVE"
+    assert started_at is not None
+    assert started.json()["ended_at"] is None
+    assert paused.json()["status"] == "PAUSED"
+    assert paused.json()["started_at"] == started_at
+    assert resumed.json()["status"] == "ACTIVE"
+    assert resumed.json()["started_at"] == started_at
+    assert completed.json()["status"] == "COMPLETED"
+    assert completed.json()["started_at"] == started_at
+    assert completed.json()["ended_at"] is not None
+    assert invalid_terminal.status_code == 409
+    assert invalid_terminal.json()["code"] == "invalid_session_status_transition"
+    assert locked.status_code == 200
+    assert locked.json()["results_status"] == "LOCKED"
+    assert locked.json()["results_locked_by_user_id"] == str(context.identity.user_id)
+    assert locked.json()["results_locked_at"] is not None
+    assert repeated_lock.status_code == 409
+    assert repeated_lock.json()["code"] == "invalid_results_status_transition"
+
+
+@pytest.mark.anyio
+@pytest.mark.integration
+@requires_database
+async def test_cancel_supports_each_non_terminal_state_and_terminal_lock(
+    application: FastAPI,
+    database_engine: Engine,
+) -> None:
+    context = _seed_context(database_engine, role=Role.ENGINEER)
+    with Session(database_engine) as session, session.begin():
+        planned = _race_session(context)
+        active = _race_session(context)
+        active.scheduled_at = datetime(2026, 11, 15, 16, tzinfo=UTC)
+        paused = _race_session(context)
+        paused.scheduled_at = datetime(2026, 11, 15, 17, tzinfo=UTC)
+        paused_complete = _race_session(context)
+        paused_complete.scheduled_at = datetime(2026, 11, 15, 18, tzinfo=UTC)
+        session.add_all([planned, active, paused, paused_complete])
+        session.flush()
+        planned_id = planned.session_id
+        active_id = active.session_id
+        paused_id = paused.session_id
+        paused_complete_id = paused_complete.session_id
+
+    headers = _headers(context.identity)
+    transport = ASGITransport(app=application)
+    async with AsyncClient(transport=transport, base_url="http://testserver") as client:
+        premature_lock = await client.post(
+            f"/api/v1/sessions/{planned_id}/lock-results", headers=headers
+        )
+        cancelled_planned = await client.post(
+            f"/api/v1/sessions/{planned_id}/cancel", headers=headers
+        )
+        locked_cancelled = await client.post(
+            f"/api/v1/sessions/{planned_id}/lock-results", headers=headers
+        )
+        await client.post(f"/api/v1/sessions/{active_id}/start", headers=headers)
+        cancelled_active = await client.post(
+            f"/api/v1/sessions/{active_id}/cancel", headers=headers
+        )
+        await client.post(f"/api/v1/sessions/{paused_id}/start", headers=headers)
+        await client.post(f"/api/v1/sessions/{paused_id}/pause", headers=headers)
+        cancelled_paused = await client.post(
+            f"/api/v1/sessions/{paused_id}/cancel", headers=headers
+        )
+        await client.post(
+            f"/api/v1/sessions/{paused_complete_id}/start", headers=headers
+        )
+        await client.post(
+            f"/api/v1/sessions/{paused_complete_id}/pause", headers=headers
+        )
+        completed_paused = await client.post(
+            f"/api/v1/sessions/{paused_complete_id}/complete", headers=headers
+        )
+        repeated_cancel = await client.post(
+            f"/api/v1/sessions/{planned_id}/cancel", headers=headers
+        )
+
+    assert premature_lock.status_code == 409
+    assert premature_lock.json()["code"] == "invalid_results_status_transition"
+    assert cancelled_planned.json()["status"] == "CANCELLED"
+    assert cancelled_planned.json()["started_at"] is None
+    assert cancelled_planned.json()["ended_at"] is not None
+    assert locked_cancelled.json()["results_status"] == "LOCKED"
+    assert cancelled_active.json()["status"] == "CANCELLED"
+    assert cancelled_active.json()["started_at"] is not None
+    assert cancelled_paused.json()["status"] == "CANCELLED"
+    assert cancelled_paused.json()["started_at"] is not None
+    assert completed_paused.json()["status"] == "COMPLETED"
+    assert completed_paused.json()["ended_at"] is not None
+    assert repeated_cancel.status_code == 409
+    assert repeated_cancel.json()["code"] == "invalid_session_status_transition"
+
+
+@pytest.mark.anyio
+@pytest.mark.integration
+@requires_database
+async def test_start_revalidates_driver_and_vehicle_without_changing_session(
+    application: FastAPI,
+    database_engine: Engine,
+) -> None:
+    context = _seed_context(database_engine, role=Role.ADMINISTRATOR)
+    with Session(database_engine) as session, session.begin():
+        driver_blocked = _race_session(context)
+        second_driver = Driver(
+            team_id=context.identity.team_id,
+            display_name="Second Driver",
+        )
+        second_vehicle = Vehicle(
+            team_id=context.identity.team_id,
+            identifier=f"Second Vehicle {uuid4()}",
+        )
+        session.add_all([driver_blocked, second_driver, second_vehicle])
+        session.flush()
+        vehicle_blocked = RaceSession(
+            team_id=context.identity.team_id,
+            event_id=context.event_id,
+            driver_id=second_driver.driver_id,
+            vehicle_id=second_vehicle.vehicle_id,
+            session_type="Qualifying",
+            scheduled_at=datetime(2026, 11, 15, 16, tzinfo=UTC),
+        )
+        session.add(vehicle_blocked)
+        session.flush()
+        driver_blocked_id = driver_blocked.session_id
+        vehicle_blocked_id = vehicle_blocked.session_id
+        driver = session.get(Driver, context.driver_id)
+        vehicle = session.get(Vehicle, second_vehicle.vehicle_id)
+        assert driver is not None
+        assert vehicle is not None
+        driver.status = DriverStatus.INACTIVE
+        vehicle.status = VehicleStatus.MAINTENANCE
+
+    headers = _headers(context.identity)
+    transport = ASGITransport(app=application)
+    async with AsyncClient(transport=transport, base_url="http://testserver") as client:
+        invalid_driver = await client.post(
+            f"/api/v1/sessions/{driver_blocked_id}/start", headers=headers
+        )
+        invalid_vehicle = await client.post(
+            f"/api/v1/sessions/{vehicle_blocked_id}/start", headers=headers
+        )
+        preserved_driver = await client.get(
+            f"/api/v1/sessions/{driver_blocked_id}", headers=headers
+        )
+        preserved_vehicle = await client.get(
+            f"/api/v1/sessions/{vehicle_blocked_id}", headers=headers
+        )
+
+    assert invalid_driver.status_code == 409
+    assert invalid_driver.json()["code"] == "session_assignment_conflict"
+    assert invalid_vehicle.status_code == 409
+    assert invalid_vehicle.json()["code"] == "session_assignment_conflict"
+    assert preserved_driver.json()["status"] == "PLANNED"
+    assert preserved_driver.json()["started_at"] is None
+    assert preserved_vehicle.json()["status"] == "PLANNED"
+    assert preserved_vehicle.json()["started_at"] is None
+
+
+@pytest.mark.anyio
+@pytest.mark.integration
+@requires_database
 async def test_session_payload_rejects_server_fields_naive_time_and_empty_patch(
     application: FastAPI,
     database_engine: Engine,
@@ -442,7 +651,7 @@ async def test_session_payload_rejects_server_fields_naive_time_and_empty_patch(
         assert response.json()["code"] == "REQUEST_VALIDATION_ERROR"
 
 
-def test_openapi_documents_session_planning_contract_and_no_commands_yet() -> None:
+def test_openapi_documents_session_planning_and_lifecycle_contract() -> None:
     schema = create_app().openapi()
     paths = schema["paths"]
     collection = paths["/api/v1/sessions"]
@@ -468,7 +677,9 @@ def test_openapi_documents_session_planning_contract_and_no_commands_yet() -> No
         "cancel",
         "lock-results",
     ):
-        assert f"/api/v1/sessions/{{session_id}}/{command_name}" not in paths
+        command_path = f"/api/v1/sessions/{{session_id}}/{command_name}"
+        assert set(paths[command_path]) == {"post"}
+        assert paths[command_path]["post"]["security"] == [{"HTTPBearer": []}]
 
 
 def _seed_context(

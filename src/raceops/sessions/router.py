@@ -1,6 +1,7 @@
-"""HTTP boundary for Session planning resources."""
+"""HTTP boundary for Session planning and lifecycle resources."""
 
 import logging
+from collections.abc import Callable
 from typing import Annotated, Any
 from uuid import UUID
 
@@ -13,9 +14,12 @@ from raceops.iam.authorization import Permission
 from raceops.iam.identity import CurrentIdentity
 from raceops.sessions.enums import ResultsStatus, SessionStatus
 from raceops.sessions.errors import (
+    InvalidResultsStatusTransitionError,
+    InvalidSessionStatusTransitionError,
     SessionAssignmentConflictError,
     SessionNotEditableError,
 )
+from raceops.sessions.models import RaceSession
 from raceops.sessions.schemas import (
     SessionCreateRequest,
     SessionPageResponse,
@@ -23,9 +27,15 @@ from raceops.sessions.schemas import (
     SessionUpdateRequest,
 )
 from raceops.sessions.services import (
+    cancel_race_session,
+    complete_race_session,
     create_race_session,
     get_race_session,
     list_race_sessions,
+    lock_race_session_results,
+    pause_race_session,
+    resume_race_session,
+    start_race_session,
     update_race_session,
 )
 
@@ -46,6 +56,18 @@ SESSION_NOT_EDITABLE_PROBLEM = ProblemDefinition(
     "Session is not editable",
     "session_not_editable",
     "Only a planned Session may be edited.",
+)
+INVALID_SESSION_STATUS_TRANSITION_PROBLEM = ProblemDefinition(
+    "invalid-session-status-transition",
+    "Invalid Session status transition",
+    "invalid_session_status_transition",
+    "The requested Session activity transition is not allowed.",
+)
+INVALID_RESULTS_STATUS_TRANSITION_PROBLEM = ProblemDefinition(
+    "invalid-results-status-transition",
+    "Invalid results status transition",
+    "invalid_results_status_transition",
+    "Results can only be locked once a Session is terminal and still open.",
 )
 
 SESSION_COMMON_RESPONSES: dict[int | str, dict[str, Any]] = {
@@ -189,6 +211,168 @@ def update_session_endpoint(
     return SessionResponse.from_model(race_session)
 
 
+@router.post(
+    "/sessions/{session_id}/start",
+    tags=["sessions"],
+    response_model=SessionResponse,
+    summary="Start a planned Session",
+    responses={
+        **SESSION_COMMON_RESPONSES,
+        409: {"model": ProblemDetails, "description": "Assignment or state conflict."},
+    },
+)
+def start_session_endpoint(
+    session_id: UUID,
+    session: Annotated[Session, Depends(get_db_session)],
+    actor: Annotated[CurrentIdentity, Depends(write_sessions)],
+) -> SessionResponse:
+    """Start after atomically revalidating Driver and Vehicle eligibility."""
+    try:
+        race_session = start_race_session(session, actor, session_id)
+    except SessionAssignmentConflictError as error:
+        raise _session_assignment_conflict() from error
+    except InvalidSessionStatusTransitionError as error:
+        raise _invalid_session_status_transition() from error
+    return _log_status_change(race_session, actor)
+
+
+@router.post(
+    "/sessions/{session_id}/pause",
+    tags=["sessions"],
+    response_model=SessionResponse,
+    summary="Pause an active Session",
+    responses={
+        **SESSION_COMMON_RESPONSES,
+        409: {"model": ProblemDetails, "description": "Invalid transition."},
+    },
+)
+def pause_session_endpoint(
+    session_id: UUID,
+    session: Annotated[Session, Depends(get_db_session)],
+    actor: Annotated[CurrentIdentity, Depends(write_sessions)],
+) -> SessionResponse:
+    """Pause an active Session without changing its first start time."""
+    return _run_status_command(session, actor, session_id, pause_race_session)
+
+
+@router.post(
+    "/sessions/{session_id}/resume",
+    tags=["sessions"],
+    response_model=SessionResponse,
+    summary="Resume a paused Session",
+    responses={
+        **SESSION_COMMON_RESPONSES,
+        409: {"model": ProblemDetails, "description": "Invalid transition."},
+    },
+)
+def resume_session_endpoint(
+    session_id: UUID,
+    session: Annotated[Session, Depends(get_db_session)],
+    actor: Annotated[CurrentIdentity, Depends(write_sessions)],
+) -> SessionResponse:
+    """Resume a paused Session while preserving its first start time."""
+    return _run_status_command(session, actor, session_id, resume_race_session)
+
+
+@router.post(
+    "/sessions/{session_id}/complete",
+    tags=["sessions"],
+    response_model=SessionResponse,
+    summary="Complete a Session",
+    responses={
+        **SESSION_COMMON_RESPONSES,
+        409: {"model": ProblemDetails, "description": "Invalid transition."},
+    },
+)
+def complete_session_endpoint(
+    session_id: UUID,
+    session: Annotated[Session, Depends(get_db_session)],
+    actor: Annotated[CurrentIdentity, Depends(write_sessions)],
+) -> SessionResponse:
+    """Complete an active or paused Session with a server-side end time."""
+    return _run_status_command(session, actor, session_id, complete_race_session)
+
+
+@router.post(
+    "/sessions/{session_id}/cancel",
+    tags=["sessions"],
+    response_model=SessionResponse,
+    summary="Cancel a non-terminal Session",
+    responses={
+        **SESSION_COMMON_RESPONSES,
+        409: {"model": ProblemDetails, "description": "Invalid transition."},
+    },
+)
+def cancel_session_endpoint(
+    session_id: UUID,
+    session: Annotated[Session, Depends(get_db_session)],
+    actor: Annotated[CurrentIdentity, Depends(write_sessions)],
+) -> SessionResponse:
+    """Cancel a planned, active, or paused Session."""
+    return _run_status_command(session, actor, session_id, cancel_race_session)
+
+
+@router.post(
+    "/sessions/{session_id}/lock-results",
+    tags=["sessions"],
+    response_model=SessionResponse,
+    summary="Lock terminal Session results",
+    responses={
+        **SESSION_COMMON_RESPONSES,
+        409: {"model": ProblemDetails, "description": "Invalid results transition."},
+    },
+)
+def lock_session_results_endpoint(
+    session_id: UUID,
+    session: Annotated[Session, Depends(get_db_session)],
+    actor: Annotated[CurrentIdentity, Depends(write_sessions)],
+) -> SessionResponse:
+    """Lock terminal results once and preserve actor and server time."""
+    try:
+        race_session = lock_race_session_results(session, actor, session_id)
+    except InvalidResultsStatusTransitionError as error:
+        raise _invalid_results_status_transition() from error
+    logger.info(
+        "session results locked",
+        extra={
+            "event": "session.results_locked",
+            "session_id": str(race_session.session_id),
+            "team_id": str(actor.team_id),
+            "actor_user_id": str(actor.user_id),
+        },
+    )
+    return SessionResponse.from_model(race_session)
+
+
+def _run_status_command(
+    session: Session,
+    actor: CurrentIdentity,
+    session_id: UUID,
+    command: Callable[[Session, CurrentIdentity, UUID], RaceSession],
+) -> SessionResponse:
+    try:
+        race_session = command(session, actor, session_id)
+    except InvalidSessionStatusTransitionError as error:
+        raise _invalid_session_status_transition() from error
+    return _log_status_change(race_session, actor)
+
+
+def _log_status_change(
+    race_session: RaceSession,
+    actor: CurrentIdentity,
+) -> SessionResponse:
+    logger.info(
+        "session status changed",
+        extra={
+            "event": "session.status_changed",
+            "session_id": str(race_session.session_id),
+            "team_id": str(actor.team_id),
+            "session_status": race_session.status.value,
+        },
+    )
+    return SessionResponse.from_model(race_session)
+
+
 def _session_assignment_conflict() -> ApiProblemError:
     return ApiProblemError(
         status_code=409,
@@ -198,3 +382,17 @@ def _session_assignment_conflict() -> ApiProblemError:
 
 def _session_not_editable() -> ApiProblemError:
     return ApiProblemError(status_code=409, definition=SESSION_NOT_EDITABLE_PROBLEM)
+
+
+def _invalid_session_status_transition() -> ApiProblemError:
+    return ApiProblemError(
+        status_code=409,
+        definition=INVALID_SESSION_STATUS_TRANSITION_PROBLEM,
+    )
+
+
+def _invalid_results_status_transition() -> ApiProblemError:
+    return ApiProblemError(
+        status_code=409,
+        definition=INVALID_RESULTS_STATUS_TRANSITION_PROBLEM,
+    )

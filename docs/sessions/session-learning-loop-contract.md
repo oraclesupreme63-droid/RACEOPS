@@ -229,6 +229,11 @@ La revisión `20261109_0004_sessions` añadió:
 - índices por Team para fecha, Event, Driver y Vehicle;
 - FKs restrictivas y migración reversible.
 
-La elegibilidad `Driver ACTIVE` y `Vehicle READY` cruza filas y se aplicará
-transaccionalmente en el servicio del Bloque 8.3; la base de datos ya protege
-ownership, nulabilidad y estados internos de Session.
+El Bloque 8.3 añadió creación y edición planificada con elegibilidad
+transaccional, RBAC, alcance relacionado del Driver y bloqueo histórico del
+Track de Event.
+
+El Bloque 8.4 materializó ambas máquinas de estado mediante comandos
+explícitos. El inicio revalida la asignación; los timestamps, actor y momento de
+bloqueo son server-side; las filas se bloquean para serializar transiciones y
+los estados terminales no se reabren.

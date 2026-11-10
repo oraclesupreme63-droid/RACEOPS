@@ -11,8 +11,8 @@ not a telemetry acquisition or professional analysis replacement.
 
 Phase 6 — Identity and authorization, completed and approved. Phase 7 —
 Operational Base, completed, approved and published as `v0.2.0`. Phase 8 has
-started: its contract and persistence are approved, and the first Session API
-is implemented and awaiting block approval. RaceOps exposes operational APIs
+started: its contract, persistence and planning API are approved; the Session
+lifecycle is implemented and awaiting block approval. RaceOps exposes operational APIs
 for Drivers, Vehicles, Tracks, Events and planned Sessions
 with database-enforced Team isolation, in addition to teams, users and
 team-scoped memberships; hashes
@@ -224,9 +224,9 @@ endpoint. Its Track becomes immutable after the first Session.
 Planned Sessions are available at `POST/GET /api/v1/sessions` and
 `GET/PATCH /api/v1/sessions/{session_id}`. Creation atomically validates a
 same-Team Event, active Driver and ready Vehicle. Administrator, Team Manager
-and Engineer can create and edit while `PLANNED`; Mechanic can read, and Driver
-sees only assigned Sessions. Lifecycle commands begin in Block 8.4. There is
-no DELETE endpoint.
+and Engineer can create, edit and run lifecycle commands; Mechanic can read,
+and Driver sees only assigned Sessions. Results can be locked once activity is
+terminal. There is no DELETE or reopen endpoint.
 
 ## Errors and request correlation
 
@@ -317,6 +317,7 @@ including both the Python quality job and the container smoke test.
 - [Phase 8 Block 8.1 report](docs/development/phase-8-block-8.1-report-2026-11-09.md)
 - [Phase 8 Block 8.2 report](docs/development/phase-8-block-8.2-report-2026-11-09.md)
 - [Phase 8 Block 8.3 report](docs/development/phase-8-block-8.3-report-2026-11-10.md)
+- [Phase 8 Block 8.4 report](docs/development/phase-8-block-8.4-report-2026-11-10.md)
 - [Session Learning Loop contract](docs/sessions/session-learning-loop-contract.md)
 - [Identity and authorization contract](docs/identity/identity-contract.md)
 - [Technical learning roadmap](docs/development/learning-roadmap.md)

@@ -11,3 +11,11 @@ class SessionNotEditableError(RuntimeError):
 
 class EventTrackLockedError(RuntimeError):
     """An Event with Sessions cannot be moved to another Track."""
+
+
+class InvalidSessionStatusTransitionError(RuntimeError):
+    """The requested activity command is invalid for the current status."""
+
+
+class InvalidResultsStatusTransitionError(RuntimeError):
+    """Results cannot be locked from the current Session state."""

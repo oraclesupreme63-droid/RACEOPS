@@ -1,7 +1,8 @@
-"""Application services for Session planning and relationship-scoped reads."""
+"""Services for Session planning, lifecycle, and relationship-scoped reads."""
 
 from collections.abc import Mapping
-from datetime import datetime
+from datetime import UTC, datetime
+from typing import NoReturn
 from uuid import UUID
 
 from sqlalchemy import exists, func, select
@@ -16,6 +17,8 @@ from raceops.operations.models import Driver, Event, Vehicle
 from raceops.sessions.enums import ResultsStatus, SessionStatus
 from raceops.sessions.errors import (
     EventTrackLockedError,
+    InvalidResultsStatusTransitionError,
+    InvalidSessionStatusTransitionError,
     SessionAssignmentConflictError,
     SessionNotEditableError,
 )
@@ -153,6 +156,103 @@ def update_race_session(
     return race_session
 
 
+def start_race_session(
+    session: Session,
+    actor: CurrentIdentity,
+    session_id: UUID,
+) -> RaceSession:
+    """Start a planned Session after revalidating its current assignment."""
+    race_session = _get_session_for_update(session, actor.team_id, session_id)
+    if race_session.status is not SessionStatus.PLANNED:
+        _reject_session_transition(session)
+    _require_eligible_assignment(
+        session,
+        actor.team_id,
+        driver_id=race_session.driver_id,
+        vehicle_id=race_session.vehicle_id,
+    )
+    race_session.status = SessionStatus.ACTIVE
+    race_session.started_at = datetime.now(UTC)
+    return _commit_race_session(session, race_session)
+
+
+def pause_race_session(
+    session: Session,
+    actor: CurrentIdentity,
+    session_id: UUID,
+) -> RaceSession:
+    """Pause an active Session without replacing its first start time."""
+    race_session = _get_session_for_update(session, actor.team_id, session_id)
+    if race_session.status is not SessionStatus.ACTIVE:
+        _reject_session_transition(session)
+    race_session.status = SessionStatus.PAUSED
+    return _commit_race_session(session, race_session)
+
+
+def resume_race_session(
+    session: Session,
+    actor: CurrentIdentity,
+    session_id: UUID,
+) -> RaceSession:
+    """Resume a paused Session while preserving its first start time."""
+    race_session = _get_session_for_update(session, actor.team_id, session_id)
+    if race_session.status is not SessionStatus.PAUSED:
+        _reject_session_transition(session)
+    race_session.status = SessionStatus.ACTIVE
+    return _commit_race_session(session, race_session)
+
+
+def complete_race_session(
+    session: Session,
+    actor: CurrentIdentity,
+    session_id: UUID,
+) -> RaceSession:
+    """Complete an active or paused Session and record its end time."""
+    race_session = _get_session_for_update(session, actor.team_id, session_id)
+    if race_session.status not in {SessionStatus.ACTIVE, SessionStatus.PAUSED}:
+        _reject_session_transition(session)
+    race_session.status = SessionStatus.COMPLETED
+    race_session.ended_at = datetime.now(UTC)
+    return _commit_race_session(session, race_session)
+
+
+def cancel_race_session(
+    session: Session,
+    actor: CurrentIdentity,
+    session_id: UUID,
+) -> RaceSession:
+    """Cancel a non-terminal Session and preserve whether it ever started."""
+    race_session = _get_session_for_update(session, actor.team_id, session_id)
+    if race_session.status not in {
+        SessionStatus.PLANNED,
+        SessionStatus.ACTIVE,
+        SessionStatus.PAUSED,
+    }:
+        _reject_session_transition(session)
+    race_session.status = SessionStatus.CANCELLED
+    race_session.ended_at = datetime.now(UTC)
+    return _commit_race_session(session, race_session)
+
+
+def lock_race_session_results(
+    session: Session,
+    actor: CurrentIdentity,
+    session_id: UUID,
+) -> RaceSession:
+    """Irreversibly lock results for a terminal Session with actor and time."""
+    race_session = _get_session_for_update(session, actor.team_id, session_id)
+    if (
+        race_session.status not in {SessionStatus.COMPLETED, SessionStatus.CANCELLED}
+        or race_session.results_status is not ResultsStatus.OPEN
+    ):
+        session.rollback()
+        raise InvalidResultsStatusTransitionError
+    race_session.results_status = ResultsStatus.LOCKED
+    race_session.results_locked_by_user_id = actor.user_id
+    race_session.results_locked_at = datetime.now(UTC)
+    return _commit_race_session(session, race_session)
+
+
 def ensure_event_track_change_allowed(
     session: Session,
     actor: CurrentIdentity,
@@ -280,6 +380,38 @@ def _require_event_for_update(
     if event is None:
         raise ResourceNotFoundError
     return event
+
+
+def _get_session_for_update(
+    session: Session,
+    team_id: UUID,
+    session_id: UUID,
+) -> RaceSession:
+    race_session = session.scalar(
+        select(RaceSession)
+        .where(
+            RaceSession.session_id == session_id,
+            RaceSession.team_id == team_id,
+        )
+        .with_for_update()
+    )
+    if race_session is None:
+        raise ResourceNotFoundError
+    return race_session
+
+
+def _reject_session_transition(session: Session) -> NoReturn:
+    session.rollback()
+    raise InvalidSessionStatusTransitionError
+
+
+def _commit_race_session(
+    session: Session,
+    race_session: RaceSession,
+) -> RaceSession:
+    session.commit()
+    session.refresh(race_session)
+    return race_session
 
 
 def _require_eligible_assignment(

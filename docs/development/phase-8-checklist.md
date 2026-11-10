@@ -37,15 +37,15 @@
 - [x] Completar acceso relacionado de Driver a Event y Vehicle.
 - [x] Bloquear cambio de Track cuando Event tenga Session.
 - [x] Pruebas HTTP y entre Teams.
-- [ ] Aprobación del propietario.
+- [x] Aprobación del propietario.
 
 ### 8.4 — Ciclo y bloqueo de resultados
 
-- [ ] Start, pause, resume, complete y cancel.
-- [ ] Timestamps server-side.
-- [ ] Results `OPEN → LOCKED` con actor y momento.
-- [ ] Conflictos y estados terminales.
-- [ ] Pruebas de todas las transiciones.
+- [x] Start, pause, resume, complete y cancel.
+- [x] Timestamps server-side.
+- [x] Results `OPEN → LOCKED` con actor y momento.
+- [x] Conflictos y estados terminales.
+- [x] Pruebas de todas las transiciones.
 - [ ] Aprobación del propietario.
 
 ### 8.5 — Laps, Sectors y métricas (`v0.3`)
@@ -117,8 +117,7 @@
 
 ## Condición para avanzar
 
-El Bloque 8.3 está técnicamente completo y espera aprobación en su
-[`reporte`](phase-8-block-8.3-report-2026-11-10.md). El ciclo de actividad y el
-bloqueo de resultados no comienzan antes de aprobar esta primera API. Cada
-bloque funcional termina con una sola verificación completa y su punto de
-aprobación.
+El Bloque 8.4 está técnicamente completo y espera aprobación en su
+[`reporte`](phase-8-block-8.4-report-2026-11-10.md). Laps y Sectors no comienzan
+antes de aprobar los ciclos de actividad y resultados. Cada bloque funcional
+termina con una sola verificación completa y su punto de aprobación.
