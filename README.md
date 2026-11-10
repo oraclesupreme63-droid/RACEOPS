@@ -11,9 +11,9 @@ not a telemetry acquisition or professional analysis replacement.
 
 Phase 6 — Identity and authorization, completed and approved. Phase 7 —
 Operational Base, completed, approved and published as `v0.2.0`. Phase 8 has
-started: its contract is approved and Session persistence is implemented and
-awaiting block approval. No Session endpoints exist yet. RaceOps exposes
-operational APIs for Drivers, Vehicles, Tracks and Events
+started: its contract and persistence are approved, and the first Session API
+is implemented and awaiting block approval. RaceOps exposes operational APIs
+for Drivers, Vehicles, Tracks, Events and planned Sessions
 with database-enforced Team isolation, in addition to teams, users and
 team-scoped memberships; hashes
 passwords with Argon2id; issues short-lived membership-scoped JWTs; re-resolves
@@ -200,10 +200,10 @@ With a valid membership token, the Vehicle API is available at:
 - `POST /api/v1/vehicles/{vehicle_id}/retire`.
 
 Administrator and Team Manager can manage Vehicles. Engineer and Mechanic can
-read same-Team Vehicles. Driver access remains denied until Phase 8 can prove
-a Session relationship. A Vehicle starts `READY`, `RETIRED` is terminal and
-only `READY` will be assignable. Ownership comes from the token and status
-changes use explicit commands; there is no DELETE endpoint.
+read same-Team Vehicles. Driver reads only Vehicles related through assigned
+Sessions. A Vehicle starts `READY`, `RETIRED` is terminal and only `READY` is
+assignable. Ownership comes from the token and status changes use explicit
+commands; there is no DELETE endpoint.
 
 ## Manage Tracks and Events
 
@@ -214,9 +214,19 @@ Administrator, Team Manager and Engineer can create and update them.
 Events are available at `POST/GET /api/v1/events`,
 `GET/PATCH /api/v1/events/{event_id}` and the explicit commands `activate`,
 `complete` and `cancel`. Administrator, Team Manager and Engineer manage
-Events; Mechanic has read access. Driver Event access remains deferred until
-Session can prove a relationship. Every Event references a same-Team Track,
-starts `PLANNED`, preserves valid dates and has no DELETE endpoint.
+Events; Mechanic has read access. Driver Event access is relationship-scoped
+and exposes only Events tied to assigned Sessions. Every Event references a
+same-Team Track, starts `PLANNED`, preserves valid dates and has no DELETE
+endpoint. Its Track becomes immutable after the first Session.
+
+## Plan Sessions
+
+Planned Sessions are available at `POST/GET /api/v1/sessions` and
+`GET/PATCH /api/v1/sessions/{session_id}`. Creation atomically validates a
+same-Team Event, active Driver and ready Vehicle. Administrator, Team Manager
+and Engineer can create and edit while `PLANNED`; Mechanic can read, and Driver
+sees only assigned Sessions. Lifecycle commands begin in Block 8.4. There is
+no DELETE endpoint.
 
 ## Errors and request correlation
 
@@ -287,7 +297,7 @@ including both the Python quality job and the container smoke test.
 - [Architecture decisions](docs/decisions/README.md)
 - [Development runbook](docs/development/runbook.md)
 - [Gate G5 assessment](docs/development/gate-g5-assessment.md)
-- [Current project status report](docs/development/project-status-report-2026-11-09.md)
+- [Current project status report](docs/development/project-status-report-2026-11-10.md)
 - [Phase 6 checklist](docs/development/phase-6-checklist.md)
 - [Phase 6 Block 6.2 report](docs/development/phase-6-block-6.2-report-2026-11-08.md)
 - [Phase 6 Block 6.3 report](docs/development/phase-6-block-6.3-report-2026-11-08.md)
@@ -306,6 +316,7 @@ including both the Python quality job and the container smoke test.
 - [Phase 8 checklist](docs/development/phase-8-checklist.md)
 - [Phase 8 Block 8.1 report](docs/development/phase-8-block-8.1-report-2026-11-09.md)
 - [Phase 8 Block 8.2 report](docs/development/phase-8-block-8.2-report-2026-11-09.md)
+- [Phase 8 Block 8.3 report](docs/development/phase-8-block-8.3-report-2026-11-10.md)
 - [Session Learning Loop contract](docs/sessions/session-learning-loop-contract.md)
 - [Identity and authorization contract](docs/identity/identity-contract.md)
 - [Technical learning roadmap](docs/development/learning-roadmap.md)

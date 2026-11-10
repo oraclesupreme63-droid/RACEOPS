@@ -10,6 +10,7 @@ from sqlalchemy.orm import Session
 from raceops.api.dependencies import get_db_session, require_permission
 from raceops.api.errors import ApiProblemError, ProblemDefinition, ProblemDetails
 from raceops.iam.authorization import Permission
+from raceops.iam.enums import Role
 from raceops.iam.identity import CurrentIdentity
 from raceops.operations.enums import EventStatus
 from raceops.operations.errors import (
@@ -39,6 +40,12 @@ from raceops.operations.tracks import (
     list_tracks,
     update_track,
 )
+from raceops.sessions.errors import EventTrackLockedError
+from raceops.sessions.services import (
+    ensure_event_track_change_allowed,
+    get_related_event,
+    list_related_events,
+)
 
 track_logger = logging.getLogger("raceops.operations.tracks")
 event_logger = logging.getLogger("raceops.operations.events")
@@ -60,6 +67,12 @@ INVALID_EVENT_STATUS_TRANSITION_PROBLEM = ProblemDefinition(
     "Invalid event status transition",
     "invalid_event_status_transition",
     "The requested event status transition is not allowed.",
+)
+EVENT_TRACK_LOCKED_PROBLEM = ProblemDefinition(
+    "event-track-locked",
+    "Event Track is locked",
+    "event_track_locked",
+    "An Event with Sessions cannot be moved to another Track.",
 )
 
 TRACK_COMMON_RESPONSES: dict[int | str, dict[str, Any]] = {
@@ -233,14 +246,24 @@ def list_events_endpoint(
     offset: Annotated[int, Query(ge=0)] = 0,
 ) -> EventPageResponse:
     """Return a stable page after Team, status, and Track filtering."""
-    events, total = list_events(
-        session,
-        actor,
-        status=event_status,
-        track_id=track_id,
-        limit=limit,
-        offset=offset,
-    )
+    if actor.role is Role.DRIVER:
+        events, total = list_related_events(
+            session,
+            actor,
+            status=event_status,
+            track_id=track_id,
+            limit=limit,
+            offset=offset,
+        )
+    else:
+        events, total = list_events(
+            session,
+            actor,
+            status=event_status,
+            track_id=track_id,
+            limit=limit,
+            offset=offset,
+        )
     return EventPageResponse(
         items=[EventResponse.from_model(event) for event in events],
         total=total,
@@ -262,7 +285,11 @@ def get_event_endpoint(
     actor: Annotated[CurrentIdentity, Depends(read_events)],
 ) -> EventResponse:
     """Return one Event only inside the actor's active Team."""
-    return EventResponse.from_model(get_event(session, actor, event_id))
+    if actor.role is Role.DRIVER:
+        event = get_related_event(session, actor, event_id)
+    else:
+        event = get_event(session, actor, event_id)
+    return EventResponse.from_model(event)
 
 
 @router.patch(
@@ -270,7 +297,10 @@ def get_event_endpoint(
     tags=["events"],
     response_model=EventResponse,
     summary="Update Event metadata",
-    responses=EVENT_COMMON_RESPONSES,
+    responses={
+        **EVENT_COMMON_RESPONSES,
+        409: {"model": ProblemDetails, "description": "Event Track is locked."},
+    },
 )
 def update_event_endpoint(
     event_id: UUID,
@@ -280,6 +310,13 @@ def update_event_endpoint(
 ) -> EventResponse:
     """Update Event metadata; status remains an explicit command."""
     try:
+        if payload.track_id is not None:
+            ensure_event_track_change_allowed(
+                session,
+                actor,
+                event_id,
+                payload.track_id,
+            )
         event = update_event(
             session,
             actor,
@@ -288,6 +325,11 @@ def update_event_endpoint(
         )
     except EventDateRangeError as error:
         raise _event_date_range_problem() from error
+    except EventTrackLockedError as error:
+        raise ApiProblemError(
+            status_code=409,
+            definition=EVENT_TRACK_LOCKED_PROBLEM,
+        ) from error
     event_logger.info(
         "event updated",
         extra={

@@ -39,7 +39,7 @@ def test_role_permission_map_covers_every_role_and_is_deny_by_default() -> None:
     assert has_permission(Role.TEAM_MANAGER, Permission.READ_VEHICLES) is True
     assert has_permission(Role.ENGINEER, Permission.READ_VEHICLES) is True
     assert has_permission(Role.MECHANIC, Permission.READ_VEHICLES) is True
-    assert has_permission(Role.DRIVER, Permission.READ_VEHICLES) is False
+    assert has_permission(Role.DRIVER, Permission.READ_VEHICLES) is True
     assert has_permission(Role.ADMINISTRATOR, Permission.MANAGE_VEHICLES) is True
     assert has_permission(Role.TEAM_MANAGER, Permission.MANAGE_VEHICLES) is True
     assert has_permission(Role.ENGINEER, Permission.MANAGE_VEHICLES) is False
@@ -55,12 +55,18 @@ def test_role_permission_map_covers_every_role_and_is_deny_by_default() -> None:
     assert has_permission(Role.TEAM_MANAGER, Permission.READ_EVENTS) is True
     assert has_permission(Role.ENGINEER, Permission.READ_EVENTS) is True
     assert has_permission(Role.MECHANIC, Permission.READ_EVENTS) is True
-    assert has_permission(Role.DRIVER, Permission.READ_EVENTS) is False
+    assert has_permission(Role.DRIVER, Permission.READ_EVENTS) is True
     assert has_permission(Role.ADMINISTRATOR, Permission.WRITE_EVENTS) is True
     assert has_permission(Role.TEAM_MANAGER, Permission.WRITE_EVENTS) is True
     assert has_permission(Role.ENGINEER, Permission.WRITE_EVENTS) is True
     assert has_permission(Role.MECHANIC, Permission.WRITE_EVENTS) is False
     assert has_permission(Role.DRIVER, Permission.WRITE_EVENTS) is False
+    assert all(has_permission(role, Permission.READ_SESSIONS) for role in Role)
+    assert has_permission(Role.ADMINISTRATOR, Permission.WRITE_SESSIONS) is True
+    assert has_permission(Role.TEAM_MANAGER, Permission.WRITE_SESSIONS) is True
+    assert has_permission(Role.ENGINEER, Permission.WRITE_SESSIONS) is True
+    assert has_permission(Role.MECHANIC, Permission.WRITE_SESSIONS) is False
+    assert has_permission(Role.DRIVER, Permission.WRITE_SESSIONS) is False
 
 
 @pytest.mark.parametrize(

@@ -292,9 +292,12 @@ async def test_driver_reads_track_catalog_but_events_require_session_relationshi
     assert tracks.status_code == 200
     assert tracks.json()["total"] == 1
     assert track.status_code == 200
-    for response in (events, event, track_write):
-        assert response.status_code == 403
-        assert response.json()["code"] == "insufficient_permissions"
+    assert events.status_code == 200
+    assert events.json()["total"] == 0
+    assert event.status_code == 404
+    assert event.json()["code"] == "resource_not_found"
+    assert track_write.status_code == 403
+    assert track_write.json()["code"] == "insufficient_permissions"
 
 
 @pytest.mark.anyio

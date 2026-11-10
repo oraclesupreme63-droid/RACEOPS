@@ -253,9 +253,12 @@ async def test_driver_vehicle_access_is_deferred_until_session_relationship_exis
             json={"identifier": "Forbidden"},
         )
 
-    for response in (listed, read, create):
-        assert response.status_code == 403
-        assert response.json()["code"] == "insufficient_permissions"
+    assert listed.status_code == 200
+    assert listed.json()["total"] == 0
+    assert read.status_code == 404
+    assert read.json()["code"] == "resource_not_found"
+    assert create.status_code == 403
+    assert create.json()["code"] == "insufficient_permissions"
 
 
 @pytest.mark.anyio

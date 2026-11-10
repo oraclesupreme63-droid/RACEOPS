@@ -2,16 +2,16 @@
 
 ## 1. Corte ejecutivo
 
-- **Fecha:** 9 de noviembre de 2026
+- **Fecha:** 10 de noviembre de 2026
 - **Versión alcanzada:** `v0.2.0 — Operational Base`, publicada
 - **Fase actual:** 8 — Session Learning Loop
-- **Bloque actual:** 8.2 — Persistencia de Session implementada; espera aprobación
+- **Bloque actual:** 8.3 — API y asignación implementada; espera aprobación
 - **Bloqueador técnico actual:** ninguno
 
 RaceOps ya es un backend ejecutable con identidad, permisos y cuatro recursos
 operativos completos: Drivers, Vehicles, Tracks y Events. La Fase 7 fue
-aprobada y publicada. La Fase 8 ya cuenta con contrato aprobado y persistencia
-de Session verificada, todavía sin API. No se asigna un porcentaje global
+aprobada y publicada. La Fase 8 ya cuenta con contrato, persistencia y primera
+API de Session verificadas. No se asigna un porcentaje global
 artificial porque las fases futuras tienen alcances y validaciones diferentes.
 
 ## 2. Estado por etapa
@@ -22,7 +22,7 @@ artificial porque las fases futuras tienen alcances y validaciones diferentes.
 | Fase 5 | Fundación técnica completada; Gate G5 aprobado |
 | Fase 6 | Identidad y autorización completadas y aprobadas |
 | Fase 7 | Completada, aprobada y publicada como `v0.2.0` |
-| Fase 8 | Contrato aprobado; Bloque 8.2 implementado y pendiente de aprobación |
+| Fase 8 | Contrato y persistencia aprobados; Bloque 8.3 pendiente de aprobación |
 | Gate G6 | Pendiente hasta completar el flujo entre sesiones |
 
 ## 3. Qué funciona hoy
@@ -33,20 +33,20 @@ artificial porque las fases futuras tienen alcances y validaciones diferentes.
 - Drivers con vínculo opcional a User, activación y desactivación;
 - Vehicles con disponibilidad y estados explícitos;
 - Tracks y Events con fechas, filtros y ciclo de estado;
-- Session persistida con asignación protegida por Team, estados independientes
-  y bloqueo coherente de resultados;
-- 145 pruebas, 94.95 % de cobertura y controles estáticos en verde;
+- Session planificada con API, asignación atómica, RBAC y filtros relacionados;
+- Driver consulta sólo sus Sessions, Events y Vehicles asociados;
+- Event no puede cambiar de Track después de tener su primera Session;
+- 152 pruebas registradas y 94.22 % de cobertura en la verificación del bloque;
 - preservación de datos: no hay DELETE normal para estos recursos.
 
 ## 4. Qué falta
 
-### Próximo objetivo: API de Session
+### Próximo objetivo: ciclo de Session
 
-Tras aprobar la persistencia, el Bloque 8.3 implementará crear, listar,
-consultar y editar Sessions planificadas, asignación atómica, RBAC, alcance del
-Driver y bloqueo del Track de Event. Después continuará el flujo Event →
-Session → resultados → feedback → análisis → acciones → siguiente Session →
-conclusión.
+Tras aprobar la primera API, el Bloque 8.4 implementará start, pause, resume,
+complete, cancel y lock-results con timestamps server-side. Después continuará
+el flujo Event → Session → resultados → feedback → análisis → acciones →
+siguiente Session → conclusión.
 
 ### Después del flujo central
 
@@ -67,9 +67,8 @@ la feria.
   está demostrada; hay contraevidencia válida.
 - Swagger es la interfaz de prueba actual; todavía no existe frontend de uso
   cotidiano.
-- El acceso relacionado de Driver a Vehicle y Event ya puede sustentarse en la
-  tabla Session, pero no se expondrá hasta aplicar los filtros HTTP del Bloque
-  8.3.
+- El acceso relacionado de Driver ya funciona; todavía debe probarse con
+  usuarios reales para confirmar que la información expuesta sea suficiente.
 - Las pruebas locales completas tardan varios minutos por Argon2 y PostgreSQL;
   por eficiencia se ejecutan al cierre de cada bloque y CI las confirma.
 - La fecha oficial de la feria sigue sin publicarse.
@@ -78,5 +77,5 @@ la feria.
 ## 6. Recomendación
 
 Mantener la dirección. No conviene añadir más catálogos. Tras aprobar este
-cierre, el trabajo debe concentrarse en una primera versión vertical y pequeña
-de Session, demostrando la cadena observación → hipótesis → acción → resultado.
+cierre, el trabajo debe completar el ciclo de Session y luego resultados,
+demostrando la cadena observación → hipótesis → acción → resultado.

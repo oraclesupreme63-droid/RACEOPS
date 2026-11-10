@@ -10,6 +10,7 @@ from sqlalchemy.orm import Session
 from raceops.api.dependencies import get_db_session, require_permission
 from raceops.api.errors import ApiProblemError, ProblemDefinition, ProblemDetails
 from raceops.iam.authorization import Permission
+from raceops.iam.enums import Role
 from raceops.iam.identity import CurrentIdentity
 from raceops.operations.drivers import (
     create_driver,
@@ -41,6 +42,7 @@ from raceops.operations.vehicles import (
     transition_vehicle_status,
     update_vehicle,
 )
+from raceops.sessions.services import get_related_vehicle, list_related_vehicles
 
 driver_logger = logging.getLogger("raceops.operations.drivers")
 vehicle_logger = logging.getLogger("raceops.operations.vehicles")
@@ -322,13 +324,22 @@ def list_vehicles_endpoint(
     offset: Annotated[int, Query(ge=0)] = 0,
 ) -> VehiclePageResponse:
     """Return a stable page after Team and optional status filtering."""
-    vehicles, total = list_vehicles(
-        session,
-        actor,
-        status=vehicle_status,
-        limit=limit,
-        offset=offset,
-    )
+    if actor.role is Role.DRIVER:
+        vehicles, total = list_related_vehicles(
+            session,
+            actor,
+            status=vehicle_status,
+            limit=limit,
+            offset=offset,
+        )
+    else:
+        vehicles, total = list_vehicles(
+            session,
+            actor,
+            status=vehicle_status,
+            limit=limit,
+            offset=offset,
+        )
     return VehiclePageResponse(
         items=[VehicleResponse.from_model(vehicle) for vehicle in vehicles],
         total=total,
@@ -350,7 +361,11 @@ def get_vehicle_endpoint(
     actor: Annotated[CurrentIdentity, Depends(read_vehicles)],
 ) -> VehicleResponse:
     """Return one Vehicle only inside the actor's active Team."""
-    return VehicleResponse.from_model(get_vehicle(session, actor, vehicle_id))
+    if actor.role is Role.DRIVER:
+        vehicle = get_related_vehicle(session, actor, vehicle_id)
+    else:
+        vehicle = get_vehicle(session, actor, vehicle_id)
+    return VehicleResponse.from_model(vehicle)
 
 
 @router.patch(

@@ -3,7 +3,7 @@
 ## Estado general
 
 - **Fase:** en progreso
-- **Última actualización:** 9 de noviembre de 2026
+- **Última actualización:** 10 de noviembre de 2026
 - **Entregables intermedios:** `v0.3 — Sessions & Results`
 - **Entregable final:** `v0.4 — Session Learning Loop`
 - **Gate objetivo:** G6 — Vertical Alpha
@@ -27,16 +27,16 @@
 - [x] Migración reversible.
 - [x] Pruebas de invariantes y round-trip.
 - [x] `alembic check` sin diferencias.
-- [ ] Aprobación del propietario.
+- [x] Aprobación del propietario.
 
 ### 8.3 — API y asignación
 
-- [ ] Crear, listar, consultar y editar Session planificada.
-- [ ] Asignación atómica y revalidación.
-- [ ] `READ_SESSIONS`, RBAC y alcance del Driver.
-- [ ] Completar acceso relacionado de Driver a Event y Vehicle.
-- [ ] Bloquear cambio de Track cuando Event tenga Session.
-- [ ] Pruebas HTTP y entre Teams.
+- [x] Crear, listar, consultar y editar Session planificada.
+- [x] Asignación atómica y revalidación.
+- [x] `READ_SESSIONS`, RBAC y alcance del Driver.
+- [x] Completar acceso relacionado de Driver a Event y Vehicle.
+- [x] Bloquear cambio de Track cuando Event tenga Session.
+- [x] Pruebas HTTP y entre Teams.
 - [ ] Aprobación del propietario.
 
 ### 8.4 — Ciclo y bloqueo de resultados
@@ -117,7 +117,8 @@
 
 ## Condición para avanzar
 
-El Bloque 8.2 está técnicamente completo y espera aprobación en su
-[`reporte`](phase-8-block-8.2-report-2026-11-09.md). No se crea la API de
-Session antes de aprobar la persistencia. Cada bloque funcional termina con
-una sola verificación completa y su punto de aprobación.
+El Bloque 8.3 está técnicamente completo y espera aprobación en su
+[`reporte`](phase-8-block-8.3-report-2026-11-10.md). El ciclo de actividad y el
+bloqueo de resultados no comienzan antes de aprobar esta primera API. Cada
+bloque funcional termina con una sola verificación completa y su punto de
+aprobación.
