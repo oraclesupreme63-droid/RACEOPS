@@ -17,6 +17,7 @@ from raceops.sessions.errors import (
     InvalidResultsStatusTransitionError,
     InvalidSessionStatusTransitionError,
     SessionAssignmentConflictError,
+    SessionDriverLockedByFeedbackError,
     SessionNotEditableError,
 )
 from raceops.sessions.models import RaceSession
@@ -68,6 +69,12 @@ INVALID_RESULTS_STATUS_TRANSITION_PROBLEM = ProblemDefinition(
     "Invalid results status transition",
     "invalid_results_status_transition",
     "Results can only be locked once a Session is terminal and still open.",
+)
+SESSION_DRIVER_LOCKED_BY_FEEDBACK_PROBLEM = ProblemDefinition(
+    "session-driver-locked-by-feedback",
+    "Session Driver is locked by feedback",
+    "session_driver_locked_by_feedback",
+    "A Session with Driver Feedback cannot be assigned to another Driver.",
 )
 
 SESSION_COMMON_RESPONSES: dict[int | str, dict[str, Any]] = {
@@ -200,6 +207,8 @@ def update_session_endpoint(
         raise _session_assignment_conflict() from error
     except SessionNotEditableError as error:
         raise _session_not_editable() from error
+    except SessionDriverLockedByFeedbackError as error:
+        raise _session_driver_locked_by_feedback() from error
     logger.info(
         "session updated",
         extra={
@@ -382,6 +391,13 @@ def _session_assignment_conflict() -> ApiProblemError:
 
 def _session_not_editable() -> ApiProblemError:
     return ApiProblemError(status_code=409, definition=SESSION_NOT_EDITABLE_PROBLEM)
+
+
+def _session_driver_locked_by_feedback() -> ApiProblemError:
+    return ApiProblemError(
+        status_code=409,
+        definition=SESSION_DRIVER_LOCKED_BY_FEEDBACK_PROBLEM,
+    )
 
 
 def _invalid_session_status_transition() -> ApiProblemError:

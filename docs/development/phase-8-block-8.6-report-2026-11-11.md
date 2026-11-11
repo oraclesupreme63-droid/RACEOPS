@@ -5,7 +5,7 @@
 - **Fecha:** 11 de noviembre de 2026
 - **Fase:** 8 — Session Learning Loop
 - **Bloque:** 8.6 — Conditions
-- **Resultado:** implementado y verificado; pendiente de aprobación del propietario
+- **Resultado:** implementado, verificado y aprobado por el propietario
 - **Siguiente bloque:** 8.7 — Driver Feedback
 
 ## 2. Capacidad entregada
@@ -58,7 +58,7 @@ No se añadieron APIs meteorológicas, automatización, series temporales,
 recomendaciones, telemetría ni campos específicos de una categoría. La
 cardinalidad de un snapshot continúa como hipótesis reversible.
 
-## 7. Punto de aprobación
+## 7. Aprobación
 
-Con aprobación comenzará el Bloque 8.7: Driver Feedback propio o comunicado,
-autor separado del Driver experimentador y lectura restringida por relación.
+El propietario aprobó este bloque el 11 de noviembre de 2026. El trabajo
+continuó con el Bloque 8.7.

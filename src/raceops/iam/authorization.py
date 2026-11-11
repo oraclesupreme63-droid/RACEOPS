@@ -33,7 +33,9 @@ class Permission(StrEnum):
     WRITE_RESULTS = "WRITE_RESULTS"
     READ_CONDITIONS = "READ_CONDITIONS"
     WRITE_CONDITIONS = "WRITE_CONDITIONS"
+    READ_DRIVER_FEEDBACK = "READ_DRIVER_FEEDBACK"
     CREATE_DRIVER_FEEDBACK = "CREATE_DRIVER_FEEDBACK"
+    UPDATE_DRIVER_FEEDBACK = "UPDATE_DRIVER_FEEDBACK"
     WRITE_OBSERVATIONS = "WRITE_OBSERVATIONS"
     WRITE_ANALYSIS = "WRITE_ANALYSIS"
     WRITE_PRIORITIES = "WRITE_PRIORITIES"
@@ -69,6 +71,7 @@ _ADMINISTRATOR_PERMISSIONS = frozenset(
         Permission.WRITE_RESULTS,
         Permission.READ_CONDITIONS,
         Permission.WRITE_CONDITIONS,
+        Permission.READ_DRIVER_FEEDBACK,
         Permission.READ_HISTORY,
     }
 )
@@ -89,6 +92,7 @@ _TEAM_MANAGER_PERMISSIONS = frozenset(
         Permission.WRITE_RESULTS,
         Permission.READ_CONDITIONS,
         Permission.WRITE_CONDITIONS,
+        Permission.READ_DRIVER_FEEDBACK,
         Permission.CREATE_DRIVER_FEEDBACK,
         Permission.WRITE_PRIORITIES,
         Permission.CREATE_ACTIONS,
@@ -112,7 +116,9 @@ _ENGINEER_PERMISSIONS = frozenset(
         Permission.WRITE_RESULTS,
         Permission.READ_CONDITIONS,
         Permission.WRITE_CONDITIONS,
+        Permission.READ_DRIVER_FEEDBACK,
         Permission.CREATE_DRIVER_FEEDBACK,
+        Permission.UPDATE_DRIVER_FEEDBACK,
         Permission.WRITE_OBSERVATIONS,
         Permission.WRITE_ANALYSIS,
         Permission.WRITE_PRIORITIES,
@@ -133,6 +139,7 @@ _MECHANIC_PERMISSIONS = frozenset(
         Permission.READ_RESULTS,
         Permission.READ_CONDITIONS,
         Permission.WRITE_CONDITIONS,
+        Permission.READ_DRIVER_FEEDBACK,
         Permission.CREATE_DRIVER_FEEDBACK,
         Permission.WRITE_OBSERVATIONS,
         Permission.CREATE_ACTIONS,
@@ -151,7 +158,9 @@ _DRIVER_PERMISSIONS = frozenset(
         Permission.READ_SESSIONS,
         Permission.READ_RESULTS,
         Permission.READ_CONDITIONS,
+        Permission.READ_DRIVER_FEEDBACK,
         Permission.CREATE_DRIVER_FEEDBACK,
+        Permission.UPDATE_DRIVER_FEEDBACK,
         Permission.UPDATE_ASSIGNED_ACTIONS,
         Permission.READ_HISTORY,
     }

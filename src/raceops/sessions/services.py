@@ -20,9 +20,10 @@ from raceops.sessions.errors import (
     InvalidResultsStatusTransitionError,
     InvalidSessionStatusTransitionError,
     SessionAssignmentConflictError,
+    SessionDriverLockedByFeedbackError,
     SessionNotEditableError,
 )
-from raceops.sessions.models import RaceSession
+from raceops.sessions.models import DriverFeedback, RaceSession
 
 
 def create_race_session(
@@ -141,6 +142,16 @@ def update_race_session(
     vehicle_id = changes.get("vehicle_id", race_session.vehicle_id)
     if not isinstance(driver_id, UUID) or not isinstance(vehicle_id, UUID):
         raise TypeError("validated assignment identifiers must be UUIDs")
+    if driver_id != race_session.driver_id and session.scalar(
+        select(
+            exists().where(
+                DriverFeedback.session_id == session_id,
+                DriverFeedback.team_id == actor.team_id,
+            )
+        )
+    ):
+        session.rollback()
+        raise SessionDriverLockedByFeedbackError
     if "driver_id" in changes or "vehicle_id" in changes:
         _require_eligible_assignment(
             session,

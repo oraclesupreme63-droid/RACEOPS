@@ -9,6 +9,10 @@ class SessionNotEditableError(RuntimeError):
     """Only a PLANNED Session may be edited."""
 
 
+class SessionDriverLockedByFeedbackError(RuntimeError):
+    """A Session with Driver Feedback cannot be reassigned to another Driver."""
+
+
 class EventTrackLockedError(RuntimeError):
     """An Event with Sessions cannot be moved to another Track."""
 

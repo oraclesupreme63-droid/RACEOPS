@@ -21,6 +21,7 @@ from sqlalchemy import (
 from sqlalchemy.orm import Mapped, mapped_column
 
 from raceops.db.base import Base, TimestampMixin
+from raceops.iam.authorization import Visibility
 from raceops.sessions.enums import (
     LapClassification,
     LapSource,
@@ -34,6 +35,7 @@ RESULTS_STATUS_ENUM_NAME: Final = "results_status"
 LAP_SOURCE_ENUM_NAME: Final = "lap_source"
 LAP_CLASSIFICATION_ENUM_NAME: Final = "lap_classification"
 SECTOR_STATUS_ENUM_NAME: Final = "sector_status"
+VISIBILITY_LEVEL_ENUM_NAME: Final = "visibility_level"
 
 
 class RaceSession(TimestampMixin, Base):
@@ -290,3 +292,71 @@ class ConditionSnapshot(TimestampMixin, Base):
     weather: Mapped[str | None] = mapped_column(String(80), nullable=True)
     track_condition: Mapped[str | None] = mapped_column(String(120), nullable=True)
     source: Mapped[str | None] = mapped_column(String(80), nullable=True)
+
+
+class DriverFeedback(TimestampMixin, Base):
+    """What a Session's Driver experienced, separate from who recorded it."""
+
+    __tablename__ = "driver_feedback"
+    __table_args__ = (
+        CheckConstraint(
+            "description = btrim(description) "
+            "AND char_length(description) BETWEEN 1 AND 2000",
+            name="description_normalized",
+        ),
+        CheckConstraint(
+            "corner_or_zone IS NULL OR (corner_or_zone = btrim(corner_or_zone) "
+            "AND char_length(corner_or_zone) BETWEEN 1 AND 80)",
+            name="corner_or_zone_normalized",
+        ),
+        CheckConstraint(
+            "driving_phase IS NULL OR (driving_phase = btrim(driving_phase) "
+            "AND char_length(driving_phase) BETWEEN 1 AND 80)",
+            name="driving_phase_normalized",
+        ),
+        CheckConstraint(
+            "severity IS NULL OR (severity = btrim(severity) "
+            "AND char_length(severity) BETWEEN 1 AND 40)",
+            name="severity_normalized",
+        ),
+        CheckConstraint(
+            "confidence IS NULL OR (confidence = btrim(confidence) "
+            "AND char_length(confidence) BETWEEN 1 AND 40)",
+            name="confidence_normalized",
+        ),
+        ForeignKeyConstraint(
+            ["session_id", "team_id"],
+            ["sessions.session_id", "sessions.team_id"],
+            name="fk_driver_feedback_session_team",
+            ondelete="RESTRICT",
+        ),
+        ForeignKeyConstraint(
+            ["driver_id", "team_id"],
+            ["drivers.driver_id", "drivers.team_id"],
+            name="fk_driver_feedback_driver_team",
+            ondelete="RESTRICT",
+        ),
+        UniqueConstraint(
+            "feedback_id", "team_id", name="uq_driver_feedback_feedback_team"
+        ),
+        Index("ix_driver_feedback_team_session", "team_id", "session_id"),
+    )
+
+    feedback_id: Mapped[UUID] = mapped_column(primary_key=True, default=uuid4)
+    team_id: Mapped[UUID] = mapped_column(nullable=False)
+    session_id: Mapped[UUID] = mapped_column(nullable=False)
+    driver_id: Mapped[UUID] = mapped_column(nullable=False)
+    author_user_id: Mapped[UUID] = mapped_column(
+        ForeignKey("users.user_id", ondelete="RESTRICT"), nullable=False
+    )
+    description: Mapped[str] = mapped_column(String(2000), nullable=False)
+    corner_or_zone: Mapped[str | None] = mapped_column(String(80), nullable=True)
+    driving_phase: Mapped[str | None] = mapped_column(String(80), nullable=True)
+    severity: Mapped[str | None] = mapped_column(String(40), nullable=True)
+    confidence: Mapped[str | None] = mapped_column(String(40), nullable=True)
+    visibility_level: Mapped[Visibility] = mapped_column(
+        Enum(Visibility, name=VISIBILITY_LEVEL_ENUM_NAME),
+        nullable=False,
+        default=Visibility.ROLE_RESTRICTED,
+        server_default=Visibility.ROLE_RESTRICTED.value,
+    )

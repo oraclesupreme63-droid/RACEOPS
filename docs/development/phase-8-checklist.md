@@ -3,7 +3,7 @@
 ## Estado general
 
 - **Fase:** en progreso
-- **Última actualización:** 10 de noviembre de 2026
+- **Última actualización:** 11 de noviembre de 2026
 - **Entregables intermedios:** `v0.3 — Sessions & Results`
 - **Entregable final:** `v0.4 — Session Learning Loop`
 - **Gate objetivo:** G6 — Vertical Alpha
@@ -64,14 +64,14 @@
 - [x] Valores conocidos con unidades explícitas.
 - [x] Captura breve y permisos.
 - [x] Pruebas con datos parciales.
-- [ ] Aprobación del propietario.
+- [x] Aprobación del propietario.
 
 ### 8.7 — Driver Feedback
 
-- [ ] Feedback propio y comunicado.
-- [ ] Autor y Driver experimentador separados.
-- [ ] Alcance por Session y visibilidad.
-- [ ] Pruebas de relación y Roles.
+- [x] Feedback propio y comunicado.
+- [x] Autor y Driver experimentador separados.
+- [x] Alcance por Session y visibilidad.
+- [x] Pruebas de relación y Roles.
 - [ ] Aprobación del propietario.
 
 ### 8.8 — Observations
@@ -118,6 +118,6 @@
 ## Condición para avanzar
 
 El Bloque 8.5 fue aprobado y publicado como `v0.3.0`. El Bloque 8.6 está
-técnicamente completo y espera aprobación en su
-[`reporte`](phase-8-block-8.6-report-2026-11-11.md). Cada bloque funcional
+aprobado. El Bloque 8.7 está técnicamente completo y espera aprobación en su
+[`reporte`](phase-8-block-8.7-report-2026-11-11.md). Cada bloque funcional
 termina con una sola verificación completa y su punto de aprobación.
