@@ -258,3 +258,9 @@ clasificación de elegibilidad y métricas enteras reproducibles. El bloqueo de
 Session serializa con cada escritura y `LOCKED` vuelve inmutables ambos tipos
 de resultado. El detalle de fórmula y alcance vive en el
 [`contrato de resultados`](lap-sector-results-contract.md).
+
+El Bloque 8.6 añadió un Condition Snapshot opcional por Session con datos
+parciales, unidades explícitas y permisos propios. Driver sólo lee contexto de
+su Session asignada; Mechanic puede capturarlo. No existe integración
+meteorológica ni falsa sustitución de ausencias por cero. El detalle vive en el
+[`contrato de Conditions`](condition-snapshot-contract.md).

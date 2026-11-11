@@ -60,10 +60,10 @@
 
 ### 8.6 — Conditions
 
-- [ ] Snapshot opcional por Session.
-- [ ] Valores conocidos con unidades explícitas.
-- [ ] Captura breve y permisos.
-- [ ] Pruebas con datos parciales.
+- [x] Snapshot opcional por Session.
+- [x] Valores conocidos con unidades explícitas.
+- [x] Captura breve y permisos.
+- [x] Pruebas con datos parciales.
 - [ ] Aprobación del propietario.
 
 ### 8.7 — Driver Feedback
@@ -117,6 +117,7 @@
 
 ## Condición para avanzar
 
-El Bloque 8.5 fue aprobado y publicado como `v0.3.0`. El Bloque 8.6 avanza con
-Conditions opcionales por Session. Cada bloque funcional termina con una sola
-verificación completa y su punto de aprobación.
+El Bloque 8.5 fue aprobado y publicado como `v0.3.0`. El Bloque 8.6 está
+técnicamente completo y espera aprobación en su
+[`reporte`](phase-8-block-8.6-report-2026-11-11.md). Cada bloque funcional
+termina con una sola verificación completa y su punto de aprobación.

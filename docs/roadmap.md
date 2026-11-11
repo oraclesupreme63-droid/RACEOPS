@@ -353,8 +353,8 @@ Resultado y conclusión
 Este hito tiene prioridad sobre cualquier integración externa.
 
 **Estado:** En progreso. Los Bloques 8.1–8.5 están aprobados y publicados como
-`v0.3.0 — Sessions & Results`. El Bloque 8.6 implementa Conditions opcionales
-por Session.
+`v0.3.0 — Sessions & Results`. El Bloque 8.6 implementó Conditions opcionales
+por Session y espera aprobación.
 
 ---
 

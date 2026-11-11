@@ -7,9 +7,10 @@ from raceops.sessions.enums import (
     SectorStatus,
     SessionStatus,
 )
-from raceops.sessions.models import Lap, RaceSession, Sector
+from raceops.sessions.models import ConditionSnapshot, Lap, RaceSession, Sector
 
 __all__ = [
+    "ConditionSnapshot",
     "Lap",
     "LapClassification",
     "LapSource",

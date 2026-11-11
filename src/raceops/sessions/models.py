@@ -1,6 +1,7 @@
 """SQLAlchemy persistence model for a motorsport Session."""
 
 from datetime import datetime
+from decimal import Decimal
 from typing import Final
 from uuid import UUID, uuid4
 
@@ -13,6 +14,7 @@ from sqlalchemy import (
     ForeignKeyConstraint,
     Index,
     Integer,
+    Numeric,
     String,
     UniqueConstraint,
 )
@@ -220,3 +222,71 @@ class Sector(TimestampMixin, Base):
         default=SectorStatus.VALID,
         server_default=SectorStatus.VALID.value,
     )
+
+
+class ConditionSnapshot(TimestampMixin, Base):
+    """One optional set of known environmental context for a Session."""
+
+    __tablename__ = "condition_snapshots"
+    __table_args__ = (
+        CheckConstraint(
+            "(ambient_temperature IS NULL AND ambient_temperature_unit IS NULL) "
+            "OR (ambient_temperature IS NOT NULL "
+            "AND ambient_temperature_unit IS NOT NULL)",
+            name="ambient_temperature_value_unit_pair",
+        ),
+        CheckConstraint(
+            "(track_temperature IS NULL AND track_temperature_unit IS NULL) "
+            "OR (track_temperature IS NOT NULL "
+            "AND track_temperature_unit IS NOT NULL)",
+            name="track_temperature_value_unit_pair",
+        ),
+        CheckConstraint(
+            "ambient_temperature IS NOT NULL OR track_temperature IS NOT NULL "
+            "OR weather IS NOT NULL OR track_condition IS NOT NULL",
+            name="at_least_one_known_condition",
+        ),
+        CheckConstraint(
+            "ambient_temperature_unit IS NULL "
+            "OR (ambient_temperature_unit = btrim(ambient_temperature_unit) "
+            "AND char_length(ambient_temperature_unit) BETWEEN 1 AND 24)",
+            name="ambient_temperature_unit_normalized",
+        ),
+        CheckConstraint(
+            "track_temperature_unit IS NULL "
+            "OR (track_temperature_unit = btrim(track_temperature_unit) "
+            "AND char_length(track_temperature_unit) BETWEEN 1 AND 24)",
+            name="track_temperature_unit_normalized",
+        ),
+        ForeignKeyConstraint(
+            ["session_id", "team_id"],
+            ["sessions.session_id", "sessions.team_id"],
+            name="fk_condition_snapshots_session_team",
+            ondelete="RESTRICT",
+        ),
+        UniqueConstraint("session_id", name="uq_condition_snapshots_session"),
+        Index(
+            "ix_condition_snapshots_team_session",
+            "team_id",
+            "session_id",
+        ),
+    )
+
+    condition_id: Mapped[UUID] = mapped_column(primary_key=True, default=uuid4)
+    team_id: Mapped[UUID] = mapped_column(nullable=False)
+    session_id: Mapped[UUID] = mapped_column(nullable=False)
+    ambient_temperature: Mapped[Decimal | None] = mapped_column(
+        Numeric(10, 3), nullable=True
+    )
+    ambient_temperature_unit: Mapped[str | None] = mapped_column(
+        String(24), nullable=True
+    )
+    track_temperature: Mapped[Decimal | None] = mapped_column(
+        Numeric(10, 3), nullable=True
+    )
+    track_temperature_unit: Mapped[str | None] = mapped_column(
+        String(24), nullable=True
+    )
+    weather: Mapped[str | None] = mapped_column(String(80), nullable=True)
+    track_condition: Mapped[str | None] = mapped_column(String(120), nullable=True)
+    source: Mapped[str | None] = mapped_column(String(80), nullable=True)

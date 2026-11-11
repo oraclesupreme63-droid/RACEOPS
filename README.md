@@ -12,7 +12,7 @@ not a telemetry acquisition or professional analysis replacement.
 Phase 6 — Identity and authorization, completed and approved. Phase 7 —
 Operational Base was published as `v0.2.0`. Phase 8 has published Sessions,
 Laps, Sectors and simple result metrics as `v0.3.0`; Conditions are the next
-active block. RaceOps exposes operational APIs for Drivers, Vehicles, Tracks,
+active block and are implemented pending approval. RaceOps exposes operational APIs for Drivers, Vehicles, Tracks,
 Events, Sessions and timing results
 with database-enforced Team isolation, in addition to teams, users and
 team-scoped memberships; hashes

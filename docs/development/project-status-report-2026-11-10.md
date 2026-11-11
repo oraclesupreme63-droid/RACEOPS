@@ -2,10 +2,10 @@
 
 ## 1. Corte ejecutivo
 
-- **Fecha:** 10 de noviembre de 2026
+- **Fecha de actualización:** 11 de noviembre de 2026
 - **Versión alcanzada:** `v0.3.0 — Sessions & Results`, publicada
 - **Fase actual:** 8 — Session Learning Loop
-- **Bloque actual:** 8.6 — Conditions
+- **Bloque actual:** 8.6 — Conditions; espera aprobación
 - **Bloqueador técnico actual:** ninguno
 
 RaceOps ya es un backend ejecutable con identidad, permisos y cuatro recursos
@@ -23,7 +23,7 @@ y validaciones diferentes.
 | Fase 5 | Fundación técnica completada; Gate G5 aprobado |
 | Fase 6 | Identidad y autorización completadas y aprobadas |
 | Fase 7 | Completada, aprobada y publicada como `v0.2.0` |
-| Fase 8 | Bloques 8.1–8.5 aprobados; `v0.3.0` publicada; Bloque 8.6 activo |
+| Fase 8 | Bloques 8.1–8.5 aprobados; `v0.3.0` publicada; Bloque 8.6 pendiente de aprobación |
 | Gate G6 | Pendiente hasta completar el flujo entre sesiones |
 
 ## 3. Qué funciona hoy
@@ -42,7 +42,8 @@ y validaciones diferentes.
 - Laps y Sectors permiten captura y consulta con duraciones en microsegundos;
 - métricas excluyen vueltas no válidas y no inventan datos insuficientes;
 - resultados bloqueados rechazan toda corrección normal;
-- 162 pruebas registradas; CI exige al menos 90 % de cobertura;
+- Conditions conserva contexto parcial con unidades y permisos por Role;
+- 174 pruebas registradas; CI exige al menos 90 % de cobertura;
 - preservación de datos: no hay DELETE normal para estos recursos.
 
 ## 4. Qué falta

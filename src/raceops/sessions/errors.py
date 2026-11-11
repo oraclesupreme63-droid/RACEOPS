@@ -31,3 +31,11 @@ class LapNumberConflictError(RuntimeError):
 
 class SectorOrderConflictError(RuntimeError):
     """A Sector order is already used inside the Lap."""
+
+
+class ConditionSnapshotExistsError(RuntimeError):
+    """The Session already owns its single P0 Condition Snapshot."""
+
+
+class InvalidConditionSnapshotError(RuntimeError):
+    """Known conditions violate value/unit or non-empty invariants."""
