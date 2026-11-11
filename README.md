@@ -12,10 +12,11 @@ not a telemetry acquisition or professional analysis replacement.
 Phase 6 — Identity and authorization, completed and approved. Phase 7 —
 Operational Base was published as `v0.2.0`. Phase 8 has published Sessions,
 Laps, Sectors and simple result metrics as `v0.3.0`; Conditions and Driver
-Feedback are approved, while Observations are implemented pending approval.
+Feedback, and Observations are approved; Analysis and Hypotheses are now
+implemented pending approval.
 RaceOps exposes
 operational APIs for Drivers, Vehicles, Tracks, Events, Sessions, timing
-results, conditions, feedback and observations
+results, conditions, feedback, observations, analyses and hypotheses
 with database-enforced Team isolation, in addition to teams, users and
 team-scoped memberships; hashes
 passwords with Argon2id; issues short-lived membership-scoped JWTs; re-resolves
@@ -255,6 +256,21 @@ pagination. An Observation has no confirmed-cause field and never updates a
 Hypothesis automatically. Context and visibility are immutable in this P0 API,
 and there is no DELETE endpoint.
 
+## Analyze a Session and propose Hypotheses
+
+Engineer can create and read evidence-backed technical analyses through
+`POST/GET /api/v1/sessions/{session_id}/analyses` and
+`GET/PATCH /api/v1/analyses/{analysis_id}`. Every analysis references at least
+one same-Session Driver Feedback, Lap, Sector, Condition or Observation.
+
+Technical detail remains `ENGINEERING_CONFIDENTIAL`. Other roles use
+`GET /api/v1/sessions/{session_id}/analysis-summaries`, which returns only
+explicitly authorized summaries without technical identifiers, hidden-record
+counts or confidential detail. Hypotheses are managed by Engineering through
+the analysis endpoint and preserve cause classification, confidence and the
+server-controlled initial state `PROPOSED`. Conclusions remain deferred until
+an Action has later evidence in Block 8.11.
+
 ## Errors and request correlation
 
 Every HTTP response includes `X-Request-ID`. A valid UUID supplied in that
@@ -348,6 +364,7 @@ including both the Python quality job and the container smoke test.
 - [Phase 8 Block 8.6 report](docs/development/phase-8-block-8.6-report-2026-11-11.md)
 - [Phase 8 Block 8.7 report](docs/development/phase-8-block-8.7-report-2026-11-11.md)
 - [Phase 8 Block 8.8 report](docs/development/phase-8-block-8.8-report-2026-11-11.md)
+- [Phase 8 Block 8.9 report](docs/development/phase-8-block-8.9-report-2026-11-11.md)
 - [Session Learning Loop contract](docs/sessions/session-learning-loop-contract.md)
 - [Identity and authorization contract](docs/identity/identity-contract.md)
 - [Technical learning roadmap](docs/development/learning-roadmap.md)

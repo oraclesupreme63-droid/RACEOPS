@@ -5,7 +5,7 @@
 - **Fecha:** 11 de noviembre de 2026
 - **Fase:** 8 — Session Learning Loop
 - **Bloque:** 8.8 — Observations
-- **Resultado:** implementado y verificado; pendiente de aprobación del propietario
+- **Resultado:** implementado, verificado y aprobado por el propietario
 - **Siguiente bloque:** 8.9 — Analysis e Hypotheses
 
 ## 2. Capacidad entregada
@@ -84,7 +84,8 @@ No se añadieron incidentes, mantenimiento, enlaces a feedback/laps/sectors,
 análisis, hipótesis, causalidad automática ni cambios de visibilidad auditados.
 Esas capacidades permanecen fuera de P0 o en bloques posteriores.
 
-## 9. Punto de aprobación
+## 9. Aprobación
 
-Con aprobación comenzará el Bloque 8.9: Analysis e Hypotheses, manteniendo
-separados resumen autorizado, detalle técnico, causa posible y confianza.
+El propietario aprobó el Bloque 8.8 y autorizó el inicio del Bloque 8.9:
+Analysis e Hypotheses, manteniendo separados resumen autorizado, detalle
+técnico, causa posible y confianza.

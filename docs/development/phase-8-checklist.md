@@ -80,14 +80,14 @@
 - [x] Categoría y visibilidad sin convertirla en causa.
 - [x] Engineer/Mechanic y lectura autorizada.
 - [x] Pruebas de confidencialidad.
-- [ ] Aprobación del propietario.
+- [x] Aprobación del propietario.
 
 ### 8.9 — Analysis e Hypotheses
 
-- [ ] Análisis autorizado y detalle técnico separado.
-- [ ] Hipótesis, causa, confianza y estado.
-- [ ] Permisos de Engineering.
-- [ ] Pruebas de serialización por audiencia.
+- [x] Análisis autorizado y detalle técnico separado.
+- [x] Hipótesis, causa, confianza y estado.
+- [x] Permisos de Engineering.
+- [x] Pruebas de serialización por audiencia.
 - [ ] Aprobación del propietario.
 
 ### 8.10 — Priorities y Actions
@@ -117,7 +117,7 @@
 
 ## Condición para avanzar
 
-El Bloque 8.5 fue aprobado y publicado como `v0.3.0`. Los Bloques 8.6 y 8.7
-están aprobados. El Bloque 8.8 está técnicamente completo y espera aprobación
-en su [`reporte`](phase-8-block-8.8-report-2026-11-11.md). Cada bloque
-funcional termina con una sola verificación completa y su punto de aprobación.
+El Bloque 8.5 fue aprobado y publicado como `v0.3.0`. Los Bloques 8.6–8.8
+están aprobados. El Bloque 8.9 está técnicamente completo y espera aprobación
+en su [`reporte`](phase-8-block-8.9-report-2026-11-11.md). Cada bloque funcional
+termina con una sola verificación completa y su punto de aprobación.

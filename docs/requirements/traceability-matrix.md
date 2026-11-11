@@ -75,7 +75,7 @@ evidencia modifica el alcance.
 |---|---|---|---|
 | RF-001–RF-003 / AC-001–AC-002 | `iam/authentication.py`, `credentials.py`, `tokens.py`, API `/auth/login` | API, unidad e integración de seguridad | Implementado |
 | RF-004–RF-006 / AC-003 | `TeamMembership`, identidad server-side, RBAC y Team scope | Persistencia, todos los Roles y UUID de otro Team | Infraestructura implementada; se repite con cada recurso real |
-| RF-007–RF-008 / AC-004 | `Visibility` y política de confidencialidad | Matriz unitaria por Role, relación y autorización explícita | Infraestructura implementada; serialización real se valida con Analysis en Fase 8 |
+| RF-007–RF-008 / AC-004 | `Visibility`, análisis confidencial y resumen autorizado separado | Matriz por Role, Driver relacionado y ausencia de identificadores/conteos ocultos | Implementado y validado con Analysis en Fase 8 |
 | RF-009–RF-010 | permisos explícitos de Administrator y Team Manager | casos permitidos y denegados por Role | Política implementada; endpoints operativos comienzan en Fase 7 |
 | RF-011–RF-012 | estados activos/inactivos, timestamps y ownership de Membership | constraints, resolución inactiva y round-trip de migraciones | Base persistente implementada; conservación se repite en recursos futuros |
 | RNF-SEC / AC-NF-001, AC-NF-003 | errores RFC 9457, logs seguros, secretos externos y CORS | no filtración, configuración, CORS y escaneo de archivos rastreados | Cumplido para el alcance de Fase 6; controles de publicación quedan en Fase 13 |

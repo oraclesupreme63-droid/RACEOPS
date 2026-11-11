@@ -11,10 +11,26 @@ from raceops.iam.authorization import Visibility
 from raceops.iam.enums import Role
 from raceops.iam.errors import InsufficientPermissionsError, ResourceNotFoundError
 from raceops.iam.identity import CurrentIdentity
-from raceops.learning.models import Observation
+from raceops.learning.enums import (
+    AnalysisEvidenceType,
+    CauseClassification,
+    ConfidenceLevel,
+)
+from raceops.learning.models import (
+    AnalysisEvidenceReference,
+    Hypothesis,
+    Observation,
+    SessionAnalysis,
+)
 from raceops.operations.models import Driver
 from raceops.operations.vehicles import get_vehicle
-from raceops.sessions.models import RaceSession
+from raceops.sessions.models import (
+    ConditionSnapshot,
+    DriverFeedback,
+    Lap,
+    RaceSession,
+    Sector,
+)
 from raceops.sessions.services import get_race_session
 
 
@@ -180,3 +196,263 @@ def _driver_observation_relationship(actor: CurrentIdentity) -> ColumnElement[bo
             ),
         ),
     )
+
+
+def create_session_analysis(
+    session: Session,
+    actor: CurrentIdentity,
+    *,
+    session_id: UUID,
+    technical_detail: str,
+    authorized_summary: str | None,
+    evidence: list[tuple[AnalysisEvidenceType, UUID]],
+) -> SessionAnalysis:
+    """Persist confidential reasoning only after validating every evidence link."""
+    race_session = get_race_session(session, actor, session_id)
+    for evidence_type, reference_id in evidence:
+        _require_session_evidence(
+            session,
+            actor,
+            race_session,
+            evidence_type=evidence_type,
+            reference_id=reference_id,
+        )
+    analysis = SessionAnalysis(
+        team_id=actor.team_id,
+        session_id=session_id,
+        author_user_id=actor.user_id,
+        authorized_summary=authorized_summary,
+        technical_detail=technical_detail,
+    )
+    analysis.evidence_refs = [
+        AnalysisEvidenceReference(
+            team_id=actor.team_id,
+            evidence_type=evidence_type,
+            reference_id=reference_id,
+        )
+        for evidence_type, reference_id in evidence
+    ]
+    session.add(analysis)
+    session.commit()
+    session.refresh(analysis)
+    return analysis
+
+
+def list_session_analyses(
+    session: Session,
+    actor: CurrentIdentity,
+    session_id: UUID,
+) -> list[SessionAnalysis]:
+    """List complete analyses for Engineering after checking Session scope."""
+    get_race_session(session, actor, session_id)
+    statement = (
+        select(SessionAnalysis)
+        .where(
+            SessionAnalysis.team_id == actor.team_id,
+            SessionAnalysis.session_id == session_id,
+        )
+        .order_by(SessionAnalysis.created_at, SessionAnalysis.analysis_id)
+    )
+    return list(session.scalars(statement))
+
+
+def get_session_analysis(
+    session: Session,
+    actor: CurrentIdentity,
+    analysis_id: UUID,
+    *,
+    for_update: bool = False,
+) -> SessionAnalysis:
+    """Resolve one same-Team analysis without disclosing other records."""
+    statement = select(SessionAnalysis).where(
+        SessionAnalysis.analysis_id == analysis_id,
+        SessionAnalysis.team_id == actor.team_id,
+    )
+    if for_update:
+        statement = statement.with_for_update()
+    analysis = session.scalar(statement)
+    if analysis is None:
+        raise ResourceNotFoundError
+    return analysis
+
+
+def update_session_analysis(
+    session: Session,
+    actor: CurrentIdentity,
+    analysis_id: UUID,
+    *,
+    changes: Mapping[str, object],
+) -> SessionAnalysis:
+    """Revise technical reasoning or its separate authorized summary."""
+    analysis = get_session_analysis(session, actor, analysis_id, for_update=True)
+    for field, value in changes.items():
+        setattr(analysis, field, value)
+    session.commit()
+    session.refresh(analysis)
+    return analysis
+
+
+def list_authorized_analysis_summaries(
+    session: Session,
+    actor: CurrentIdentity,
+    session_id: UUID,
+) -> list[SessionAnalysis]:
+    """Return only deliberately shared text, never hidden records or counts."""
+    get_race_session(session, actor, session_id)
+    statement = (
+        select(SessionAnalysis)
+        .where(
+            SessionAnalysis.team_id == actor.team_id,
+            SessionAnalysis.session_id == session_id,
+            SessionAnalysis.authorized_summary.is_not(None),
+        )
+        .order_by(SessionAnalysis.created_at, SessionAnalysis.analysis_id)
+    )
+    return list(session.scalars(statement))
+
+
+def create_hypothesis(
+    session: Session,
+    actor: CurrentIdentity,
+    analysis_id: UUID,
+    *,
+    description: str,
+    cause_classification: CauseClassification,
+    confidence: ConfidenceLevel,
+) -> Hypothesis:
+    """Create one Engineering-confidential hypothesis in PROPOSED state."""
+    analysis = get_session_analysis(session, actor, analysis_id)
+    hypothesis = Hypothesis(
+        team_id=actor.team_id,
+        analysis_id=analysis.analysis_id,
+        description=description,
+        cause_classification=cause_classification,
+        confidence=confidence,
+    )
+    session.add(hypothesis)
+    session.commit()
+    session.refresh(hypothesis)
+    return hypothesis
+
+
+def list_hypotheses(
+    session: Session,
+    actor: CurrentIdentity,
+    analysis_id: UUID,
+) -> list[Hypothesis]:
+    """List technical hypotheses only after resolving their parent analysis."""
+    get_session_analysis(session, actor, analysis_id)
+    statement = (
+        select(Hypothesis)
+        .where(
+            Hypothesis.team_id == actor.team_id,
+            Hypothesis.analysis_id == analysis_id,
+        )
+        .order_by(Hypothesis.created_at, Hypothesis.hypothesis_id)
+    )
+    return list(session.scalars(statement))
+
+
+def get_hypothesis(
+    session: Session,
+    actor: CurrentIdentity,
+    hypothesis_id: UUID,
+    *,
+    for_update: bool = False,
+) -> Hypothesis:
+    """Resolve one Engineering hypothesis within the selected Team."""
+    statement = select(Hypothesis).where(
+        Hypothesis.hypothesis_id == hypothesis_id,
+        Hypothesis.team_id == actor.team_id,
+    )
+    if for_update:
+        statement = statement.with_for_update()
+    hypothesis = session.scalar(statement)
+    if hypothesis is None:
+        raise ResourceNotFoundError
+    return hypothesis
+
+
+def update_hypothesis(
+    session: Session,
+    actor: CurrentIdentity,
+    hypothesis_id: UUID,
+    *,
+    changes: Mapping[str, object],
+) -> Hypothesis:
+    """Revise a proposal without accepting an unsupported status transition."""
+    hypothesis = get_hypothesis(session, actor, hypothesis_id, for_update=True)
+    for field, value in changes.items():
+        setattr(hypothesis, field, value)
+    session.commit()
+    session.refresh(hypothesis)
+    return hypothesis
+
+
+def _require_session_evidence(
+    session: Session,
+    actor: CurrentIdentity,
+    race_session: RaceSession,
+    *,
+    evidence_type: AnalysisEvidenceType,
+    reference_id: UUID,
+) -> None:
+    """Ensure a polymorphic reference is real and belongs to this Session."""
+    if evidence_type is AnalysisEvidenceType.DRIVER_FEEDBACK:
+        found = session.scalar(
+            select(DriverFeedback.feedback_id).where(
+                DriverFeedback.feedback_id == reference_id,
+                DriverFeedback.team_id == actor.team_id,
+                DriverFeedback.session_id == race_session.session_id,
+            )
+        )
+    elif evidence_type is AnalysisEvidenceType.LAP:
+        found = session.scalar(
+            select(Lap.lap_id).where(
+                Lap.lap_id == reference_id,
+                Lap.team_id == actor.team_id,
+                Lap.session_id == race_session.session_id,
+            )
+        )
+    elif evidence_type is AnalysisEvidenceType.SECTOR:
+        found = session.scalar(
+            select(Sector.sector_id)
+            .join(
+                Lap,
+                and_(
+                    Lap.lap_id == Sector.lap_id,
+                    Lap.team_id == Sector.team_id,
+                ),
+            )
+            .where(
+                Sector.sector_id == reference_id,
+                Sector.team_id == actor.team_id,
+                Lap.session_id == race_session.session_id,
+            )
+        )
+    elif evidence_type is AnalysisEvidenceType.CONDITION:
+        found = session.scalar(
+            select(ConditionSnapshot.condition_id).where(
+                ConditionSnapshot.condition_id == reference_id,
+                ConditionSnapshot.team_id == actor.team_id,
+                ConditionSnapshot.session_id == race_session.session_id,
+            )
+        )
+    elif evidence_type is AnalysisEvidenceType.OBSERVATION:
+        observation = session.scalar(
+            select(Observation).where(
+                Observation.observation_id == reference_id,
+                Observation.team_id == actor.team_id,
+            )
+        )
+        found = None
+        if observation is not None:
+            if observation.session_id is not None:
+                if observation.session_id == race_session.session_id:
+                    found = observation.observation_id
+            elif observation.vehicle_id == race_session.vehicle_id:
+                found = observation.observation_id
+    else:
+        found = None
+    if found is None:
+        raise ResourceNotFoundError

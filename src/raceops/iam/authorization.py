@@ -38,6 +38,7 @@ class Permission(StrEnum):
     UPDATE_DRIVER_FEEDBACK = "UPDATE_DRIVER_FEEDBACK"
     READ_OBSERVATIONS = "READ_OBSERVATIONS"
     WRITE_OBSERVATIONS = "WRITE_OBSERVATIONS"
+    READ_ANALYSIS_SUMMARIES = "READ_ANALYSIS_SUMMARIES"
     WRITE_ANALYSIS = "WRITE_ANALYSIS"
     WRITE_PRIORITIES = "WRITE_PRIORITIES"
     CREATE_ACTIONS = "CREATE_ACTIONS"
@@ -74,6 +75,7 @@ _ADMINISTRATOR_PERMISSIONS = frozenset(
         Permission.WRITE_CONDITIONS,
         Permission.READ_DRIVER_FEEDBACK,
         Permission.READ_OBSERVATIONS,
+        Permission.READ_ANALYSIS_SUMMARIES,
         Permission.READ_HISTORY,
     }
 )
@@ -97,6 +99,7 @@ _TEAM_MANAGER_PERMISSIONS = frozenset(
         Permission.READ_DRIVER_FEEDBACK,
         Permission.CREATE_DRIVER_FEEDBACK,
         Permission.READ_OBSERVATIONS,
+        Permission.READ_ANALYSIS_SUMMARIES,
         Permission.WRITE_PRIORITIES,
         Permission.CREATE_ACTIONS,
         Permission.UPDATE_ASSIGNED_ACTIONS,
@@ -124,6 +127,7 @@ _ENGINEER_PERMISSIONS = frozenset(
         Permission.UPDATE_DRIVER_FEEDBACK,
         Permission.READ_OBSERVATIONS,
         Permission.WRITE_OBSERVATIONS,
+        Permission.READ_ANALYSIS_SUMMARIES,
         Permission.WRITE_ANALYSIS,
         Permission.WRITE_PRIORITIES,
         Permission.CREATE_ACTIONS,
@@ -147,6 +151,7 @@ _MECHANIC_PERMISSIONS = frozenset(
         Permission.CREATE_DRIVER_FEEDBACK,
         Permission.READ_OBSERVATIONS,
         Permission.WRITE_OBSERVATIONS,
+        Permission.READ_ANALYSIS_SUMMARIES,
         Permission.CREATE_ACTIONS,
         Permission.UPDATE_ASSIGNED_ACTIONS,
         Permission.WRITE_ACTION_OUTCOMES,
@@ -167,6 +172,7 @@ _DRIVER_PERMISSIONS = frozenset(
         Permission.CREATE_DRIVER_FEEDBACK,
         Permission.UPDATE_DRIVER_FEEDBACK,
         Permission.READ_OBSERVATIONS,
+        Permission.READ_ANALYSIS_SUMMARIES,
         Permission.UPDATE_ASSIGNED_ACTIONS,
         Permission.READ_HISTORY,
     }
