@@ -9,10 +9,11 @@ from sqlalchemy.engine import Connection
 from raceops.core.config import Settings
 from raceops.db.base import Base
 from raceops.iam import models as iam_models
+from raceops.learning import models as learning_models
 from raceops.operations import models as operations_models
 from raceops.sessions import models as session_models
 
-_ = iam_models, operations_models, session_models
+_ = iam_models, learning_models, operations_models, session_models
 
 config = context.config
 

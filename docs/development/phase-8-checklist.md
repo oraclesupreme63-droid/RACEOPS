@@ -72,14 +72,14 @@
 - [x] Autor y Driver experimentador separados.
 - [x] Alcance por Session y visibilidad.
 - [x] Pruebas de relación y Roles.
-- [ ] Aprobación del propietario.
+- [x] Aprobación del propietario.
 
 ### 8.8 — Observations
 
-- [ ] Observación asociada con Session o Vehicle.
-- [ ] Categoría y visibilidad sin convertirla en causa.
-- [ ] Engineer/Mechanic y lectura autorizada.
-- [ ] Pruebas de confidencialidad.
+- [x] Observación asociada con Session o Vehicle.
+- [x] Categoría y visibilidad sin convertirla en causa.
+- [x] Engineer/Mechanic y lectura autorizada.
+- [x] Pruebas de confidencialidad.
 - [ ] Aprobación del propietario.
 
 ### 8.9 — Analysis e Hypotheses
@@ -117,7 +117,7 @@
 
 ## Condición para avanzar
 
-El Bloque 8.5 fue aprobado y publicado como `v0.3.0`. El Bloque 8.6 está
-aprobado. El Bloque 8.7 está técnicamente completo y espera aprobación en su
-[`reporte`](phase-8-block-8.7-report-2026-11-11.md). Cada bloque funcional
-termina con una sola verificación completa y su punto de aprobación.
+El Bloque 8.5 fue aprobado y publicado como `v0.3.0`. Los Bloques 8.6 y 8.7
+están aprobados. El Bloque 8.8 está técnicamente completo y espera aprobación
+en su [`reporte`](phase-8-block-8.8-report-2026-11-11.md). Cada bloque
+funcional termina con una sola verificación completa y su punto de aprobación.

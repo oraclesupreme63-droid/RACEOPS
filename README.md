@@ -11,10 +11,11 @@ not a telemetry acquisition or professional analysis replacement.
 
 Phase 6 — Identity and authorization, completed and approved. Phase 7 —
 Operational Base was published as `v0.2.0`. Phase 8 has published Sessions,
-Laps, Sectors and simple result metrics as `v0.3.0`; Conditions are approved
-and Driver Feedback is implemented pending approval. RaceOps exposes
+Laps, Sectors and simple result metrics as `v0.3.0`; Conditions and Driver
+Feedback are approved, while Observations are implemented pending approval.
+RaceOps exposes
 operational APIs for Drivers, Vehicles, Tracks, Events, Sessions, timing
-results, conditions and feedback
+results, conditions, feedback and observations
 with database-enforced Team isolation, in addition to teams, users and
 team-scoped memberships; hashes
 passwords with Argon2id; issues short-lived membership-scoped JWTs; re-resolves
@@ -243,6 +244,17 @@ and edit their own feedback; authorized team roles can capture communicated
 feedback. Default reads are limited to the affected Driver, Engineer and Team
 Manager. There is no DELETE endpoint.
 
+## Record technical Observations
+
+Observations are available at `POST/GET /api/v1/observations` and
+`GET/PATCH /api/v1/observations/{observation_id}`. Each record references at
+least one same-Team Session or Vehicle and preserves its author, timestamps and
+visibility. Engineer and Mechanic can record evidence; reads are filtered by
+`TEAM`, `ROLE_RESTRICTED` or `ENGINEERING_CONFIDENTIAL` before counting and
+pagination. An Observation has no confirmed-cause field and never updates a
+Hypothesis automatically. Context and visibility are immutable in this P0 API,
+and there is no DELETE endpoint.
+
 ## Errors and request correlation
 
 Every HTTP response includes `X-Request-ID`. A valid UUID supplied in that
@@ -335,6 +347,7 @@ including both the Python quality job and the container smoke test.
 - [Phase 8 Block 8.4 report](docs/development/phase-8-block-8.4-report-2026-11-10.md)
 - [Phase 8 Block 8.6 report](docs/development/phase-8-block-8.6-report-2026-11-11.md)
 - [Phase 8 Block 8.7 report](docs/development/phase-8-block-8.7-report-2026-11-11.md)
+- [Phase 8 Block 8.8 report](docs/development/phase-8-block-8.8-report-2026-11-11.md)
 - [Session Learning Loop contract](docs/sessions/session-learning-loop-contract.md)
 - [Identity and authorization contract](docs/identity/identity-contract.md)
 - [Technical learning roadmap](docs/development/learning-roadmap.md)

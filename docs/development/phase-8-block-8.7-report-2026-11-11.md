@@ -5,7 +5,7 @@
 - **Fecha:** 11 de noviembre de 2026
 - **Fase:** 8 — Session Learning Loop
 - **Bloque:** 8.7 — Driver Feedback
-- **Resultado:** implementado y verificado; pendiente de aprobación del propietario
+- **Resultado:** implementado, verificado y aprobado por el propietario
 - **Siguiente bloque:** 8.8 — Observations
 
 ## 2. Capacidad entregada
@@ -66,7 +66,7 @@ No se añadieron archivos de telemetría, recomendaciones automáticas, análisi
 hipótesis ni campos rígidos por categoría. Driver Feedback describe experiencia;
 no afirma una causa técnica y no contiene detalles confidenciales de setup.
 
-## 7. Punto de aprobación
+## 7. Aprobación
 
-Con aprobación comenzará el Bloque 8.8: Observations asociadas con Session o
-Vehicle, sin convertir observaciones en causas y con visibilidad explícita.
+El propietario aprobó este bloque el 11 de noviembre de 2026. El trabajo
+continuó con el Bloque 8.8.
