@@ -13,7 +13,7 @@ Phase 6 — Identity and authorization, completed and approved. Phase 7 —
 Operational Base was published as `v0.2.0`. Phase 8 has published Sessions,
 Laps, Sectors and simple result metrics as `v0.3.0`; Conditions and Driver
 Feedback, and Observations are approved; Analysis and Hypotheses are now
-implemented pending approval.
+approved; Priorities and Actions are now implemented pending approval.
 RaceOps exposes
 operational APIs for Drivers, Vehicles, Tracks, Events, Sessions, timing
 results, conditions, feedback, observations, analyses and hypotheses
@@ -271,6 +271,22 @@ the analysis endpoint and preserve cause classification, confidence and the
 server-controlled initial state `PROPOSED`. Conclusions remain deferred until
 an Action has later evidence in Block 8.11.
 
+## Turn analysis into Priorities and Actions
+
+Priorities are available at
+`POST/GET /api/v1/sessions/{source_session_id}/priorities` and
+`GET/PATCH /api/v1/priorities/{priority_id}`. They can target a known Session
+or honestly retain `NEXT_SESSION` until it exists. PostgreSQL enforces ranks
+1–3 and prevents a fourth main Priority for the same recipient and target;
+additional notes remain non-main.
+
+Actions are available at `POST/GET /api/v1/sessions/{source_session_id}/actions`
+and `GET /api/v1/actions/{action_id}`. Explicit commands move execution through
+`PROPOSED`, `PLANNED`, `IN_PROGRESS`, `COMPLETED` or `CANCELLED`. Assignees and
+coordinators can update execution, while Driver-facing `public_summary` stays
+separate from Engineering-only `confidential_detail`. Completing an Action
+does not create an Outcome or claim improvement.
+
 ## Errors and request correlation
 
 Every HTTP response includes `X-Request-ID`. A valid UUID supplied in that
@@ -365,6 +381,7 @@ including both the Python quality job and the container smoke test.
 - [Phase 8 Block 8.7 report](docs/development/phase-8-block-8.7-report-2026-11-11.md)
 - [Phase 8 Block 8.8 report](docs/development/phase-8-block-8.8-report-2026-11-11.md)
 - [Phase 8 Block 8.9 report](docs/development/phase-8-block-8.9-report-2026-11-11.md)
+- [Phase 8 Block 8.10 report](docs/development/phase-8-block-8.10-report-2026-11-11.md)
 - [Session Learning Loop contract](docs/sessions/session-learning-loop-contract.md)
 - [Identity and authorization contract](docs/identity/identity-contract.md)
 - [Technical learning roadmap](docs/development/learning-roadmap.md)

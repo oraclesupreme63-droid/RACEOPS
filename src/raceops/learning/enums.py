@@ -40,3 +40,28 @@ class HypothesisStatus(StrEnum):
     PARTIALLY_SUPPORTED = "PARTIALLY_SUPPORTED"
     REJECTED = "REJECTED"
     INCONCLUSIVE = "INCONCLUSIVE"
+
+
+class TargetIntent(StrEnum):
+    """Whether a decision targets a known Session or the next one."""
+
+    NEXT_SESSION = "NEXT_SESSION"
+    SPECIFIC_SESSION = "SPECIFIC_SESSION"
+
+
+class ActionType(StrEnum):
+    """Operational class of work decided after analysis."""
+
+    DRIVING = "DRIVING"
+    ENGINEERING = "ENGINEERING"
+    MECHANICAL = "MECHANICAL"
+
+
+class ActionStatus(StrEnum):
+    """Execution state, deliberately independent from Action Outcome."""
+
+    PROPOSED = "PROPOSED"
+    PLANNED = "PLANNED"
+    IN_PROGRESS = "IN_PROGRESS"
+    COMPLETED = "COMPLETED"
+    CANCELLED = "CANCELLED"

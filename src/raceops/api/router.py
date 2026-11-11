@@ -3,6 +3,7 @@
 from fastapi import APIRouter
 
 from raceops.iam.router import router as identity_router
+from raceops.learning.decision_router import router as decision_router
 from raceops.learning.router import router as learning_router
 from raceops.operations.context_router import router as context_router
 from raceops.operations.router import router as operations_router
@@ -20,3 +21,4 @@ api_router.include_router(results_router)
 api_router.include_router(conditions_router)
 api_router.include_router(feedback_router)
 api_router.include_router(learning_router)
+api_router.include_router(decision_router)

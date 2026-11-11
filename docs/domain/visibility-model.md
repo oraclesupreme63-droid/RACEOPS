@@ -167,6 +167,7 @@ El Bloque 6.5 materializó los tres niveles como políticas server-side:
   jerarquía ni por autoría;
 - una falla de Team, relación o Visibility produce el mismo resultado oculto.
 
-La política fue probada con datos sintéticos. El filtrado de campos concretos
-como `technical_detail` se integrará y probará con los modelos de Analysis y
-Action; esos modelos todavía no existen y no se simulan en la API pública.
+La política fue probada con datos sintéticos y recursos reales. Analysis
+separa `authorized_summary` de `technical_detail`; Action separa
+`public_summary` de `confidential_detail`. Las pruebas HTTP verifican que los
+campos prohibidos se omitan antes de serializar y antes de contar listados.

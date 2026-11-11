@@ -88,14 +88,14 @@
 - [x] Hipótesis, causa, confianza y estado.
 - [x] Permisos de Engineering.
 - [x] Pruebas de serialización por audiencia.
-- [ ] Aprobación del propietario.
+- [x] Aprobación del propietario.
 
 ### 8.10 — Priorities y Actions
 
-- [ ] Prioridades por destinatario y máximo tres principales.
-- [ ] Acciones con responsable y motivación.
-- [ ] Intención `NEXT_SESSION` sin crear Session ficticia.
-- [ ] Estados y permisos por responsable.
+- [x] Prioridades por destinatario y máximo tres principales.
+- [x] Acciones con responsable y motivación.
+- [x] Intención `NEXT_SESSION` sin crear Session ficticia.
+- [x] Estados y permisos por responsable.
 - [ ] Aprobación del propietario.
 
 ### 8.11 — Outcomes y siguiente Session
@@ -117,7 +117,7 @@
 
 ## Condición para avanzar
 
-El Bloque 8.5 fue aprobado y publicado como `v0.3.0`. Los Bloques 8.6–8.8
-están aprobados. El Bloque 8.9 está técnicamente completo y espera aprobación
-en su [`reporte`](phase-8-block-8.9-report-2026-11-11.md). Cada bloque funcional
-termina con una sola verificación completa y su punto de aprobación.
+El Bloque 8.5 fue aprobado y publicado como `v0.3.0`. Los Bloques 8.6–8.9
+están aprobados. El Bloque 8.10 está técnicamente completo y espera aprobación
+en su [`reporte`](phase-8-block-8.10-report-2026-11-11.md). Cada bloque
+funcional termina con una sola verificación completa y su punto de aprobación.

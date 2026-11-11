@@ -5,7 +5,7 @@
 - **Fecha:** 11 de noviembre de 2026
 - **Fase:** 8 — Session Learning Loop
 - **Bloque:** 8.9 — Analysis e Hypotheses
-- **Resultado:** implementado y verificado; pendiente de aprobación del propietario
+- **Resultado:** implementado, verificado y aprobado por el propietario
 - **Siguiente bloque:** 8.10 — Priorities y Actions
 
 ## 2. Capacidad entregada
@@ -126,8 +126,7 @@ reserva para PostgreSQL efímero de CI, evitando borrar datos locales.
 - Aún no existe una Conclusion legítima: depende de Priorities, Actions y
   Outcomes en los Bloques 8.10–8.11.
 
-## 11. Punto de aprobación
+## 11. Aprobación
 
-Con aprobación comenzará el Bloque 8.10: Priorities y Actions. Ese bloque
-convertirá el análisis en un máximo de tres prioridades principales y en
-acciones asignables, sin fingir que la próxima Session ya existe.
+El propietario aprobó el Bloque 8.9 y autorizó el Bloque 8.10: Priorities y
+Actions, sin fingir que la próxima Session ya existe.
