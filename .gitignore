@@ -39,3 +39,7 @@ Thumbs.db
 *.sqlite
 *.sqlite3
 
+# Private validation records and participant-provided artifacts
+docs/validation/private/
+validation-private/
+

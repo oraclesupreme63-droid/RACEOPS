@@ -402,6 +402,8 @@ including both the Python quality job and the container smoke test.
 - [Phase 8 closure report](docs/development/phase-8-block-8.12-report-2026-11-12.md)
 - [Phase 8 implementation traceability](docs/development/phase-8-traceability.md)
 - [Gate G6 assessment](docs/development/gate-g6-assessment.md)
+- [Phase 9 checklist](docs/development/phase-9-checklist.md)
+- [Phase 9 validation protocol](docs/validation/validation-protocol.md)
 - [Session Learning Loop contract](docs/sessions/session-learning-loop-contract.md)
 - [Identity and authorization contract](docs/identity/identity-contract.md)
 - [Technical learning roadmap](docs/development/learning-roadmap.md)

@@ -363,6 +363,10 @@ aprobado y Fase 9 queda habilitada.
 **Objetivo:** confrontar el flujo construido con información real o
 representativa.
 
+**Estado:** En progreso. El Bloque 9.1 define protocolo, privacidad, métricas,
+umbrales y límites de evidencia antes de construir el cliente mínimo de
+validación o invitar participantes.
+
 **Actividades:**
 
 - utilizar una sesión real cuando exista autorización;
