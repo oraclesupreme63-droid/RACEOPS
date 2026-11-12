@@ -19,6 +19,7 @@ from raceops.db.base import Base, TimestampMixin
 from raceops.iam.authorization import Visibility
 from raceops.iam.enums import Role
 from raceops.learning.enums import (
+    ActionOutcomeClassification,
     ActionStatus,
     ActionType,
     AnalysisEvidenceType,
@@ -36,6 +37,7 @@ HYPOTHESIS_STATUS_ENUM_NAME: Final = "hypothesis_status"
 TARGET_INTENT_ENUM_NAME: Final = "target_intent"
 ACTION_TYPE_ENUM_NAME: Final = "action_type"
 ACTION_STATUS_ENUM_NAME: Final = "action_status"
+ACTION_OUTCOME_CLASSIFICATION_ENUM_NAME: Final = "action_outcome_classification"
 TEAM_ROLE_ENUM_NAME: Final = "team_role"
 
 
@@ -440,3 +442,80 @@ class Action(TimestampMixin, Base):
         default=Visibility.ROLE_RESTRICTED,
         server_default=Visibility.ROLE_RESTRICTED.value,
     )
+    outcome: Mapped["ActionOutcome | None"] = relationship(
+        back_populates="action", uselist=False, lazy="selectin"
+    )
+
+
+class ActionOutcome(TimestampMixin, Base):
+    """One evidence-based evaluation, separate from Action execution."""
+
+    __tablename__ = "action_outcomes"
+    __table_args__ = (
+        CheckConstraint(
+            "public_conclusion IS NOT NULL OR confidential_conclusion IS NOT NULL",
+            name="has_conclusion",
+        ),
+        CheckConstraint(
+            "public_conclusion IS NULL OR "
+            "(public_conclusion = btrim(public_conclusion) "
+            "AND char_length(public_conclusion) BETWEEN 1 AND 2000)",
+            name="public_conclusion_normalized",
+        ),
+        CheckConstraint(
+            "confidential_conclusion IS NULL OR "
+            "(confidential_conclusion = btrim(confidential_conclusion) "
+            "AND char_length(confidential_conclusion) BETWEEN 1 AND 5000)",
+            name="confidential_conclusion_normalized",
+        ),
+        CheckConstraint(
+            "visibility_level = 'ROLE_RESTRICTED'",
+            name="role_restricted",
+        ),
+        ForeignKeyConstraint(
+            ["action_id", "team_id"],
+            ["actions.action_id", "actions.team_id"],
+            name="fk_action_outcomes_action_team",
+            ondelete="RESTRICT",
+        ),
+        ForeignKeyConstraint(
+            ["evaluation_session_id", "team_id"],
+            ["sessions.session_id", "sessions.team_id"],
+            name="fk_action_outcomes_evaluation_session_team",
+            ondelete="RESTRICT",
+        ),
+        UniqueConstraint("action_id", name="uq_action_outcomes_action"),
+        UniqueConstraint(
+            "outcome_id", "team_id", name="uq_action_outcomes_outcome_team"
+        ),
+        Index("ix_action_outcomes_team_session", "team_id", "evaluation_session_id"),
+    )
+
+    outcome_id: Mapped[UUID] = mapped_column(primary_key=True, default=uuid4)
+    team_id: Mapped[UUID] = mapped_column(nullable=False)
+    action_id: Mapped[UUID] = mapped_column(nullable=False)
+    evaluation_session_id: Mapped[UUID] = mapped_column(nullable=False)
+    classification: Mapped[ActionOutcomeClassification] = mapped_column(
+        Enum(
+            ActionOutcomeClassification,
+            name=ACTION_OUTCOME_CLASSIFICATION_ENUM_NAME,
+        ),
+        nullable=False,
+    )
+    public_conclusion: Mapped[str | None] = mapped_column(String(2000), nullable=True)
+    confidential_conclusion: Mapped[str | None] = mapped_column(
+        String(5000), nullable=True
+    )
+    concluded_hypothesis_status: Mapped[HypothesisStatus | None] = mapped_column(
+        Enum(HypothesisStatus, name=HYPOTHESIS_STATUS_ENUM_NAME), nullable=True
+    )
+    author_user_id: Mapped[UUID] = mapped_column(
+        ForeignKey("users.user_id", ondelete="RESTRICT"), nullable=False
+    )
+    visibility_level: Mapped[Visibility] = mapped_column(
+        Enum(Visibility, name=VISIBILITY_LEVEL_ENUM_NAME),
+        nullable=False,
+        default=Visibility.ROLE_RESTRICTED,
+        server_default=Visibility.ROLE_RESTRICTED.value,
+    )
+    action: Mapped[Action] = relationship(back_populates="outcome")

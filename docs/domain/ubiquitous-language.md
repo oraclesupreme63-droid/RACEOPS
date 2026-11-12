@@ -160,7 +160,7 @@ Estado de ejecución: `PROPOSED`, `PLANNED`, `IN_PROGRESS`, `COMPLETED` o
 ### Action Outcome
 
 Evaluación registrada de lo ocurrido después de ejecutar una Action:
-`IMPROVED`, `WORSENED`, `NO_MEASURABLE_CHANGE` o `INCONCLUSIVE`.
+`IMPROVED`, `WORSENED`, `NO_MEASURABLE_EFFECT` o `INCONCLUSIVE`.
 
 `NOT_EVALUATED` es el estado derivado que se muestra cuando todavía no
 existe Action Outcome; no se crea un resultado ficticio para representar

@@ -11,3 +11,11 @@ class InvalidDecisionContextError(RuntimeError):
 
 class InvalidActionStatusTransitionError(RuntimeError):
     """The requested Action execution transition is not allowed."""
+
+
+class InvalidActionOutcomeError(RuntimeError):
+    """An Outcome would violate execution, target, or conclusion rules."""
+
+
+class ActionOutcomeConflictError(RuntimeError):
+    """The Action already has its single P0 Outcome."""

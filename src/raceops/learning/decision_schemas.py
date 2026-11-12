@@ -8,7 +8,12 @@ from pydantic import BaseModel, ConfigDict, Field, field_validator, model_valida
 
 from raceops.iam.authorization import Visibility
 from raceops.iam.enums import Role
-from raceops.learning.enums import ActionStatus, ActionType, TargetIntent
+from raceops.learning.enums import (
+    ActionEvaluationStatus,
+    ActionStatus,
+    ActionType,
+    TargetIntent,
+)
 from raceops.learning.models import Action, Priority
 
 RECIPIENT_ROLES = frozenset({Role.DRIVER, Role.ENGINEER, Role.MECHANIC})
@@ -212,6 +217,7 @@ class ActionResponse(BaseModel):
     assignee_role: Role
     action_type: ActionType
     status: ActionStatus
+    evaluation_status: ActionEvaluationStatus
     public_summary: str | None
     confidential_detail: str | None = None
     cancellation_reason: str | None
@@ -233,6 +239,11 @@ class ActionResponse(BaseModel):
             assignee_role=action.assignee_role,
             action_type=action.action_type,
             status=action.status,
+            evaluation_status=(
+                ActionEvaluationStatus.NOT_EVALUATED
+                if action.outcome is None
+                else ActionEvaluationStatus(action.outcome.classification.value)
+            ),
             public_summary=action.public_summary,
             confidential_detail=action.confidential_detail if engineering else None,
             cancellation_reason=action.cancellation_reason,

@@ -20,8 +20,18 @@ from raceops.core.config import Settings
 from raceops.iam.enums import Role
 from raceops.iam.models import Team, TeamMembership, User
 from raceops.iam.tokens import issue_access_token
-from raceops.learning.enums import CauseClassification, ConfidenceLevel
-from raceops.learning.models import Hypothesis, SessionAnalysis
+from raceops.learning.enums import (
+    AnalysisEvidenceType,
+    CauseClassification,
+    ConfidenceLevel,
+)
+from raceops.learning.models import (
+    ActionOutcome,
+    AnalysisEvidenceReference,
+    Hypothesis,
+    Observation,
+    SessionAnalysis,
+)
 from raceops.main import create_app
 from raceops.operations.models import Driver, Event, Track, Vehicle
 from raceops.sessions.models import RaceSession
@@ -350,7 +360,7 @@ async def test_priority_limit_visibility_and_action_execution_are_enforced(
     )
 
 
-def test_openapi_documents_decisions_without_delete_or_outcome() -> None:
+def test_openapi_documents_decisions_without_delete() -> None:
     paths = create_app().openapi()["paths"]
 
     assert set(paths["/api/v1/sessions/{source_session_id}/priorities"]) == {
@@ -367,6 +377,249 @@ def test_openapi_documents_decisions_without_delete_or_outcome() -> None:
         assert set(paths[f"/api/v1/actions/{{action_id}}/{transition_name}"]) == {
             "post"
         }
+
+
+@pytest.mark.anyio
+@pytest.mark.integration
+@requires_database
+async def test_outcome_resolves_next_session_and_preserves_authorized_chain(
+    application: FastAPI,
+    database_engine: Engine,
+) -> None:
+    context = _seed_context(database_engine)
+    foreign_context = _seed_context(database_engine)
+    engineer = _seed_identity(
+        database_engine, team_id=context.driver.team_id, role=Role.ENGINEER
+    )
+    manager = _seed_identity(
+        database_engine, team_id=context.driver.team_id, role=Role.TEAM_MANAGER
+    )
+    hypothesis_id = _seed_hypothesis(database_engine, context, engineer)
+    transport = ASGITransport(app=application)
+
+    async with AsyncClient(transport=transport, base_url="http://testserver") as client:
+        priority = await client.post(
+            f"/api/v1/sessions/{context.source_session_id}/priorities",
+            headers=_headers(engineer),
+            json={
+                "hypothesis_id": str(hypothesis_id),
+                "recipient_role": "DRIVER",
+                "recipient_user_id": str(context.driver.user_id),
+                "description": "Improve brake release at T4.",
+            },
+        )
+        created = await client.post(
+            f"/api/v1/sessions/{context.source_session_id}/actions",
+            headers=_headers(engineer),
+            json={
+                "hypothesis_id": str(hypothesis_id),
+                "priority_id": priority.json()["priority_id"],
+                "assignee_role": "DRIVER",
+                "assignee_user_id": str(context.driver.user_id),
+                "action_type": "DRIVING",
+                "public_summary": "Release the brake earlier at T4.",
+                "confidential_detail": "Compare the release trace.",
+            },
+        )
+        action_id = created.json()["action_id"]
+        not_evaluated = await client.get(
+            f"/api/v1/actions/{action_id}/outcome", headers=_headers(engineer)
+        )
+        premature = await client.post(
+            f"/api/v1/actions/{action_id}/outcome",
+            headers=_headers(engineer),
+            json={
+                "evaluation_session_id": str(context.target_session_id),
+                "classification": "IMPROVED",
+                "public_conclusion": "Too early.",
+            },
+        )
+        for transition_name in ("plan", "start", "complete"):
+            transitioned = await client.post(
+                f"/api/v1/actions/{action_id}/{transition_name}",
+                headers=_headers(engineer),
+            )
+            assert transitioned.status_code == 200
+        wrong_team = await client.post(
+            f"/api/v1/actions/{action_id}/outcome",
+            headers=_headers(engineer),
+            json={
+                "evaluation_session_id": str(foreign_context.target_session_id),
+                "classification": "IMPROVED",
+                "public_conclusion": "Foreign evidence must be hidden.",
+            },
+        )
+        evaluated = await client.post(
+            f"/api/v1/actions/{action_id}/outcome",
+            headers=_headers(engineer),
+            json={
+                "evaluation_session_id": str(context.target_session_id),
+                "classification": "IMPROVED",
+                "public_conclusion": "Consistency improved in Practice 2.",
+                "confidential_conclusion": "The brake-release trace also improved.",
+                "concluded_hypothesis_status": "PARTIALLY_SUPPORTED",
+            },
+        )
+        duplicate = await client.post(
+            f"/api/v1/actions/{action_id}/outcome",
+            headers=_headers(engineer),
+            json={
+                "evaluation_session_id": str(context.target_session_id),
+                "classification": "INCONCLUSIVE",
+                "public_conclusion": "Duplicate evaluation.",
+            },
+        )
+        resolved_action = await client.get(
+            f"/api/v1/actions/{action_id}", headers=_headers(engineer)
+        )
+        resolved_priority = await client.get(
+            f"/api/v1/priorities/{priority.json()['priority_id']}",
+            headers=_headers(engineer),
+        )
+        engineer_chain = await client.get(
+            f"/api/v1/actions/{action_id}/learning-chain",
+            headers=_headers(engineer),
+        )
+        manager_evaluation = await client.get(
+            f"/api/v1/actions/{action_id}/outcome", headers=_headers(manager)
+        )
+        driver_chain = await client.get(
+            f"/api/v1/actions/{action_id}/learning-chain",
+            headers=_headers(context.driver),
+        )
+        driver_write = await client.post(
+            f"/api/v1/actions/{action_id}/outcome",
+            headers=_headers(context.driver),
+            json={
+                "evaluation_session_id": str(context.target_session_id),
+                "classification": "IMPROVED",
+                "public_conclusion": "Driver cannot author Outcome.",
+            },
+        )
+
+    assert created.status_code == 201
+    assert priority.status_code == 201
+    assert created.json()["evaluation_status"] == "NOT_EVALUATED"
+    assert not_evaluated.status_code == 200
+    assert not_evaluated.json() == {
+        "action_id": action_id,
+        "evaluation_status": "NOT_EVALUATED",
+    }
+    assert premature.status_code == 409
+    assert premature.json()["code"] == "invalid_action_outcome"
+    assert wrong_team.status_code == 404
+    assert evaluated.status_code == 201
+    assert evaluated.json()["classification"] == "IMPROVED"
+    assert evaluated.json()["concluded_hypothesis_status"] == "PARTIALLY_SUPPORTED"
+    assert duplicate.status_code == 409
+    assert duplicate.json()["code"] == "action_outcome_conflict"
+    assert resolved_action.json()["target_intent"] == "SPECIFIC_SESSION"
+    assert resolved_action.json()["target_session_id"] == str(context.target_session_id)
+    assert resolved_action.json()["evaluation_status"] == "IMPROVED"
+    assert resolved_priority.json()["target_intent"] == "SPECIFIC_SESSION"
+    assert resolved_priority.json()["target_session_id"] == str(
+        context.target_session_id
+    )
+    engineer_chain_body = engineer_chain.json()
+    assert (
+        engineer_chain_body["priority"]["priority_id"] == priority.json()["priority_id"]
+    )
+    assert engineer_chain_body["hypothesis"]["status"] == "PARTIALLY_SUPPORTED"
+    assert engineer_chain_body["analysis"]["technical_detail"]
+    assert engineer_chain_body["analysis"]["evidence"][0]["evidence_type"] == (
+        "OBSERVATION"
+    )
+    assert engineer_chain_body["evaluation"]["outcome"]["confidential_conclusion"]
+    manager_outcome = manager_evaluation.json()["outcome"]
+    assert "confidential_conclusion" not in manager_outcome
+    assert "concluded_hypothesis_status" not in manager_outcome
+    driver_chain_body = driver_chain.json()
+    assert "hypothesis" not in driver_chain_body
+    assert "analysis" not in driver_chain_body
+    assert driver_chain_body["evaluation"]["evaluation_status"] == "IMPROVED"
+    assert "confidential_conclusion" not in driver_chain_body["evaluation"]["outcome"]
+    assert driver_write.status_code == 403
+
+    with Session(database_engine) as session:
+        assert (
+            session.query(ActionOutcome).filter_by(action_id=UUID(action_id)).count()
+            == 1
+        )
+        hypothesis = session.get_one(Hypothesis, hypothesis_id)
+        assert hypothesis.status.value == "PARTIALLY_SUPPORTED"
+
+
+def test_openapi_documents_outcomes_without_destructive_endpoints() -> None:
+    paths = create_app().openapi()["paths"]
+
+    assert set(paths["/api/v1/actions/{action_id}/outcome"]) == {"get", "post"}
+    assert set(paths["/api/v1/actions/{action_id}/learning-chain"]) == {"get"}
+
+
+@pytest.mark.anyio
+@pytest.mark.integration
+@requires_database
+async def test_mechanic_can_only_record_public_outcome_for_assigned_work(
+    application: FastAPI,
+    database_engine: Engine,
+) -> None:
+    context = _seed_context(database_engine)
+    engineer = _seed_identity(
+        database_engine, team_id=context.driver.team_id, role=Role.ENGINEER
+    )
+    mechanic = _seed_identity(
+        database_engine, team_id=context.driver.team_id, role=Role.MECHANIC
+    )
+    other_mechanic = _seed_identity(
+        database_engine, team_id=context.driver.team_id, role=Role.MECHANIC
+    )
+    transport = ASGITransport(app=application)
+
+    async with AsyncClient(transport=transport, base_url="http://testserver") as client:
+        created = await client.post(
+            f"/api/v1/sessions/{context.source_session_id}/actions",
+            headers=_headers(engineer),
+            json={
+                "assignee_role": "MECHANIC",
+                "assignee_user_id": str(mechanic.user_id),
+                "action_type": "MECHANICAL",
+                "public_summary": "Inspect and adjust the left rear assembly.",
+            },
+        )
+        action_id = created.json()["action_id"]
+        for transition_name in ("plan", "start", "complete"):
+            transitioned = await client.post(
+                f"/api/v1/actions/{action_id}/{transition_name}",
+                headers=_headers(mechanic),
+            )
+            assert transitioned.status_code == 200
+        hidden_from_other = await client.get(
+            f"/api/v1/actions/{action_id}/outcome",
+            headers=_headers(other_mechanic),
+        )
+        forbidden_confidential = await client.post(
+            f"/api/v1/actions/{action_id}/outcome",
+            headers=_headers(mechanic),
+            json={
+                "evaluation_session_id": str(context.target_session_id),
+                "classification": "NO_MEASURABLE_EFFECT",
+                "confidential_conclusion": "Mechanic cannot publish this detail.",
+            },
+        )
+        evaluated = await client.post(
+            f"/api/v1/actions/{action_id}/outcome",
+            headers=_headers(mechanic),
+            json={
+                "evaluation_session_id": str(context.target_session_id),
+                "classification": "NO_MEASURABLE_EFFECT",
+                "public_conclusion": "No repeatable handling change was measured.",
+            },
+        )
+
+    assert hidden_from_other.status_code == 404
+    assert forbidden_confidential.status_code == 403
+    assert evaluated.status_code == 201
+    assert evaluated.json()["classification"] == "NO_MEASURABLE_EFFECT"
 
 
 def _seed_context(engine: Engine) -> SeededContext:
@@ -439,6 +692,15 @@ def _seed_hypothesis(
     engineer: SeededIdentity,
 ) -> UUID:
     with Session(engine) as session, session.begin():
+        observation = Observation(
+            team_id=context.driver.team_id,
+            session_id=context.source_session_id,
+            author_user_id=engineer.user_id,
+            description="Rear instability under braking at T4.",
+            category="HANDLING",
+        )
+        session.add(observation)
+        session.flush()
         analysis = SessionAnalysis(
             team_id=context.driver.team_id,
             session_id=context.source_session_id,
@@ -446,6 +708,13 @@ def _seed_hypothesis(
             authorized_summary="Working on rear stability.",
             technical_detail="Rear instability follows abrupt brake release.",
         )
+        analysis.evidence_refs = [
+            AnalysisEvidenceReference(
+                team_id=context.driver.team_id,
+                evidence_type=AnalysisEvidenceType.OBSERVATION,
+                reference_id=observation.observation_id,
+            )
+        ]
         session.add(analysis)
         session.flush()
         hypothesis = Hypothesis(

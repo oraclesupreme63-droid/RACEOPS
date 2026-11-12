@@ -11,7 +11,7 @@ from sqlalchemy.engine import Engine
 from raceops.core.config import Settings
 
 RUN_DATABASE_TESTS = os.getenv("RACEOPS_RUN_DB_TESTS") == "1"
-HEAD_REVISION = "20261111_0010_decisions"
+HEAD_REVISION = "20261112_0011_outcomes"
 
 
 @pytest.mark.integration

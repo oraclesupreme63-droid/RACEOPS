@@ -3,7 +3,7 @@
 ## Estado general
 
 - **Fase:** en progreso
-- **Última actualización:** 11 de noviembre de 2026
+- **Última actualización:** 12 de noviembre de 2026
 - **Entregables intermedios:** `v0.3 — Sessions & Results`
 - **Entregable final:** `v0.4 — Session Learning Loop`
 - **Gate objetivo:** G6 — Vertical Alpha
@@ -96,14 +96,14 @@
 - [x] Acciones con responsable y motivación.
 - [x] Intención `NEXT_SESSION` sin crear Session ficticia.
 - [x] Estados y permisos por responsable.
-- [ ] Aprobación del propietario.
+- [x] Aprobación del propietario.
 
 ### 8.11 — Outcomes y siguiente Session
 
-- [ ] Vincular Action con Session de evaluación.
-- [ ] Resultado `IMPROVED`, `WORSENED` o `NO_MEASURABLE_EFFECT`.
-- [ ] Conclusión de Hypothesis sin falsa certeza.
-- [ ] Recuperar cadena completa de aprendizaje.
+- [x] Vincular Action con Session de evaluación.
+- [x] Resultado `IMPROVED`, `WORSENED`, `NO_MEASURABLE_EFFECT` o `INCONCLUSIVE`.
+- [x] Conclusión de Hypothesis sin falsa certeza.
+- [x] Recuperar cadena completa de aprendizaje.
 - [ ] Aprobación del propietario.
 
 ### 8.12 — Cierre de Fase 8 (`v0.4`)
@@ -117,7 +117,7 @@
 
 ## Condición para avanzar
 
-El Bloque 8.5 fue aprobado y publicado como `v0.3.0`. Los Bloques 8.6–8.9
-están aprobados. El Bloque 8.10 está técnicamente completo y espera aprobación
-en su [`reporte`](phase-8-block-8.10-report-2026-11-11.md). Cada bloque
+El Bloque 8.5 fue aprobado y publicado como `v0.3.0`. Los Bloques 8.6–8.10
+están aprobados. El Bloque 8.11 está técnicamente completo y espera aprobación
+en su [`reporte`](phase-8-block-8.11-report-2026-11-12.md). Cada bloque
 funcional termina con una sola verificación completa y su punto de aprobación.

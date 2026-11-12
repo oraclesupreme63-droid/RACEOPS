@@ -13,7 +13,8 @@ Phase 6 — Identity and authorization, completed and approved. Phase 7 —
 Operational Base was published as `v0.2.0`. Phase 8 has published Sessions,
 Laps, Sectors and simple result metrics as `v0.3.0`; Conditions and Driver
 Feedback, and Observations are approved; Analysis and Hypotheses are now
-approved; Priorities and Actions are now implemented pending approval.
+approved; Priorities and Actions are approved; Outcomes and the authorized
+learning chain are implemented pending approval.
 RaceOps exposes
 operational APIs for Drivers, Vehicles, Tracks, Events, Sessions, timing
 results, conditions, feedback, observations, analyses and hypotheses
@@ -268,8 +269,8 @@ Technical detail remains `ENGINEERING_CONFIDENTIAL`. Other roles use
 explicitly authorized summaries without technical identifiers, hidden-record
 counts or confidential detail. Hypotheses are managed by Engineering through
 the analysis endpoint and preserve cause classification, confidence and the
-server-controlled initial state `PROPOSED`. Conclusions remain deferred until
-an Action has later evidence in Block 8.11.
+server-controlled initial state `PROPOSED`. A Hypothesis can only leave that
+state through an explicit later Outcome conclusion.
 
 ## Turn analysis into Priorities and Actions
 
@@ -286,6 +287,22 @@ and `GET /api/v1/actions/{action_id}`. Explicit commands move execution through
 coordinators can update execution, while Driver-facing `public_summary` stays
 separate from Engineering-only `confidential_detail`. Completing an Action
 does not create an Outcome or claim improvement.
+
+## Evaluate Actions and recover the learning chain
+
+`POST /api/v1/actions/{action_id}/outcome` evaluates a completed Action against
+one actual later Session. `NEXT_SESSION` is resolved to that real Session and
+the observed effect is recorded as `IMPROVED`, `WORSENED`,
+`NO_MEASURABLE_EFFECT` or `INCONCLUSIVE`. Before an Outcome exists,
+`GET /api/v1/actions/{action_id}/outcome` returns the derived state
+`NOT_EVALUATED`; no fictitious database row is created.
+
+Public and Engineering-confidential conclusions are stored separately. An
+Engineer may explicitly conclude the related Hypothesis without RaceOps
+inferring certainty from the Action status or one metric. The authorized
+`GET /api/v1/actions/{action_id}/learning-chain` projection connects evidence,
+analysis, Hypothesis, Priority, Action and Outcome while removing protected
+nodes and fields for non-Engineering audiences.
 
 ## Errors and request correlation
 
@@ -382,6 +399,7 @@ including both the Python quality job and the container smoke test.
 - [Phase 8 Block 8.8 report](docs/development/phase-8-block-8.8-report-2026-11-11.md)
 - [Phase 8 Block 8.9 report](docs/development/phase-8-block-8.9-report-2026-11-11.md)
 - [Phase 8 Block 8.10 report](docs/development/phase-8-block-8.10-report-2026-11-11.md)
+- [Phase 8 Block 8.11 report](docs/development/phase-8-block-8.11-report-2026-11-12.md)
 - [Session Learning Loop contract](docs/sessions/session-learning-loop-contract.md)
 - [Identity and authorization contract](docs/identity/identity-contract.md)
 - [Technical learning roadmap](docs/development/learning-roadmap.md)

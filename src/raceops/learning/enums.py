@@ -65,3 +65,22 @@ class ActionStatus(StrEnum):
     IN_PROGRESS = "IN_PROGRESS"
     COMPLETED = "COMPLETED"
     CANCELLED = "CANCELLED"
+
+
+class ActionOutcomeClassification(StrEnum):
+    """Observed effect recorded after execution in a later Session."""
+
+    IMPROVED = "IMPROVED"
+    WORSENED = "WORSENED"
+    NO_MEASURABLE_EFFECT = "NO_MEASURABLE_EFFECT"
+    INCONCLUSIVE = "INCONCLUSIVE"
+
+
+class ActionEvaluationStatus(StrEnum):
+    """Read-model status; NOT_EVALUATED is never persisted as an Outcome."""
+
+    NOT_EVALUATED = "NOT_EVALUATED"
+    IMPROVED = "IMPROVED"
+    WORSENED = "WORSENED"
+    NO_MEASURABLE_EFFECT = "NO_MEASURABLE_EFFECT"
+    INCONCLUSIVE = "INCONCLUSIVE"
