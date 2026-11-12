@@ -352,10 +352,9 @@ Resultado y conclusión
 
 Este hito tiene prioridad sobre cualquier integración externa.
 
-**Estado:** Cierre técnico completado. Los Bloques 8.1–8.11 están aprobados;
-el flujo vertical y su auditoría final forman el candidato `v0.4.0`. La
-publicación del tag y el paso formal a Fase 9 esperan aprobación del
-propietario.
+**Estado:** Completada y aprobada el 12 de noviembre de 2026. El flujo vertical
+y su auditoría final se publican como `v0.4.0`. Gate G6 — Vertical Alpha está
+aprobado y Fase 9 queda habilitada.
 
 ---
 

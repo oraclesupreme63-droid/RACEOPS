@@ -12,8 +12,8 @@ not a telemetry acquisition or professional analysis replacement.
 Phase 6 — Identity and authorization, completed and approved. Phase 7 —
 Operational Base was published as `v0.2.0`. Phase 8 published Sessions, Laps,
 Sectors and simple result metrics as `v0.3.0`. The complete Session Learning
-Loop is now implemented as the `v0.4.0` release candidate and awaits owner
-approval before its Git tag is published.
+Loop was approved and published as `v0.4.0`. Phase 9 now validates that flow
+with representative data and users before expanding the product.
 RaceOps exposes
 operational APIs for Drivers, Vehicles, Tracks, Events, Sessions, timing
 results, conditions, feedback, observations, analyses and hypotheses

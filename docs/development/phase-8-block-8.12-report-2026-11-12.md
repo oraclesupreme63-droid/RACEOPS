@@ -5,8 +5,8 @@
 - **Fecha:** 12 de noviembre de 2026
 - **Fase:** 8 — Session Learning Loop
 - **Bloque:** 8.12 — Cierre de Fase 8 (`v0.4`)
-- **Resultado:** implementación y verificación completas; pendiente de aprobación
-- **Publicación:** candidato `v0.4.0`, tag pendiente de aprobación
+- **Resultado:** implementación, verificación y aprobación completas
+- **Publicación:** `v0.4.0`
 
 ## 2. Demostración vertical
 
@@ -83,8 +83,8 @@ candidato; el tag `v0.4.0` permanece reservado hasta la aprobación final.
 - Se mantiene una sola verificación global al final del bloque para reducir
   tiempo y consumo, además de la prueba focalizada durante el desarrollo.
 
-## 8. Punto de aprobación
+## 8. Aprobación
 
-Todas las verificaciones están registradas y CI está en verde. Se solicita la
-aprobación del propietario. Si se aprueba, se publicará el tag `v0.4.0`, se
-cerrará Gate G6 y podrá comenzar la Fase 9.
+El propietario aprobó el cierre el 12 de noviembre de 2026. Se publica el tag
+`v0.4.0`, Gate G6 queda aprobado y comienza la Fase 9 — Validación con datos y
+usuarios.

@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- **Fase:** cierre técnico pendiente de aprobación
+- **Fase:** completada y aprobada
 - **Última actualización:** 12 de noviembre de 2026
 - **Entregables intermedios:** `v0.3 — Sessions & Results`
 - **Entregable final:** `v0.4 — Session Learning Loop`
@@ -113,11 +113,10 @@
 - [x] Validación de confidencialidad por Role.
 - [x] Trazabilidad y documentación actualizadas.
 - [x] Evidencia `v0.4.0` y evaluación de Gate G6.
-- [ ] Aprobación de Fase 8.
+- [x] Aprobación de Fase 8.
 
 ## Condición para avanzar
 
-Los Bloques 8.1–8.11 están aprobados. El Bloque 8.12 dispone de una prueba de
-aceptación y trazabilidad completas; su suite final, evidencia `v0.4.0`, Gate
-G6 y aprobación se cierran como una única verificación. El tag no se publicará
-hasta recibir aprobación del propietario.
+Los Bloques 8.1–8.12 están aprobados. La suite final, evidencia `v0.4.0` y Gate
+G6 quedaron verificados. La versión se publica y la validación de producto
+continúa en Fase 9 sin asumir que la automatización demuestra adopción.

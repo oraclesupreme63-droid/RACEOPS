@@ -3,9 +3,9 @@
 ## 1. Información
 
 - **Fecha de evaluación técnica:** 12 de noviembre de 2026
-- **Versión evaluada:** candidato `v0.4.0 — Session Learning Loop`
+- **Versión evaluada:** `v0.4.0 — Session Learning Loop`
 - **Gate:** G6 — Vertical Alpha
-- **Decisión:** técnicamente satisfecho; pendiente de aprobación del propietario
+- **Decisión:** aprobado
 
 ## 2. Objetivo del gate
 
@@ -44,6 +44,7 @@ aprobaron. El job de calidad ejecutó 219 pruebas, incluido el round-trip de
 migraciones sobre PostgreSQL efímero; el job de contenedor verificó imagen,
 stack, endpoints y restricciones de runtime.
 
-El código puede prepararse como candidato `v0.4.0`, pero el tag no se publica
-hasta recibir aprobación explícita del propietario. Esa aprobación cerrará
-Fase 8 y habilitará Fase 9; no convertirá las hipótesis de adopción en hechos.
+El propietario aprobó el cierre el 12 de noviembre de 2026. El tag `v0.4.0`
+puede publicarse, Fase 8 queda cerrada y Fase 9 queda habilitada. Esta decisión
+confirma el funcionamiento del Vertical Alpha; no convierte las hipótesis de
+adopción en hechos.
