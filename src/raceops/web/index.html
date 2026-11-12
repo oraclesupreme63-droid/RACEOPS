@@ -1,0 +1,624 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#101310">
+    <meta
+      name="description"
+      content="Cliente mínimo de validación para el Session Learning Loop de RaceOps."
+    >
+    <title>RaceOps · Session Learning Loop</title>
+    <link rel="stylesheet" href="./styles.css?v=0.4.0-9.2">
+    <script src="./app.js?v=0.4.0-9.2" defer></script>
+  </head>
+  <body>
+    <div class="noise" aria-hidden="true"></div>
+
+    <main id="login-view" class="login-view">
+      <section class="login-brand" aria-labelledby="login-title">
+        <div class="brand-mark brand-mark--large" aria-hidden="true">
+          <span>R</span>
+        </div>
+        <p class="eyebrow">Motorsport team operations</p>
+        <h1 id="login-title">Convierte cada sesión en una decisión útil.</h1>
+        <p class="login-lede">
+          Feedback, evidencia, acciones y resultados en una sola línea de
+          aprendizaje — sin reemplazar tus herramientas de telemetría.
+        </p>
+        <ol class="flow-preview" aria-label="Flujo principal de RaceOps">
+          <li><span>01</span> Sesión</li>
+          <li><span>02</span> Evidencia</li>
+          <li><span>03</span> Acción</li>
+          <li><span>04</span> Resultado</li>
+        </ol>
+      </section>
+
+      <section class="login-panel" aria-label="Acceso a RaceOps">
+        <div class="login-card">
+          <div class="login-card__header">
+            <p class="eyebrow">Validation alpha · v0.4</p>
+            <h2>Entrar al equipo</h2>
+            <p>Usa una cuenta local preparada para la sesión de validación.</p>
+          </div>
+
+          <form id="login-form" class="stack-form">
+            <label>
+              Correo
+              <input
+                id="login-email"
+                name="email"
+                type="email"
+                autocomplete="username"
+                placeholder="driver@raceops.local"
+                required
+              >
+            </label>
+            <label>
+              Contraseña
+              <input
+                id="login-password"
+                name="password"
+                type="password"
+                autocomplete="current-password"
+                minlength="12"
+                required
+              >
+            </label>
+            <label id="team-field" class="is-hidden">
+              Equipo
+              <select id="login-team" name="team_id"></select>
+            </label>
+            <p id="login-error" class="form-error" role="alert"></p>
+            <button class="button button--primary button--wide" type="submit">
+              <span>Entrar a RaceOps</span>
+              <span aria-hidden="true">→</span>
+            </button>
+          </form>
+
+          <div class="login-note">
+            <span class="signal-dot" aria-hidden="true"></span>
+            El token vive sólo durante esta pestaña y se elimina al salir.
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div id="app-shell" class="app-shell is-hidden">
+      <header class="topbar">
+        <a class="brand" href="#" aria-label="RaceOps, inicio">
+          <span class="brand-mark" aria-hidden="true">R</span>
+          <span>
+            <strong>RACE<span>OPS</span></strong>
+            <small>Session control</small>
+          </span>
+        </a>
+
+        <div class="topbar__status" aria-label="Estado del sistema">
+          <span class="signal-dot"></span>
+          <span>API conectada</span>
+        </div>
+
+        <div class="identity-menu">
+          <div class="identity-copy">
+            <strong id="identity-team">—</strong>
+            <span id="identity-role">—</span>
+          </div>
+          <button id="logout-button" class="icon-button" type="button">
+            Salir
+          </button>
+        </div>
+      </header>
+
+      <div class="workspace-layout">
+        <aside class="session-rail" aria-label="Sesiones disponibles">
+          <div class="rail-heading">
+            <div>
+              <p class="eyebrow">Pit wall</p>
+              <h2>Sesiones</h2>
+            </div>
+            <button
+              id="refresh-sessions"
+              class="icon-button icon-button--square"
+              type="button"
+              aria-label="Actualizar sesiones"
+              title="Actualizar sesiones"
+            >
+              ↻
+            </button>
+          </div>
+          <div id="session-list" class="session-list" aria-live="polite"></div>
+          <p id="session-empty" class="empty-copy is-hidden">
+            No hay sesiones visibles para este rol.
+          </p>
+        </aside>
+
+        <main class="workspace-main">
+          <section id="workspace-empty" class="workspace-empty">
+            <div class="empty-glyph" aria-hidden="true">⌁</div>
+            <p class="eyebrow">RaceOps ready</p>
+            <h1>Selecciona una sesión</h1>
+            <p>
+              Revisa lo que pasó, registra lo que sintió el piloto y convierte
+              la evidencia en el siguiente trabajo del equipo.
+            </p>
+          </section>
+
+          <section id="workspace" class="workspace is-hidden" aria-live="polite">
+            <header class="session-hero">
+              <div>
+                <div class="hero-kicker">
+                  <span id="session-status" class="status-pill">—</span>
+                  <span id="session-results-status" class="status-pill status-pill--muted">—</span>
+                </div>
+                <p id="session-event" class="eyebrow">—</p>
+                <h1 id="session-title">—</h1>
+                <p id="session-context" class="session-context">—</p>
+              </div>
+              <div class="hero-time">
+                <span>Programada</span>
+                <strong id="session-date">—</strong>
+                <small id="session-time">—</small>
+              </div>
+            </header>
+
+            <div id="metric-strip" class="metric-strip"></div>
+
+            <nav class="workspace-tabs" aria-label="Áreas de la sesión">
+              <button class="tab-button is-active" data-tab="context" type="button">
+                Contexto
+              </button>
+              <button class="tab-button" data-tab="feedback" type="button">
+                Feedback
+                <span id="feedback-count" class="count-badge">0</span>
+              </button>
+              <button class="tab-button" data-tab="analysis" type="button">
+                Análisis
+              </button>
+              <button class="tab-button" data-tab="actions" type="button">
+                Acciones
+                <span id="action-count" class="count-badge">0</span>
+              </button>
+              <button class="tab-button" data-tab="learning" type="button">
+                Aprendizaje
+              </button>
+            </nav>
+
+            <section id="tab-context" class="tab-panel">
+              <div class="two-column-grid">
+                <article class="panel">
+                  <div class="panel-heading">
+                    <div>
+                      <p class="eyebrow">Session snapshot</p>
+                      <h2>Condiciones</h2>
+                    </div>
+                  </div>
+                  <div id="conditions-content" class="detail-grid"></div>
+                </article>
+
+                <article class="panel">
+                  <div class="panel-heading">
+                    <div>
+                      <p class="eyebrow">Timing</p>
+                      <h2>Vueltas</h2>
+                    </div>
+                  </div>
+                  <div id="laps-content" class="lap-list"></div>
+                </article>
+              </div>
+
+              <article class="panel panel--full">
+                <div class="panel-heading">
+                  <div>
+                    <p class="eyebrow">Technical evidence</p>
+                    <h2>Observaciones</h2>
+                  </div>
+                  <button
+                    id="toggle-observation-form"
+                    class="button button--secondary is-hidden"
+                    type="button"
+                  >
+                    + Nueva observación
+                  </button>
+                </div>
+                <form id="observation-form" class="inline-form is-hidden">
+                  <label class="field-grow">
+                    ¿Qué se observó?
+                    <textarea
+                      name="description"
+                      maxlength="2000"
+                      rows="3"
+                      placeholder="Describe evidencia, no una causa confirmada."
+                      required
+                    ></textarea>
+                  </label>
+                  <label>
+                    Categoría
+                    <input name="category" maxlength="80" placeholder="Frenos, neumáticos…">
+                  </label>
+                  <label>
+                    Visibilidad
+                    <select name="visibility_level">
+                      <option value="ROLE_RESTRICTED">Roles técnicos</option>
+                      <option value="TEAM">Todo el equipo autorizado</option>
+                      <option value="ENGINEERING_CONFIDENTIAL">Ingeniería</option>
+                    </select>
+                  </label>
+                  <div class="form-actions">
+                    <button class="button button--primary" type="submit">Guardar evidencia</button>
+                    <button class="button button--ghost form-cancel" type="button">Cancelar</button>
+                  </div>
+                </form>
+                <div id="observations-content" class="record-list"></div>
+              </article>
+            </section>
+
+            <section id="tab-feedback" class="tab-panel is-hidden">
+              <div class="section-intro">
+                <div>
+                  <p class="eyebrow">Driver voice</p>
+                  <h2>¿Qué sintió el piloto?</h2>
+                </div>
+                <p>
+                  Captura la experiencia sin convertirla todavía en una causa.
+                  Los campos de contexto son opcionales.
+                </p>
+              </div>
+
+              <form id="feedback-form" class="feedback-composer is-hidden">
+                <label class="composer-main">
+                  Feedback
+                  <textarea
+                    name="description"
+                    maxlength="2000"
+                    rows="4"
+                    placeholder="Ej. Inestabilidad trasera al frenar."
+                    required
+                  ></textarea>
+                </label>
+                <div class="composer-fields">
+                  <label>
+                    Curva o zona
+                    <input name="corner_or_zone" maxlength="80" placeholder="T4">
+                  </label>
+                  <label>
+                    Fase
+                    <select name="driving_phase">
+                      <option value="">Sin especificar</option>
+                      <option>Frenada</option>
+                      <option>Entrada</option>
+                      <option>Ápice</option>
+                      <option>Salida</option>
+                      <option>Aceleración</option>
+                    </select>
+                  </label>
+                  <label>
+                    Severidad
+                    <select name="severity">
+                      <option value="">Sin especificar</option>
+                      <option value="LOW">Baja</option>
+                      <option value="MEDIUM">Media</option>
+                      <option value="HIGH">Alta</option>
+                    </select>
+                  </label>
+                  <label>
+                    Confianza
+                    <select name="confidence">
+                      <option value="">Sin especificar</option>
+                      <option value="LOW">Baja</option>
+                      <option value="MEDIUM">Media</option>
+                      <option value="HIGH">Alta</option>
+                    </select>
+                  </label>
+                </div>
+                <div class="form-actions">
+                  <button class="button button--primary" type="submit">
+                    Registrar feedback
+                  </button>
+                  <span class="form-hint">Sólo el relato es obligatorio.</span>
+                </div>
+              </form>
+
+              <div id="feedback-content" class="feedback-timeline"></div>
+            </section>
+
+            <section id="tab-analysis" class="tab-panel is-hidden">
+              <div id="analysis-locked" class="permission-note is-hidden">
+                <strong>Vista autorizada</strong>
+                Este rol recibe únicamente los resúmenes compartidos por Ingeniería.
+              </div>
+
+              <div id="analysis-editor" class="two-column-grid is-hidden">
+                <article class="panel">
+                  <div class="panel-heading">
+                    <div>
+                      <p class="eyebrow">Evidence first</p>
+                      <h2>Nuevo análisis</h2>
+                    </div>
+                  </div>
+                  <form id="analysis-form" class="stack-form stack-form--compact">
+                    <fieldset>
+                      <legend>Evidencia disponible</legend>
+                      <div id="evidence-options" class="check-list"></div>
+                    </fieldset>
+                    <label>
+                      Detalle técnico
+                      <textarea
+                        name="technical_detail"
+                        maxlength="5000"
+                        rows="5"
+                        placeholder="Qué muestran los datos y dónde se pierde rendimiento."
+                        required
+                      ></textarea>
+                    </label>
+                    <label>
+                      Resumen compartido <span>opcional</span>
+                      <textarea
+                        name="authorized_summary"
+                        maxlength="2000"
+                        rows="3"
+                        placeholder="Lo que otros roles sí necesitan saber."
+                      ></textarea>
+                    </label>
+                    <button class="button button--primary" type="submit">Guardar análisis</button>
+                  </form>
+                </article>
+
+                <article class="panel">
+                  <div class="panel-heading">
+                    <div>
+                      <p class="eyebrow">Uncertainty explicit</p>
+                      <h2>Nueva hipótesis</h2>
+                    </div>
+                  </div>
+                  <form id="hypothesis-form" class="stack-form stack-form--compact">
+                    <label>
+                      Análisis base
+                      <select name="analysis_id" required></select>
+                    </label>
+                    <label>
+                      Causa posible
+                      <textarea
+                        name="description"
+                        maxlength="2000"
+                        rows="4"
+                        placeholder="Formula una explicación que todavía debe probarse."
+                        required
+                      ></textarea>
+                    </label>
+                    <div class="form-row">
+                      <label>
+                        Clasificación
+                        <select name="cause_classification">
+                          <option value="DRIVER_TECHNIQUE">Técnica del piloto</option>
+                          <option value="VEHICLE_SETUP">Setup del vehículo</option>
+                          <option value="MECHANICAL">Mecánica</option>
+                          <option value="TIRES">Neumáticos</option>
+                          <option value="TRACK_ENVIRONMENT">Pista / entorno</option>
+                          <option value="UNKNOWN">Desconocida</option>
+                        </select>
+                      </label>
+                      <label>
+                        Confianza
+                        <select name="confidence">
+                          <option value="LOW">Baja</option>
+                          <option value="MEDIUM" selected>Media</option>
+                          <option value="HIGH">Alta</option>
+                        </select>
+                      </label>
+                    </div>
+                    <button class="button button--primary" type="submit">Proponer hipótesis</button>
+                  </form>
+                </article>
+              </div>
+
+              <div id="analysis-content" class="analysis-list"></div>
+            </section>
+
+            <section id="tab-actions" class="tab-panel is-hidden">
+              <div class="section-intro">
+                <div>
+                  <p class="eyebrow">Next session</p>
+                  <h2>Decide qué hacer después</h2>
+                </div>
+                <p>
+                  Mantén de una a tres prioridades principales y asigna trabajo
+                  con un resultado observable.
+                </p>
+              </div>
+
+              <div id="decision-editor" class="two-column-grid is-hidden">
+                <article class="panel">
+                  <div class="panel-heading">
+                    <div>
+                      <p class="eyebrow">Focus</p>
+                      <h2>Nueva prioridad</h2>
+                    </div>
+                  </div>
+                  <form id="priority-form" class="stack-form stack-form--compact">
+                    <label>
+                      Prioridad
+                      <textarea
+                        name="description"
+                        maxlength="2000"
+                        rows="3"
+                        placeholder="Una instrucción concreta para la siguiente sesión."
+                        required
+                      ></textarea>
+                    </label>
+                    <div class="form-row">
+                      <label>
+                        Para
+                        <select name="recipient_role">
+                          <option value="DRIVER">Piloto</option>
+                          <option value="ENGINEER">Ingeniería</option>
+                          <option value="MECHANIC">Mecánica</option>
+                        </select>
+                      </label>
+                      <label>
+                        Orden principal
+                        <select name="rank">
+                          <option value="1">1</option>
+                          <option value="2">2</option>
+                          <option value="3">3</option>
+                        </select>
+                      </label>
+                    </div>
+                    <label>
+                      Hipótesis relacionada <span>opcional</span>
+                      <select name="hypothesis_id"></select>
+                    </label>
+                    <button class="button button--primary" type="submit">Añadir prioridad</button>
+                  </form>
+                </article>
+
+                <article class="panel">
+                  <div class="panel-heading">
+                    <div>
+                      <p class="eyebrow">Ownership</p>
+                      <h2>Nueva acción</h2>
+                    </div>
+                  </div>
+                  <form id="action-form" class="stack-form stack-form--compact">
+                    <div class="form-row">
+                      <label>
+                        Responsable
+                        <select name="assignee_role">
+                          <option value="DRIVER">Piloto</option>
+                          <option value="ENGINEER">Ingeniería</option>
+                          <option value="MECHANIC">Mecánica</option>
+                        </select>
+                      </label>
+                      <label>
+                        Tipo
+                        <select name="action_type">
+                          <option value="DRIVING">Conducción</option>
+                          <option value="ENGINEERING">Ingeniería</option>
+                          <option value="MECHANICAL">Mecánica</option>
+                        </select>
+                      </label>
+                    </div>
+                    <label>
+                      Resumen compartido
+                      <textarea
+                        name="public_summary"
+                        maxlength="2000"
+                        rows="3"
+                        placeholder="Qué debe hacer el responsable."
+                        required
+                      ></textarea>
+                    </label>
+                    <label class="engineering-only-field">
+                      Detalle confidencial <span>opcional</span>
+                      <textarea
+                        name="confidential_detail"
+                        maxlength="5000"
+                        rows="3"
+                        placeholder="Información visible sólo para Ingeniería."
+                      ></textarea>
+                    </label>
+                    <label>
+                      Prioridad relacionada <span>opcional</span>
+                      <select name="priority_id"></select>
+                    </label>
+                    <button class="button button--primary" type="submit">Crear acción</button>
+                  </form>
+                </article>
+              </div>
+
+              <div class="decision-board">
+                <div>
+                  <h3>Prioridades</h3>
+                  <div id="priorities-content" class="priority-list"></div>
+                </div>
+                <div>
+                  <h3>Acciones</h3>
+                  <div id="actions-content" class="action-list"></div>
+                </div>
+              </div>
+            </section>
+
+            <section id="tab-learning" class="tab-panel is-hidden">
+              <div class="learning-hero">
+                <p class="eyebrow">Organizational memory</p>
+                <h2>Lo que el equipo puede recordar</h2>
+                <p>
+                  Abre una acción para recorrer la cadena autorizada desde la
+                  decisión hasta lo que ocurrió después.
+                </p>
+              </div>
+              <div id="learning-content" class="learning-grid"></div>
+            </section>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <dialog id="outcome-dialog" class="modal">
+      <form id="outcome-form" class="modal-card">
+        <header>
+          <div>
+            <p class="eyebrow">Close the loop</p>
+            <h2>Evaluar acción</h2>
+          </div>
+          <button class="icon-button modal-close" type="button" aria-label="Cerrar">×</button>
+        </header>
+        <input name="action_id" type="hidden">
+        <label>
+          Sesión posterior
+          <select name="evaluation_session_id" required></select>
+        </label>
+        <label>
+          Resultado observado
+          <select name="classification">
+            <option value="IMPROVED">Mejoró</option>
+            <option value="WORSENED">Empeoró</option>
+            <option value="NO_MEASURABLE_EFFECT">Sin efecto medible</option>
+            <option value="INCONCLUSIVE">Inconcluso</option>
+          </select>
+        </label>
+        <label>
+          Conclusión compartida
+          <textarea name="public_conclusion" maxlength="2000" rows="3" required></textarea>
+        </label>
+        <label class="engineering-only-field">
+          Conclusión confidencial <span>opcional</span>
+          <textarea name="confidential_conclusion" maxlength="5000" rows="3"></textarea>
+        </label>
+        <label class="engineering-only-field">
+          Estado final de la hipótesis <span>opcional</span>
+          <select name="concluded_hypothesis_status">
+            <option value="">No concluir</option>
+            <option value="SUPPORTED">Respaldada</option>
+            <option value="PARTIALLY_SUPPORTED">Parcialmente respaldada</option>
+            <option value="REJECTED">Rechazada</option>
+            <option value="INCONCLUSIVE">Inconclusa</option>
+          </select>
+        </label>
+        <div class="form-actions">
+          <button class="button button--primary" type="submit">Guardar resultado</button>
+          <button class="button button--ghost modal-close" type="button">Cancelar</button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog id="learning-dialog" class="modal modal--wide">
+      <article class="modal-card">
+        <header>
+          <div>
+            <p class="eyebrow">Learning chain</p>
+            <h2>Cadena de aprendizaje</h2>
+          </div>
+          <button class="icon-button modal-close" type="button" aria-label="Cerrar">×</button>
+        </header>
+        <div id="learning-chain-content" class="chain-view"></div>
+      </article>
+    </dialog>
+
+    <div id="toast-region" class="toast-region" aria-live="polite"></div>
+    <div id="busy-overlay" class="busy-overlay is-hidden" aria-live="polite">
+      <span class="loader" aria-hidden="true"></span>
+      <span>Cargando datos de la sesión…</span>
+    </div>
+  </body>
+</html>

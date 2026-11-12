@@ -19,16 +19,16 @@
 - [x] Definir consentimiento, anonimización y datos prohibidos.
 - [x] Proteger registros privados mediante `.gitignore`.
 - [x] Delimitar el cliente mínimo necesario para observar usuarios.
-- [ ] Aprobación del propietario.
+- [x] Aprobación del propietario.
 
 ### 9.2 — Cliente mínimo de validación
 
-- [ ] Elegir la tecnología mínima y registrar la decisión.
-- [ ] Implementar sólo el recorrido Session Learning Loop.
-- [ ] Usar la API y autorización reales; no duplicar reglas de negocio.
-- [ ] Permitir captura rápida desde computadora y teléfono.
-- [ ] Añadir estados de carga, error y confirmación suficientes para la prueba.
-- [ ] Pruebas técnicas al final del bloque.
+- [x] Elegir la tecnología mínima y registrar la decisión.
+- [x] Implementar sólo el recorrido Session Learning Loop.
+- [x] Usar la API y autorización reales; no duplicar reglas de negocio.
+- [x] Permitir captura rápida desde computadora y teléfono.
+- [x] Añadir estados de carga, error y confirmación suficientes para la prueba.
+- [x] Pruebas técnicas al final del bloque.
 - [ ] Aprobación del propietario.
 
 ### 9.3 — Dataset y ensayo interno

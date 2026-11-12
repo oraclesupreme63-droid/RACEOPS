@@ -13,7 +13,9 @@ Phase 6 — Identity and authorization, completed and approved. Phase 7 —
 Operational Base was published as `v0.2.0`. Phase 8 published Sessions, Laps,
 Sectors and simple result metrics as `v0.3.0`. The complete Session Learning
 Loop was approved and published as `v0.4.0`. Phase 9 now validates that flow
-with representative data and users before expanding the product.
+with representative data and users before expanding the product. A minimal,
+responsive validation client is available at `/app/`; its purpose is to test
+the workflow, not to pre-empt the full frontend planned for Phase 12.
 RaceOps exposes
 operational APIs for Drivers, Vehicles, Tracks, Events, Sessions, timing
 results, conditions, feedback, observations, analyses and hypotheses
@@ -91,7 +93,8 @@ docker compose up -d --wait db
 .\.venv\Scripts\python.exe -m uvicorn raceops.main:app --reload
 ```
 
-Then open `http://127.0.0.1:8000/health` or the generated API documentation
+Then open the validation client at `http://127.0.0.1:8000/app/`, the health
+endpoint at `http://127.0.0.1:8000/health` or the generated API documentation
 at `http://127.0.0.1:8000/docs`.
 
 Available system endpoints:
@@ -404,6 +407,7 @@ including both the Python quality job and the container smoke test.
 - [Gate G6 assessment](docs/development/gate-g6-assessment.md)
 - [Phase 9 checklist](docs/development/phase-9-checklist.md)
 - [Phase 9 validation protocol](docs/validation/validation-protocol.md)
+- [Phase 9 Block 9.2 report](docs/development/phase-9-block-9.2-report-2026-11-12.md)
 - [Session Learning Loop contract](docs/sessions/session-learning-loop-contract.md)
 - [Identity and authorization contract](docs/identity/identity-contract.md)
 - [Technical learning roadmap](docs/development/learning-roadmap.md)

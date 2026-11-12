@@ -18,9 +18,13 @@ historia: un ADR posterior la sustituye cuando cambie la evidencia.
 | [ADR-010](ADR-010-integer-time-durations.md) | Duraciones enteras en microsegundos | Aceptado |
 | [ADR-011](ADR-011-membership-scoped-access-token.md) | Access token limitado a una TeamMembership | Aceptado |
 | [ADR-012](ADR-012-bootstrap-without-public-registration.md) | Bootstrap administrativo sin registro público | Aceptado |
+| [ADR-013](ADR-013-buildless-validation-client.md) | Cliente de validación sin proceso de compilación | Aceptado |
 
 Aceptados mediante Gate G4 el 22 de octubre de 2026.
 
 ADR-011 y ADR-012 fueron aprobados al autorizar el avance al Bloque 6.2 el 8 de
+noviembre de 2026.
+
+ADR-013 fue aceptado al implementar el cliente mínimo del Bloque 9.2 el 12 de
 noviembre de 2026.
 

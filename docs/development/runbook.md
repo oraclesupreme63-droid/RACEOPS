@@ -2,9 +2,9 @@
 
 ## 1. Información del documento
 
-- **Versión:** 1.0
-- **Fecha:** 2026-11-04
-- **Alcance:** `v0.1 — Foundation`
+- **Versión:** 1.1
+- **Fecha:** 2026-11-12
+- **Alcance:** `v0.4 — Session Learning Loop` y cliente de validación
 - **Plataforma principal:** Windows 11 con PowerShell y Docker Desktop
 
 Este documento explica cómo iniciar, verificar, observar y detener RaceOps sin
@@ -51,6 +51,7 @@ resultado correcto de un trabajo de una sola ejecución.
 
 Abrir en el navegador:
 
+- `http://127.0.0.1:8000/app/` — cliente web de validación;
 - `http://127.0.0.1:8000/health` — vida del proceso;
 - `http://127.0.0.1:8000/ready` — disponibilidad de PostgreSQL;
 - `http://127.0.0.1:8000/docs` — interfaz OpenAPI;
@@ -63,9 +64,13 @@ Resultado esperado de readiness:
   "status": "ready",
   "service": "raceops-api",
   "database": "up",
-  "version": "0.3.0"
+  "version": "0.4.0"
 }
 ```
+
+El cliente requiere una cuenta local y datos preparados. En la Fase 9 esos
+datos se crearán mediante el escenario reproducible del Bloque 9.3; no se
+deben introducir credenciales ni información privada reales para probarlo.
 
 ## 5. Logs y diagnóstico básico
 

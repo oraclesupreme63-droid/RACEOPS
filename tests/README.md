@@ -34,6 +34,12 @@ Sessions through the HTTP API and verifies the Engineer, Driver, Team Manager,
 Mechanic and Administrator views. It is reproducible offline and contains no
 real credentials or participant data.
 
+Validation-client coverage verifies that `/app/` serves an accessible,
+responsive entry point, that its assets are present in the installed Python
+package and that the access token is confined to `sessionStorage`. Usability
+itself is measured with participants in Phase 9 and is not claimed by these
+technical tests.
+
 Driver HTTP coverage exercises create, list, read, update, activate and
 deactivate; stable pagination; status filtering; same-Team User links; all
 five Roles; Driver self-scope; cross-Team hiding; safe link conflicts; request

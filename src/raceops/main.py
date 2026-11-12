@@ -16,6 +16,7 @@ from raceops.core.config import Settings, get_settings
 from raceops.core.logging import configure_logging
 from raceops.db.health import SqlAlchemyDatabaseHealthChecker
 from raceops.db.session import build_engine, build_session_factory
+from raceops.web_client import router as web_client_router
 
 logger = logging.getLogger("raceops.lifecycle")
 
@@ -67,6 +68,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     application.state.database_health_checker = SqlAlchemyDatabaseHealthChecker(engine)
     application.include_router(health_router)
     application.include_router(api_router)
+    application.include_router(web_client_router)
     return application
 
 
