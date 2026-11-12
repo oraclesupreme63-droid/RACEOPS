@@ -5,7 +5,7 @@
 - **Fecha:** 12 de noviembre de 2026
 - **Fase:** 8 — Session Learning Loop
 - **Bloque:** 8.12 — Cierre de Fase 8 (`v0.4`)
-- **Resultado:** implementación y verificación local completas; CI en preparación
+- **Resultado:** implementación y verificación completas; pendiente de aprobación
 - **Publicación:** candidato `v0.4.0`, tag pendiente de aprobación
 
 ## 2. Demostración vertical
@@ -59,7 +59,9 @@ al trabajo real debe observarse con usuarios en Fase 9.
 - imagen Docker `raceops-api:local` reconstruida con paquete `0.4.0`;
 - API y PostgreSQL: **healthy**;
 - `/health`: `ok`; `/ready`: `ready`;
-- GitHub Actions: pendiente de registrar después del push.
+- GitHub Actions: **219 pruebas aprobadas**, cobertura **91.88 %**, migración
+  round-trip, `alembic check` y smoke test Docker aprobados en
+  [CI 43263003632](https://github.com/oraclesupreme63-droid/RACEOPS/actions/runs/43263003632).
 
 ## 6. Trazabilidad y versión
 
@@ -83,6 +85,6 @@ candidato; el tag `v0.4.0` permanece reservado hasta la aprobación final.
 
 ## 8. Punto de aprobación
 
-Cuando todas las verificaciones queden registradas y CI esté en verde, se
-solicitará aprobación del propietario. Si se aprueba, se publicará el tag
-`v0.4.0`, se cerrará Gate G6 y podrá comenzar la Fase 9.
+Todas las verificaciones están registradas y CI está en verde. Se solicita la
+aprobación del propietario. Si se aprueba, se publicará el tag `v0.4.0`, se
+cerrará Gate G6 y podrá comenzar la Fase 9.

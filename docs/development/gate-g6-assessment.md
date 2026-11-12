@@ -23,8 +23,8 @@ producto con usuarios y datos autorizados.
 | Cadena recuperable | endpoint `learning-chain` desde Action hasta Outcome | Cumplido |
 | Dataset reproducible | JSON sintético, determinista y sin datos sensibles | Cumplido |
 | Ejecución offline | sólo aplicación y PostgreSQL locales | Cumplido |
-| Calidad técnica | Ruff, mypy, 218 pruebas y 91.88 % de cobertura local | Cumplido localmente; CI pendiente |
-| Migraciones y contenedores | `head`, `alembic check`, imagen `0.4.0`, health y readiness | Cumplido localmente; round-trip en CI pendiente |
+| Calidad técnica | Ruff, mypy, 219 pruebas CI y 91.88 % de cobertura | Cumplido |
+| Migraciones y contenedores | round-trip, `alembic check`, imagen `0.4.0`, health y readiness | Cumplido |
 
 ## 4. Límites aceptados
 
@@ -38,7 +38,12 @@ producto con usuarios y datos autorizados.
 
 ## 5. Decisión de publicación
 
+La verificación local y la ejecución
+[CI 43263003632](https://github.com/oraclesupreme63-droid/RACEOPS/actions/runs/43263003632)
+aprobaron. El job de calidad ejecutó 219 pruebas, incluido el round-trip de
+migraciones sobre PostgreSQL efímero; el job de contenedor verificó imagen,
+stack, endpoints y restricciones de runtime.
+
 El código puede prepararse como candidato `v0.4.0`, pero el tag no se publica
-hasta completar la verificación global y recibir aprobación explícita del
-propietario. Esa aprobación cerrará Fase 8 y habilitará Fase 9; no convertirá
-las hipótesis de adopción en hechos.
+hasta recibir aprobación explícita del propietario. Esa aprobación cerrará
+Fase 8 y habilitará Fase 9; no convertirá las hipótesis de adopción en hechos.
