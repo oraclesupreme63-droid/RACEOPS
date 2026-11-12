@@ -5,7 +5,7 @@
 - **Fecha:** 12 de noviembre de 2026
 - **Fase:** 8 — Session Learning Loop
 - **Bloque:** 8.11 — Outcomes y siguiente Session
-- **Resultado:** implementado y verificado; pendiente de aprobación del propietario
+- **Resultado:** implementado, verificado y aprobado por el propietario
 - **Siguiente bloque:** 8.12 — Cierre de Fase 8 (`v0.4`)
 
 ## 2. Capacidad entregada
@@ -149,9 +149,9 @@ no detectó diferencias.
   no se implementan sin evidencia adicional.
 - No hay recomendación automática ni interpretación de telemetría.
 
-## 12. Punto de aprobación
+## 12. Aprobación
 
-Con aprobación comenzará el Bloque 8.12. Allí se ejecutará y documentará el
-flujo vertical completo con un dataset representativo, se hará la auditoría
-final de permisos y trazabilidad, y se preparará la evidencia `v0.4.0` para el
+El propietario aprobó el Bloque 8.11 el 12 de noviembre de 2026. El Bloque
+8.12 ejecuta y documenta el flujo vertical completo con un dataset sintético
+representativo, la auditoría final de permisos y la evidencia `v0.4.0` para el
 Gate G6 — Vertical Alpha.

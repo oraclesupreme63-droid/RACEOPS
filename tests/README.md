@@ -24,6 +24,16 @@ defaults, timestamps, Team-scoped uniqueness, same-Team Driver/User and
 Event/Track relations, valid Event dates, restrictive historical references
 and the Alembic migration round-trip.
 
+Session Learning Loop coverage validates Session assignment and lifecycle,
+Laps and Sectors, Conditions, Driver Feedback, technical Observations,
+Analysis and Hypotheses, Priorities and Actions, Outcomes and the authorized
+learning-chain projection. The acceptance test
+`acceptance/test_session_learning_loop.py` consumes the deterministic,
+synthetic dataset `fixtures/session_learning_loop_v0.4.json`, executes two
+Sessions through the HTTP API and verifies the Engineer, Driver, Team Manager,
+Mechanic and Administrator views. It is reproducible offline and contains no
+real credentials or participant data.
+
 Driver HTTP coverage exercises create, list, read, update, activate and
 deactivate; stable pagination; status filtering; same-Team User links; all
 five Roles; Driver self-scope; cross-Team hiding; safe link conflicts; request

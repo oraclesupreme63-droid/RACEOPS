@@ -352,9 +352,10 @@ Resultado y conclusión
 
 Este hito tiene prioridad sobre cualquier integración externa.
 
-**Estado:** En progreso. Los Bloques 8.1–8.5 están aprobados y publicados como
-`v0.3.0 — Sessions & Results`. El Bloque 8.6 implementó Conditions opcionales
-por Session y espera aprobación.
+**Estado:** Cierre técnico completado. Los Bloques 8.1–8.11 están aprobados;
+el flujo vertical y su auditoría final forman el candidato `v0.4.0`. La
+publicación del tag y el paso formal a Fase 9 esperan aprobación del
+propietario.
 
 ---
 

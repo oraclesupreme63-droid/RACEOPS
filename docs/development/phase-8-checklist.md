@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- **Fase:** en progreso
+- **Fase:** cierre técnico pendiente de aprobación
 - **Última actualización:** 12 de noviembre de 2026
 - **Entregables intermedios:** `v0.3 — Sessions & Results`
 - **Entregable final:** `v0.4 — Session Learning Loop`
@@ -104,20 +104,20 @@
 - [x] Resultado `IMPROVED`, `WORSENED`, `NO_MEASURABLE_EFFECT` o `INCONCLUSIVE`.
 - [x] Conclusión de Hypothesis sin falsa certeza.
 - [x] Recuperar cadena completa de aprendizaje.
-- [ ] Aprobación del propietario.
+- [x] Aprobación del propietario.
 
 ### 8.12 — Cierre de Fase 8 (`v0.4`)
 
-- [ ] Prueba end-to-end del flujo vertical.
-- [ ] Suite, cobertura, tipos, migraciones y Docker.
-- [ ] Validación de confidencialidad por Role.
-- [ ] Trazabilidad y documentación actualizadas.
-- [ ] Evidencia `v0.4.0` y evaluación de Gate G6.
+- [x] Prueba end-to-end del flujo vertical.
+- [x] Suite, cobertura, tipos, migraciones y Docker.
+- [x] Validación de confidencialidad por Role.
+- [x] Trazabilidad y documentación actualizadas.
+- [x] Evidencia `v0.4.0` y evaluación de Gate G6.
 - [ ] Aprobación de Fase 8.
 
 ## Condición para avanzar
 
-El Bloque 8.5 fue aprobado y publicado como `v0.3.0`. Los Bloques 8.6–8.10
-están aprobados. El Bloque 8.11 está técnicamente completo y espera aprobación
-en su [`reporte`](phase-8-block-8.11-report-2026-11-12.md). Cada bloque
-funcional termina con una sola verificación completa y su punto de aprobación.
+Los Bloques 8.1–8.11 están aprobados. El Bloque 8.12 dispone de una prueba de
+aceptación y trazabilidad completas; su suite final, evidencia `v0.4.0`, Gate
+G6 y aprobación se cierran como una única verificación. El tag no se publicará
+hasta recibir aprobación del propietario.

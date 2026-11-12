@@ -2,8 +2,8 @@
 
 ## 1. Información del documento
 
-- **Versión:** 1.1
-- **Estado:** Actualizada con evidencia de implementación de Fase 6
+- **Versión:** 1.2
+- **Estado:** Actualizada con evidencia de implementación de Fase 8
 - **Objetivo:** Conectar evidencia, actores, historias, casos de uso,
   requisitos, aceptación y backlog.
 

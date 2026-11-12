@@ -10,11 +10,10 @@ not a telemetry acquisition or professional analysis replacement.
 ## Current status
 
 Phase 6 — Identity and authorization, completed and approved. Phase 7 —
-Operational Base was published as `v0.2.0`. Phase 8 has published Sessions,
-Laps, Sectors and simple result metrics as `v0.3.0`; Conditions and Driver
-Feedback, and Observations are approved; Analysis and Hypotheses are now
-approved; Priorities and Actions are approved; Outcomes and the authorized
-learning chain are implemented pending approval.
+Operational Base was published as `v0.2.0`. Phase 8 published Sessions, Laps,
+Sectors and simple result metrics as `v0.3.0`. The complete Session Learning
+Loop is now implemented as the `v0.4.0` release candidate and awaits owner
+approval before its Git tag is published.
 RaceOps exposes
 operational APIs for Drivers, Vehicles, Tracks, Events, Sessions, timing
 results, conditions, feedback, observations, analyses and hypotheses
@@ -400,6 +399,9 @@ including both the Python quality job and the container smoke test.
 - [Phase 8 Block 8.9 report](docs/development/phase-8-block-8.9-report-2026-11-11.md)
 - [Phase 8 Block 8.10 report](docs/development/phase-8-block-8.10-report-2026-11-11.md)
 - [Phase 8 Block 8.11 report](docs/development/phase-8-block-8.11-report-2026-11-12.md)
+- [Phase 8 closure report](docs/development/phase-8-block-8.12-report-2026-11-12.md)
+- [Phase 8 implementation traceability](docs/development/phase-8-traceability.md)
+- [Gate G6 assessment](docs/development/gate-g6-assessment.md)
 - [Session Learning Loop contract](docs/sessions/session-learning-loop-contract.md)
 - [Identity and authorization contract](docs/identity/identity-contract.md)
 - [Technical learning roadmap](docs/development/learning-roadmap.md)
@@ -410,6 +412,8 @@ including both the Python quality job and the container smoke test.
 ## Scope discipline
 
 RaceOps remains a modular monolith. Phase 7 built the minimum operational
-resources required by Session. Phase 8 now implements the Session Learning
-Loop in vertical, independently approved blocks.
+resources required by Session. Phase 8 implements the complete Session
+Learning Loop in vertical, independently approved blocks. Phase 9 will test
+its usefulness and usability with representative or authorized real users and
+data; those product claims are deliberately not inferred from automated tests.
 

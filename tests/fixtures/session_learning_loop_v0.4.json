@@ -1,0 +1,123 @@
+{
+  "track": {
+    "name": "Kartodromo Sierra Synthetic",
+    "location": "Mexico"
+  },
+  "event": {
+    "name": "RaceOps Validation Weekend",
+    "starts_on": "2026-11-22",
+    "ends_on": "2026-11-22",
+    "description": "Synthetic and non-sensitive v0.4 validation event."
+  },
+  "driver": {
+    "display_name": "Alex Synthetic"
+  },
+  "vehicle": {
+    "identifier": "KART-SYN-27"
+  },
+  "source_session": {
+    "session_type": "Practice 1",
+    "scheduled_at": "2026-11-22T09:00:00-06:00"
+  },
+  "evaluation_session": {
+    "session_type": "Practice 2",
+    "scheduled_at": "2026-11-22T10:30:00-06:00"
+  },
+  "source_conditions": {
+    "ambient_temperature": 22.5,
+    "ambient_temperature_unit": "C",
+    "track_temperature": 28.0,
+    "track_temperature_unit": "C",
+    "weather": "Dry",
+    "track_condition": "Clean",
+    "source": "Manual synthetic reading"
+  },
+  "evaluation_conditions": {
+    "ambient_temperature": 23.0,
+    "ambient_temperature_unit": "C",
+    "track_temperature": 29.0,
+    "track_temperature_unit": "C",
+    "weather": "Dry",
+    "track_condition": "Clean",
+    "source": "Manual synthetic reading"
+  },
+  "source_laps": [
+    {
+      "lap_number": 1,
+      "duration_us": 65000000,
+      "sectors": [
+        {"sector_order": 1, "duration_us": 32000000},
+        {"sector_order": 2, "duration_us": 33000000}
+      ]
+    },
+    {
+      "lap_number": 2,
+      "duration_us": 64000000,
+      "sectors": [
+        {"sector_order": 1, "duration_us": 31500000},
+        {"sector_order": 2, "duration_us": 32500000}
+      ]
+    }
+  ],
+  "evaluation_laps": [
+    {
+      "lap_number": 1,
+      "duration_us": 63000000,
+      "sectors": [
+        {"sector_order": 1, "duration_us": 31000000},
+        {"sector_order": 2, "duration_us": 32000000}
+      ]
+    },
+    {
+      "lap_number": 2,
+      "duration_us": 62800000,
+      "sectors": [
+        {"sector_order": 1, "duration_us": 30900000},
+        {"sector_order": 2, "duration_us": 31900000}
+      ]
+    }
+  ],
+  "source_feedback": {
+    "description": "Rear instability under braking at T4.",
+    "corner_or_zone": "T4",
+    "driving_phase": "Entry",
+    "severity": "Medium",
+    "confidence": "High"
+  },
+  "evaluation_feedback": {
+    "description": "Rear movement reduced and brake release felt more progressive.",
+    "corner_or_zone": "T4",
+    "driving_phase": "Entry",
+    "severity": "Low",
+    "confidence": "High"
+  },
+  "observation": {
+    "description": "Rear movement reproduced during abrupt brake release.",
+    "category": "HANDLING"
+  },
+  "analysis": {
+    "technical_detail": "Lap trace context and feedback both point to abrupt brake release at T4.",
+    "authorized_summary": "Engineering is working with the driver on rear stability at T4."
+  },
+  "hypothesis": {
+    "description": "Abrupt brake release may amplify rear instability at T4.",
+    "cause_classification": "DRIVER_TECHNIQUE",
+    "confidence": "MEDIUM"
+  },
+  "priority": {
+    "recipient_role": "DRIVER",
+    "description": "Use a progressive brake release at T4."
+  },
+  "action": {
+    "assignee_role": "DRIVER",
+    "action_type": "DRIVING",
+    "public_summary": "Release the brake progressively at T4.",
+    "confidential_detail": "Compare the release trace and rear response against Practice 1."
+  },
+  "outcome": {
+    "classification": "IMPROVED",
+    "public_conclusion": "Lap time and driver feedback improved in Practice 2.",
+    "confidential_conclusion": "Best lap improved by 1.2 seconds with reduced reported instability.",
+    "concluded_hypothesis_status": "PARTIALLY_SUPPORTED"
+  }
+}
