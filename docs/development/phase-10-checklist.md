@@ -24,15 +24,15 @@ autorizada.
 - [x] Fijar relaciones opcionales con Session, Observation y Action.
 - [x] Separar intervención de disponibilidad del Vehicle.
 - [x] Definir RBAC, API, errores, integridad y criterios de aceptación.
-- [ ] Aprobación del propietario.
+- [x] Aprobación del propietario.
 
 ### 10.2 — Persistencia
 
-- [ ] Añadir enums y modelo `MaintenanceRecord`.
-- [ ] Proteger ownership mediante FKs compuestas por Team.
-- [ ] Añadir checks, índices y relaciones restrictivas.
-- [ ] Crear migración Alembic reversible.
-- [ ] Probar invariantes y round-trip.
+- [x] Añadir enums y modelo `MaintenanceRecord`.
+- [x] Proteger ownership mediante FKs compuestas por Team.
+- [x] Añadir checks, índices y relaciones restrictivas.
+- [x] Crear migración Alembic reversible.
+- [x] Probar invariantes y round-trip.
 - [ ] Aprobación del propietario.
 
 ### 10.3 — Creación y consulta

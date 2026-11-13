@@ -91,7 +91,17 @@
 | INV-049 | Fechas persistidas usan UTC | Infraestructura y pruebas |
 | INV-050 | Métricas pueden reproducirse desde datos canónicos | Servicio de dominio y pruebas |
 
-## 9. Estrategia de protección
+## 9. Mantenimiento
+
+| ID | Invariante | Protección esperada |
+|---|---|---|
+| INV-051 | Maintenance Record, Vehicle, usuarios y contexto pertenecen al mismo Team | FKs compuestas y servicio |
+| INV-052 | Maintenance Record nuevo inicia `OPEN` y `ROLE_RESTRICTED` | Modelo y DB |
+| INV-053 | Estado terminal exige conclusión o motivo y timestamp coherentes | Dominio y checks DB |
+| INV-054 | Completar intervención no cambia Vehicle a `READY` | Separación de servicios |
+| INV-055 | Una relación causal opcional nunca se inventa | Servicio y campos nullable |
+
+## 10. Estrategia de protección
 
 Cada invariante deberá asignarse durante arquitectura a una o más capas:
 

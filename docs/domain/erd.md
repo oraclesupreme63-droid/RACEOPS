@@ -254,6 +254,7 @@ erDiagram
     OBSERVATION o|--o{ MAINTENANCE_RECORD : may_origin
     ACTION o|--o{ MAINTENANCE_RECORD : may_origin
     USER ||--o{ MAINTENANCE_RECORD : responsible
+    USER ||--o{ MAINTENANCE_RECORD : creates
 
     TELEMETRY_REFERENCE {
         uuid telemetry_reference_id PK
@@ -270,12 +271,18 @@ erDiagram
         uuid team_id FK
         uuid vehicle_id FK
         uuid responsible_user_id FK
+        uuid created_by_user_id FK
         uuid session_id FK_nullable
         uuid observation_id FK_nullable
         uuid action_id FK_nullable
         string maintenance_type
+        string status
         string description
-        datetime performed_at
+        string completion_notes_nullable
+        string cancellation_reason_nullable
+        datetime started_at_nullable
+        datetime completed_at_nullable
+        datetime cancelled_at_nullable
         string visibility_level
     }
 ```
@@ -293,7 +300,9 @@ erDiagram
 7. Una Observation debe relacionarse al menos con Session o Vehicle.
 8. Un Outcome necesita Action y evaluation Session del mismo Team.
 9. `IMPROVED` requiere referencia a evidencia posterior.
-10. La combinación usada para limitar Main Priorities debe poder aplicarse
+10. Maintenance Record y todas sus referencias conservan el mismo `team_id`.
+11. Completar Maintenance Record no cambia Vehicle a `READY`.
+12. La combinación usada para limitar Main Priorities debe poder aplicarse
     transaccionalmente.
 
 ## 5. Decisiones pendientes de persistencia

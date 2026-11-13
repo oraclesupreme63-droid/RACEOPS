@@ -2,7 +2,7 @@
 
 **Fecha:** 13 de noviembre de 2026
 
-**Estado:** contrato preparado; pendiente de aprobación del propietario
+**Estado:** aprobado por el propietario
 
 ## Resultado
 
@@ -31,3 +31,5 @@ ello el trabajo técnico no se presentará como prueba de adopción.
 
 Con aprobación comienza 10.2 — persistencia: enums, modelo SQLAlchemy,
 restricciones Team-safe, migración reversible y pruebas PostgreSQL.
+
+El propietario aprobó el contrato el 13 de noviembre de 2026.

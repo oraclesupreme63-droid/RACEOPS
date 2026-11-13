@@ -255,3 +255,21 @@ El contrato queda listo para persistencia cuando el propietario apruebe:
 - exclusión de Driver del historial técnico;
 - permisos específicos de mantenimiento y disponibilidad;
 - entregas pequeñas de la checklist de Fase 10.
+
+## 14. Evidencia de persistencia
+
+El Bloque 10.2 materializó `MaintenanceRecord` y la revisión
+`20261113_0012_maintenance` con:
+
+- enums privados `maintenance_type` y `maintenance_status`;
+- ownership compuesto para Vehicle, responsable, creador y contexto opcional;
+- checks de texto, estado, timestamps y visibilidad;
+- cinco índices de consulta por Team;
+- historial restrictivo sin cascadas destructivas;
+- migración reversible validada en CI efímero;
+- pruebas PostgreSQL que confirman defaults, contexto y rechazo entre Teams.
+
+La consistencia semántica entre Vehicle, Session, Observation y Action se
+validará en servicios durante el Bloque 10.5. Las FKs actuales garantizan
+pertenencia al Team, pero deliberadamente no simulan reglas entre tablas que
+PostgreSQL no puede expresar mediante un `CHECK` local.

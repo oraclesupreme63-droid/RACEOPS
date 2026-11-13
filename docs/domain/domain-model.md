@@ -76,7 +76,7 @@
 | Entidad | Identidad | Datos esenciales | Reglas principales |
 |---|---|---|---|
 | TelemetryReference | `telemetry_reference_id` | team, session, sistema, nombre, ubicación autorizada, notas | No implica lectura o importación |
-| MaintenanceRecord | `maintenance_id` | team, vehicle, tipo, descripción, responsable, fecha | Puede relacionarse con Observation, Session o Action |
+| MaintenanceRecord | `maintenance_id` | team, vehicle, responsable, tipo, status, descripción, conclusión/timestamps | Puede relacionarse con Observation, Session o Action; terminar no libera Vehicle |
 
 ## 5. Objetos de valor
 
