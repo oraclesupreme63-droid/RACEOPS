@@ -1,7 +1,7 @@
 # Fase 9 — Dataset de timing público
 
 **Fecha:** 13 de noviembre de 2026
-**Estado:** técnicamente listo; pendiente de aprobación del propietario y CI
+**Estado:** técnicamente verificado; pendiente de aprobación del propietario
 
 ## Resultado buscado
 
@@ -50,3 +50,15 @@ se volvió anormalmente lento en el entorno Windows. Hasta la detención no hab�
 fallos. Para evitar repetir trabajo y tiempo improductivo, la verificación
 global definitiva se delega a CI en un PostgreSQL limpio; el bloque no se
 declarará verificado si ese flujo falla.
+
+## Verificación global
+
+GitHub Actions completó correctamente el flujo
+[CI 43467770393](https://github.com/oraclesupreme63-droid/RACEOPS/actions/runs/43467770393):
+
+- `235 passed` en 55.63 segundos;
+- cobertura total `91.66 %`, por encima del mínimo de 90 %;
+- formato, lint y mypy aprobados;
+- metadata ORM alineada con migraciones;
+- imagen de producción construida;
+- endpoints HTTP y restricciones del contenedor verificados.
