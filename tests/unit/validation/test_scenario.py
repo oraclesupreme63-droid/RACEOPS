@@ -29,6 +29,44 @@ def test_frozen_scenario_contains_uncertainty_and_partial_data() -> None:
     assert scenario.rehearsal["hypothesis"]
 
 
+def test_public_dataset_preserves_source_boundary_and_exact_sector_totals() -> None:
+    scenario = load_validation_scenario("public-kristianstad-2025")
+
+    assert scenario.version == "phase-9-public-v1"
+    assert scenario.event_end_date is not None
+    assert scenario.published_source is not None
+    assert scenario.published_source.source_type == "PUBLIC_TIMING"
+    assert scenario.driver_name == "Public Driver 027"
+    assert len(scenario.source_session.laps) == 13
+    assert len(scenario.evaluation_session.laps) == 25
+
+    all_laps = scenario.source_session.laps + scenario.evaluation_session.laps
+    assert all(len(lap.sectors) == 3 for lap in all_laps)
+    assert all(
+        sum(sector.duration_us for sector in lap.sectors) == lap.duration_us
+        for lap in all_laps
+    )
+
+    source_best = min(lap.duration_us for lap in scenario.source_session.laps)
+    evaluation_best = min(lap.duration_us for lap in scenario.evaluation_session.laps)
+    assert source_best == 50_368_000
+    assert evaluation_best == 50_348_000
+    assert evaluation_best - source_best == -20_000
+
+
+def test_public_dataset_is_available_from_cli() -> None:
+    options = seed_scenario._build_parser().parse_args(
+        [
+            "--scenario-id",
+            "public-round",
+            "--dataset",
+            "public-kristianstad-2025",
+        ]
+    )
+
+    assert options.dataset == "public-kristianstad-2025"
+
+
 @pytest.mark.parametrize(
     ("raw", "expected"),
     [(" Round-1 ", "round-1"), ("pilot02", "pilot02")],

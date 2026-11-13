@@ -18,6 +18,9 @@ ignoradas por Git. La ausencia de esos archivos en Git es intencional.
 Documentos públicos:
 
 - `validation-protocol.md`: contrato, tareas, métricas y decisiones;
+- `scenario-phase-9-v1.md`: dataset completamente sintético e imperfecto;
+- `scenario-public-kristianstad-2025.md`: dataset de timing público con
+  procedencia y límites de inferencia;
 - `participant-test-guide.md`: preparación y guion neutral del facilitador;
 - `templates/consent-template.md`: consentimiento breve para cada sesión;
 - `templates/participant-invitation-template.md`: mensaje de invitación;

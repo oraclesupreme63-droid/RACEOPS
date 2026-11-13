@@ -40,11 +40,22 @@
 - [x] Congelar escenario y versión de validación.
 - [x] Aprobación del propietario.
 
+### 9.3A — Dataset suplementario de timing público
+
+- [x] Seleccionar una publicación trazable de FIA Karting/Apex Timing.
+- [x] Incorporar dos sesiones del mismo kart con vueltas y sectores.
+- [x] Seudonimizar la identidad dentro de RaceOps.
+- [x] Separar hechos publicados de campos sintéticos del ejercicio.
+- [x] Verificar unidades, sumas de sectores y mejores vueltas.
+- [x] Probar persistencia PostgreSQL y reglas de procedencia.
+- [ ] Aprobación del propietario.
+
 ### 9.4 — Pruebas con participantes
 
 > Aplazadas el 13 de noviembre de 2026. Mientras tanto sólo se utilizará el
-> escenario sintético `phase-9-v1`. Las pruebas técnicas no contarán como
-> evidencia de usabilidad, adopción ni ajuste al trabajo real.
+> escenario sintético `phase-9-v1` o el dataset de timing público
+> `phase-9-public-v1`. Las pruebas técnicas no contarán como evidencia de
+> usabilidad, adopción ni ajuste al trabajo real.
 
 - [ ] Obtener consentimiento antes de cada sesión.
 - [ ] Observar tareas sin enseñar el flujo durante la medición.

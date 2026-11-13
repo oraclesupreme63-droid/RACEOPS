@@ -79,10 +79,20 @@ Crear una instancia nueva sin sobrescribir otra:
   --scenario-id pilot-round-2
 ```
 
+Para cargar el dataset de tiempos públicos de Kristianstad 2025:
+
+```powershell
+.\.venv\Scripts\python.exe -m raceops.validation.seed_scenario `
+  --scenario-id public-kristianstad-1 `
+  --dataset public-kristianstad-2025
+```
+
 El comando pide una contraseña compartida de prueba dos veces y después
 muestra los cinco correos locales. Sólo funciona en entorno `local` o `test`.
 Consultar la guía
-`docs/validation/scenario-phase-9-v1.md` antes de una sesión observada.
+`docs/validation/scenario-phase-9-v1.md` para el caso completamente sintético
+o `docs/validation/scenario-public-kristianstad-2025.md` para el caso basado en
+timing público.
 
 ## 5. Logs y diagnóstico básico
 

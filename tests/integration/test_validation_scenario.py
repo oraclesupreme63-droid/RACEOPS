@@ -18,6 +18,7 @@ from raceops.iam.models import TeamMembership, User
 from raceops.learning.models import Observation
 from raceops.sessions.enums import LapClassification, ResultsStatus, SectorStatus
 from raceops.sessions.models import ConditionSnapshot, Lap, RaceSession, Sector
+from raceops.validation.scenario import load_validation_scenario
 from raceops.validation.seed_scenario import (
     ValidationScenarioConflictError,
     seed_validation_scenario,
@@ -128,3 +129,45 @@ def test_seed_creates_role_accounts_and_imperfect_replay_data(
             scenario_id=scenario_id,
             password=PASSWORD,
         )
+
+
+@pytest.mark.integration
+@requires_database
+def test_public_timing_dataset_is_seeded_with_provenance_preserved(
+    database_engine: Engine,
+) -> None:
+    scenario_id = f"public-{uuid4().hex[:10]}"
+    result = seed_validation_scenario(
+        session_factory=sessionmaker(database_engine),
+        environment="test",
+        scenario_id=scenario_id,
+        password=PASSWORD,
+        definition=load_validation_scenario("public-kristianstad-2025"),
+    )
+
+    with Session(database_engine) as session:
+        sessions = list(
+            session.scalars(
+                select(RaceSession)
+                .where(RaceSession.team_id == result.team_id)
+                .order_by(RaceSession.started_at)
+            )
+        )
+        lap_counts = [
+            session.scalar(
+                select(func.count())
+                .select_from(Lap)
+                .where(Lap.session_id == race_session.session_id)
+            )
+            for race_session in sessions
+        ]
+        sector_count = session.scalar(
+            select(func.count())
+            .select_from(Sector)
+            .join(Lap, Lap.lap_id == Sector.lap_id)
+            .where(Lap.session_id.in_([item.session_id for item in sessions]))
+        )
+
+    assert result.version == "phase-9-public-v1"
+    assert lap_counts == [13, 25]
+    assert sector_count == 114

@@ -26,6 +26,7 @@ from raceops.sessions.enums import ResultsStatus, SessionStatus
 from raceops.sessions.models import ConditionSnapshot, Lap, RaceSession, Sector
 from raceops.validation.scenario import (
     SessionSeed,
+    ValidationDatasetName,
     ValidationScenarioDefinition,
     load_validation_scenario,
 )
@@ -140,7 +141,7 @@ def seed_validation_scenario(
                 track_id=track.track_id,
                 name=scenario.event_name,
                 starts_on=scenario.event_date,
-                ends_on=scenario.event_date,
+                ends_on=scenario.event_end_date or scenario.event_date,
                 description=scenario.event_description,
                 status=EventStatus.COMPLETED,
             )
@@ -296,7 +297,12 @@ def main(arguments: Sequence[str] | None = None) -> int:
 
     try:
         password = _read_confirmed_password()
-        result = _seed_from_settings(settings, options.scenario_id, password)
+        result = _seed_from_settings(
+            settings,
+            options.scenario_id,
+            password,
+            dataset=options.dataset,
+        )
     except ValidationScenarioError as error:
         logger.error(str(error), extra={"event": "validation.seed_rejected"})
         return 1
@@ -312,7 +318,11 @@ def main(arguments: Sequence[str] | None = None) -> int:
 
 
 def _seed_from_settings(
-    settings: Settings, scenario_id: str, password: str
+    settings: Settings,
+    scenario_id: str,
+    password: str,
+    *,
+    dataset: ValidationDatasetName,
 ) -> ValidationScenarioResult:
     engine = build_engine(settings)
     try:
@@ -321,6 +331,7 @@ def _seed_from_settings(
             environment=settings.env,
             scenario_id=scenario_id,
             password=password,
+            definition=load_validation_scenario(dataset),
         )
     finally:
         engine.dispose()
@@ -331,6 +342,12 @@ def _build_parser() -> argparse.ArgumentParser:
         description="Create local Role accounts and the frozen Phase 9 scenario."
     )
     parser.add_argument("--scenario-id", default="round-1")
+    parser.add_argument(
+        "--dataset",
+        choices=("synthetic", "public-kristianstad-2025"),
+        default="synthetic",
+        help="Frozen dataset to create (default: synthetic).",
+    )
     return parser
 
 

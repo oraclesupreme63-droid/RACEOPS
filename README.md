@@ -107,6 +107,15 @@ Create an isolated Phase 9 validation scenario when needed:
   --scenario-id pilot-round-2
 ```
 
+Create the public-timing scenario based on the FIA Karting 2025 Kristianstad
+booklet:
+
+```powershell
+.\.venv\Scripts\python.exe -m raceops.validation.seed_scenario `
+  --scenario-id public-kristianstad-1 `
+  --dataset public-kristianstad-2025
+```
+
 The command is local/test-only, prompts for a shared disposable password and
 never prints or accepts that password as a command-line argument.
 

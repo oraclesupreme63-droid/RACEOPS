@@ -1,0 +1,150 @@
+{
+  "version": "phase-9-public-v1",
+  "title": "Public FIA Karting timing — Kristianstad 2025",
+  "team_name": "RaceOps Public Timing Study",
+  "track_name": "Kristianstad public timing venue",
+  "track_location": "Kristianstad, Sweden",
+  "event_name": "Mondokart.com FIA Karting World Championship — OK",
+  "event_date": "2025-09-11",
+  "event_end_date": "2025-09-14",
+  "event_description": "Public timing facts from FIA Karting/Apex Timing. Participant identity is pseudonymized in RaceOps; workflow context is a labeled exercise.",
+  "driver_name": "Public Driver 027",
+  "vehicle_identifier": "PUBLIC-KART-027",
+  "source_session": {
+    "session_type": "Qualifying Heat D-F — published timing",
+    "scheduled_at": "2025-09-13T14:28:46+02:00",
+    "started_at": "2025-09-13T14:28:46+02:00",
+    "ended_at": "2025-09-13T14:40:07+02:00",
+    "conditions": {
+      "ambient_temperature": 21,
+      "ambient_temperature_unit": "C",
+      "track_temperature": null,
+      "track_temperature_unit": null,
+      "weather": "Scattered cloud",
+      "track_condition": "Dry",
+      "source": "FIA Karting/Apex Timing public result; scheduled_at mirrors published Start Time"
+    },
+    "laps": [
+      {"lap_number": 1, "duration_us": 53196000, "source": "IMPORTED", "classification": "VALID", "sectors": [{"sector_order": 1, "duration_us": 16039000, "status": "VALID"}, {"sector_order": 2, "duration_us": 19701000, "status": "VALID"}, {"sector_order": 3, "duration_us": 17456000, "status": "VALID"}]},
+      {"lap_number": 2, "duration_us": 52601000, "source": "IMPORTED", "classification": "VALID", "sectors": [{"sector_order": 1, "duration_us": 15682000, "status": "VALID"}, {"sector_order": 2, "duration_us": 19559000, "status": "VALID"}, {"sector_order": 3, "duration_us": 17360000, "status": "VALID"}]},
+      {"lap_number": 3, "duration_us": 51514000, "source": "IMPORTED", "classification": "VALID", "sectors": [{"sector_order": 1, "duration_us": 15394000, "status": "VALID"}, {"sector_order": 2, "duration_us": 19067000, "status": "VALID"}, {"sector_order": 3, "duration_us": 17053000, "status": "VALID"}]},
+      {"lap_number": 4, "duration_us": 50878000, "source": "IMPORTED", "classification": "VALID", "sectors": [{"sector_order": 1, "duration_us": 15017000, "status": "VALID"}, {"sector_order": 2, "duration_us": 18852000, "status": "VALID"}, {"sector_order": 3, "duration_us": 17009000, "status": "VALID"}]},
+      {"lap_number": 5, "duration_us": 51486000, "source": "IMPORTED", "classification": "VALID", "sectors": [{"sector_order": 1, "duration_us": 14982000, "status": "VALID"}, {"sector_order": 2, "duration_us": 19557000, "status": "VALID"}, {"sector_order": 3, "duration_us": 16947000, "status": "VALID"}]},
+      {"lap_number": 6, "duration_us": 51015000, "source": "IMPORTED", "classification": "VALID", "sectors": [{"sector_order": 1, "duration_us": 14968000, "status": "VALID"}, {"sector_order": 2, "duration_us": 19122000, "status": "VALID"}, {"sector_order": 3, "duration_us": 16925000, "status": "VALID"}]},
+      {"lap_number": 7, "duration_us": 50489000, "source": "IMPORTED", "classification": "VALID", "sectors": [{"sector_order": 1, "duration_us": 14911000, "status": "VALID"}, {"sector_order": 2, "duration_us": 18722000, "status": "VALID"}, {"sector_order": 3, "duration_us": 16856000, "status": "VALID"}]},
+      {"lap_number": 8, "duration_us": 50444000, "source": "IMPORTED", "classification": "VALID", "sectors": [{"sector_order": 1, "duration_us": 14906000, "status": "VALID"}, {"sector_order": 2, "duration_us": 18693000, "status": "VALID"}, {"sector_order": 3, "duration_us": 16845000, "status": "VALID"}]},
+      {"lap_number": 9, "duration_us": 50392000, "source": "IMPORTED", "classification": "VALID", "sectors": [{"sector_order": 1, "duration_us": 14901000, "status": "VALID"}, {"sector_order": 2, "duration_us": 18658000, "status": "VALID"}, {"sector_order": 3, "duration_us": 16833000, "status": "VALID"}]},
+      {"lap_number": 10, "duration_us": 50451000, "source": "IMPORTED", "classification": "VALID", "sectors": [{"sector_order": 1, "duration_us": 14901000, "status": "VALID"}, {"sector_order": 2, "duration_us": 18652000, "status": "VALID"}, {"sector_order": 3, "duration_us": 16898000, "status": "VALID"}]},
+      {"lap_number": 11, "duration_us": 50368000, "source": "IMPORTED", "classification": "VALID", "sectors": [{"sector_order": 1, "duration_us": 14891000, "status": "VALID"}, {"sector_order": 2, "duration_us": 18635000, "status": "VALID"}, {"sector_order": 3, "duration_us": 16842000, "status": "VALID"}]},
+      {"lap_number": 12, "duration_us": 50432000, "source": "IMPORTED", "classification": "VALID", "sectors": [{"sector_order": 1, "duration_us": 14891000, "status": "VALID"}, {"sector_order": 2, "duration_us": 18641000, "status": "VALID"}, {"sector_order": 3, "duration_us": 16900000, "status": "VALID"}]},
+      {"lap_number": 13, "duration_us": 51843000, "source": "IMPORTED", "classification": "VALID", "sectors": [{"sector_order": 1, "duration_us": 15082000, "status": "VALID"}, {"sector_order": 2, "duration_us": 19650000, "status": "VALID"}, {"sector_order": 3, "duration_us": 17111000, "status": "VALID"}]}
+    ]
+  },
+  "evaluation_session": {
+    "session_type": "Final — published timing",
+    "scheduled_at": "2025-09-14T13:58:51+02:00",
+    "started_at": "2025-09-14T13:58:51+02:00",
+    "ended_at": "2025-09-14T14:20:37+02:00",
+    "conditions": {
+      "ambient_temperature": 18,
+      "ambient_temperature_unit": "C",
+      "track_temperature": null,
+      "track_temperature_unit": null,
+      "weather": "Scattered cloud",
+      "track_condition": "Dry",
+      "source": "FIA Karting/Apex Timing public result; scheduled_at mirrors published Start Time"
+    },
+    "laps": [
+      {"lap_number": 1, "duration_us": 55710000, "source": "IMPORTED", "classification": "VALID", "sectors": [{"sector_order": 1, "duration_us": 17379000, "status": "VALID"}, {"sector_order": 2, "duration_us": 20804000, "status": "VALID"}, {"sector_order": 3, "duration_us": 17527000, "status": "VALID"}]},
+      {"lap_number": 2, "duration_us": 53015000, "source": "IMPORTED", "classification": "VALID", "sectors": [{"sector_order": 1, "duration_us": 15110000, "status": "VALID"}, {"sector_order": 2, "duration_us": 20616000, "status": "VALID"}, {"sector_order": 3, "duration_us": 17289000, "status": "VALID"}]},
+      {"lap_number": 3, "duration_us": 54135000, "source": "IMPORTED", "classification": "VALID", "sectors": [{"sector_order": 1, "duration_us": 15729000, "status": "VALID"}, {"sector_order": 2, "duration_us": 20975000, "status": "VALID"}, {"sector_order": 3, "duration_us": 17431000, "status": "VALID"}]},
+      {"lap_number": 4, "duration_us": 50860000, "source": "IMPORTED", "classification": "VALID", "sectors": [{"sector_order": 1, "duration_us": 14889000, "status": "VALID"}, {"sector_order": 2, "duration_us": 19009000, "status": "VALID"}, {"sector_order": 3, "duration_us": 16962000, "status": "VALID"}]},
+      {"lap_number": 5, "duration_us": 50566000, "source": "IMPORTED", "classification": "VALID", "sectors": [{"sector_order": 1, "duration_us": 14928000, "status": "VALID"}, {"sector_order": 2, "duration_us": 18806000, "status": "VALID"}, {"sector_order": 3, "duration_us": 16832000, "status": "VALID"}]},
+      {"lap_number": 6, "duration_us": 50654000, "source": "IMPORTED", "classification": "VALID", "sectors": [{"sector_order": 1, "duration_us": 14777000, "status": "VALID"}, {"sector_order": 2, "duration_us": 18693000, "status": "VALID"}, {"sector_order": 3, "duration_us": 17184000, "status": "VALID"}]},
+      {"lap_number": 7, "duration_us": 50435000, "source": "IMPORTED", "classification": "VALID", "sectors": [{"sector_order": 1, "duration_us": 14866000, "status": "VALID"}, {"sector_order": 2, "duration_us": 18727000, "status": "VALID"}, {"sector_order": 3, "duration_us": 16842000, "status": "VALID"}]},
+      {"lap_number": 8, "duration_us": 50348000, "source": "IMPORTED", "classification": "VALID", "sectors": [{"sector_order": 1, "duration_us": 14836000, "status": "VALID"}, {"sector_order": 2, "duration_us": 18735000, "status": "VALID"}, {"sector_order": 3, "duration_us": 16777000, "status": "VALID"}]},
+      {"lap_number": 9, "duration_us": 51009000, "source": "IMPORTED", "classification": "VALID", "sectors": [{"sector_order": 1, "duration_us": 14832000, "status": "VALID"}, {"sector_order": 2, "duration_us": 18789000, "status": "VALID"}, {"sector_order": 3, "duration_us": 17388000, "status": "VALID"}]},
+      {"lap_number": 10, "duration_us": 50605000, "source": "IMPORTED", "classification": "VALID", "sectors": [{"sector_order": 1, "duration_us": 14885000, "status": "VALID"}, {"sector_order": 2, "duration_us": 18846000, "status": "VALID"}, {"sector_order": 3, "duration_us": 16874000, "status": "VALID"}]},
+      {"lap_number": 11, "duration_us": 50840000, "source": "IMPORTED", "classification": "VALID", "sectors": [{"sector_order": 1, "duration_us": 14897000, "status": "VALID"}, {"sector_order": 2, "duration_us": 19061000, "status": "VALID"}, {"sector_order": 3, "duration_us": 16882000, "status": "VALID"}]},
+      {"lap_number": 12, "duration_us": 50439000, "source": "IMPORTED", "classification": "VALID", "sectors": [{"sector_order": 1, "duration_us": 14844000, "status": "VALID"}, {"sector_order": 2, "duration_us": 18737000, "status": "VALID"}, {"sector_order": 3, "duration_us": 16858000, "status": "VALID"}]},
+      {"lap_number": 13, "duration_us": 50604000, "source": "IMPORTED", "classification": "VALID", "sectors": [{"sector_order": 1, "duration_us": 14879000, "status": "VALID"}, {"sector_order": 2, "duration_us": 18815000, "status": "VALID"}, {"sector_order": 3, "duration_us": 16910000, "status": "VALID"}]},
+      {"lap_number": 14, "duration_us": 50719000, "source": "IMPORTED", "classification": "VALID", "sectors": [{"sector_order": 1, "duration_us": 14914000, "status": "VALID"}, {"sector_order": 2, "duration_us": 18806000, "status": "VALID"}, {"sector_order": 3, "duration_us": 16999000, "status": "VALID"}]},
+      {"lap_number": 15, "duration_us": 50891000, "source": "IMPORTED", "classification": "VALID", "sectors": [{"sector_order": 1, "duration_us": 14906000, "status": "VALID"}, {"sector_order": 2, "duration_us": 19033000, "status": "VALID"}, {"sector_order": 3, "duration_us": 16952000, "status": "VALID"}]},
+      {"lap_number": 16, "duration_us": 50755000, "source": "IMPORTED", "classification": "VALID", "sectors": [{"sector_order": 1, "duration_us": 14962000, "status": "VALID"}, {"sector_order": 2, "duration_us": 18861000, "status": "VALID"}, {"sector_order": 3, "duration_us": 16932000, "status": "VALID"}]},
+      {"lap_number": 17, "duration_us": 50713000, "source": "IMPORTED", "classification": "VALID", "sectors": [{"sector_order": 1, "duration_us": 14900000, "status": "VALID"}, {"sector_order": 2, "duration_us": 18869000, "status": "VALID"}, {"sector_order": 3, "duration_us": 16944000, "status": "VALID"}]},
+      {"lap_number": 18, "duration_us": 50757000, "source": "IMPORTED", "classification": "VALID", "sectors": [{"sector_order": 1, "duration_us": 14915000, "status": "VALID"}, {"sector_order": 2, "duration_us": 18871000, "status": "VALID"}, {"sector_order": 3, "duration_us": 16971000, "status": "VALID"}]},
+      {"lap_number": 19, "duration_us": 50773000, "source": "IMPORTED", "classification": "VALID", "sectors": [{"sector_order": 1, "duration_us": 14931000, "status": "VALID"}, {"sector_order": 2, "duration_us": 18892000, "status": "VALID"}, {"sector_order": 3, "duration_us": 16950000, "status": "VALID"}]},
+      {"lap_number": 20, "duration_us": 50828000, "source": "IMPORTED", "classification": "VALID", "sectors": [{"sector_order": 1, "duration_us": 14958000, "status": "VALID"}, {"sector_order": 2, "duration_us": 18883000, "status": "VALID"}, {"sector_order": 3, "duration_us": 16987000, "status": "VALID"}]},
+      {"lap_number": 21, "duration_us": 50718000, "source": "IMPORTED", "classification": "VALID", "sectors": [{"sector_order": 1, "duration_us": 14939000, "status": "VALID"}, {"sector_order": 2, "duration_us": 18837000, "status": "VALID"}, {"sector_order": 3, "duration_us": 16942000, "status": "VALID"}]},
+      {"lap_number": 22, "duration_us": 50881000, "source": "IMPORTED", "classification": "VALID", "sectors": [{"sector_order": 1, "duration_us": 14955000, "status": "VALID"}, {"sector_order": 2, "duration_us": 18897000, "status": "VALID"}, {"sector_order": 3, "duration_us": 17029000, "status": "VALID"}]},
+      {"lap_number": 23, "duration_us": 51026000, "source": "IMPORTED", "classification": "VALID", "sectors": [{"sector_order": 1, "duration_us": 14994000, "status": "VALID"}, {"sector_order": 2, "duration_us": 19009000, "status": "VALID"}, {"sector_order": 3, "duration_us": 17023000, "status": "VALID"}]},
+      {"lap_number": 24, "duration_us": 51022000, "source": "IMPORTED", "classification": "VALID", "sectors": [{"sector_order": 1, "duration_us": 15025000, "status": "VALID"}, {"sector_order": 2, "duration_us": 18956000, "status": "VALID"}, {"sector_order": 3, "duration_us": 17041000, "status": "VALID"}]},
+      {"lap_number": 25, "duration_us": 52529000, "source": "IMPORTED", "classification": "VALID", "sectors": [{"sector_order": 1, "duration_us": 15009000, "status": "VALID"}, {"sector_order": 2, "duration_us": 19730000, "status": "VALID"}, {"sector_order": 3, "duration_us": 17790000, "status": "VALID"}]}
+    ]
+  },
+  "seed_observation": {
+    "description": "The publication contains timing and conditions, but no driver feedback, setup change or team decision. Do not infer causality from lap times alone.",
+    "category": "DATA_PROVENANCE",
+    "visibility_level": "ROLE_RESTRICTED"
+  },
+  "published_source": {
+    "source_type": "PUBLIC_TIMING",
+    "publisher": "FIA Karting / Apex Timing",
+    "document_title": "OK — Mondokart.com FIA Karting World Championship — Kristianstad 2025 booklet",
+    "document_url": "https://nocache.fiakarting.com/sites/default/files/xml_folder/2025/Kristianstad/Booklet_OK.pdf",
+    "document_references": [
+      "Qualifying Heat D-F — results and Lap Time Analysis",
+      "Document 59.2 OFFICIAL — Final Results",
+      "Final — Lap Time Analysis"
+    ],
+    "retrieved_on": "2026-11-13",
+    "publication_notice": "Lap Time Analysis is marked for information purposes and without official/regulatory value; Final Results document 59.2 is marked OFFICIAL.",
+    "identity_handling": "The public driver name is not stored in RaceOps; kart 27 is represented as Public Driver 027.",
+    "factual_fields": ["event", "location", "dates", "session labels", "start/end times", "weather", "air temperature", "track state", "lap times", "sector times"],
+    "synthetic_fields": ["RaceOps team", "RaceOps driver label", "scheduled_at adapter", "feedback exercise", "hypothesis", "priority", "action", "outcome interpretation"]
+  },
+  "rehearsal": {
+    "evidence_boundary": {
+      "published": "Timing, sectors, session times and listed conditions only.",
+      "synthetic_exercise": "Feedback, analysis, hypothesis, priority, action and learning are training inputs, not statements by the published driver or team."
+    },
+    "driver_feedback": {
+      "description": "[SYNTHETIC EXERCISE] Traffic affected several laps; no setup conclusion is available from timing alone.",
+      "corner_or_zone": "Whole lap",
+      "driving_phase": "Race context",
+      "severity": "LOW",
+      "confidence": "LOW"
+    },
+    "engineer_observation": {
+      "description": "Published best lap changed from 50.368 s in Qualifying Heat D-F to 50.348 s in the Final, a difference of 0.020 s. Session context and air temperature also differ.",
+      "category": "PERFORMANCE",
+      "visibility_level": "ROLE_RESTRICTED"
+    },
+    "analysis": {
+      "technical_detail": "The public timing supports a 0.020 s best-lap difference but contains no feedback, setup delta or recorded action; it cannot explain the cause.",
+      "authorized_summary": "Timing is nearly unchanged; more context is required before deciding what worked."
+    },
+    "hypothesis": {
+      "description": "No causal hypothesis is supported by the published timing alone.",
+      "cause_classification": "UNKNOWN",
+      "confidence": "LOW"
+    },
+    "priority": {
+      "description": "Capture driver feedback and the authorized setup delta in the next comparable session.",
+      "recipient_role": "ENGINEER",
+      "rank": 1
+    },
+    "action": {
+      "assignee_role": "ENGINEER",
+      "action_type": "ENGINEERING",
+      "public_summary": "Record feedback and session context before comparing the next run.",
+      "confidential_detail": "Do not reconstruct or guess setup values absent from the public source."
+    },
+    "outcome": {
+      "classification": "INCONCLUSIVE",
+      "public_conclusion": "The Final best lap was 0.020 s faster, but no cause can be attributed.",
+      "confidential_conclusion": "Different session context and missing feedback/setup history prevent causal interpretation.",
+      "concluded_hypothesis_status": "INCONCLUSIVE"
+    }
+  }
+}

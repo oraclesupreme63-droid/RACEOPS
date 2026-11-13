@@ -5,8 +5,10 @@
 ## Decisión
 
 El propietario decidió aplazar las pruebas con pilotos y otros participantes.
-El desarrollo y las comprobaciones técnicas continuarán únicamente con el
-dataset sintético congelado `phase-9-v1` hasta que se autorice retomar la ronda.
+El desarrollo y las comprobaciones técnicas continuarán con el dataset
+sintético congelado `phase-9-v1` y, desde el 13 de noviembre, con el dataset
+`phase-9-public-v1` derivado de timing público. Ninguno contiene feedback o
+setup real de un equipo.
 
 ## Qué permite esta decisión
 
