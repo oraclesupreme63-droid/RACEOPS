@@ -38,7 +38,7 @@
 - [x] Preparar cuentas locales por Role sin credenciales reales.
 - [x] Ejecutar un ensayo completo y corregir bloqueos de la prueba.
 - [x] Congelar escenario y versión de validación.
-- [ ] Aprobación del propietario.
+- [x] Aprobación del propietario.
 
 ### 9.4 — Pruebas con participantes
 
@@ -68,6 +68,7 @@
 
 ## Condición para avanzar
 
-El Bloque 9.1 debe aprobarse antes de programar el cliente de validación. No se
-pedirán datos reales ni se invitarán participantes hasta disponer de un flujo
-seguro, una tarea clara y un lugar privado para las notas.
+Los Bloques 9.1–9.3 están aprobados. El Bloque 9.4 puede comenzar únicamente
+con consentimiento, el escenario sintético congelado y registros individuales
+fuera de Git. Ningún comentario aislado modificará el producto antes de
+consolidar los hallazgos en el Bloque 9.5, salvo un defecto P0 reproducible.

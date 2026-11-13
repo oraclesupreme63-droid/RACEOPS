@@ -18,5 +18,8 @@ ignoradas por Git. La ausencia de esos archivos en Git es intencional.
 Documentos públicos:
 
 - `validation-protocol.md`: contrato, tareas, métricas y decisiones;
+- `participant-test-guide.md`: preparación y guion neutral del facilitador;
+- `templates/consent-template.md`: consentimiento breve para cada sesión;
+- `templates/participant-invitation-template.md`: mensaje de invitación;
 - `templates/participant-session-template.md`: plantilla privada vacía;
 - `templates/task-observation-template.md`: hoja de observación vacía.
