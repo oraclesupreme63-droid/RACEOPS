@@ -48,7 +48,7 @@
 - [x] Separar hechos publicados de campos sintéticos del ejercicio.
 - [x] Verificar unidades, sumas de sectores y mejores vueltas.
 - [x] Probar persistencia PostgreSQL y reglas de procedencia.
-- [ ] Aprobación del propietario.
+- [x] Aprobación del propietario.
 
 ### 9.4 — Pruebas con participantes
 

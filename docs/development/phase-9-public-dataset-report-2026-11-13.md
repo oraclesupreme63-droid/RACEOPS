@@ -1,7 +1,7 @@
 # Fase 9 — Dataset de timing público
 
 **Fecha:** 13 de noviembre de 2026
-**Estado:** técnicamente verificado; pendiente de aprobación del propietario
+**Estado:** técnicamente verificado y aprobado por el propietario
 
 ## Resultado buscado
 
