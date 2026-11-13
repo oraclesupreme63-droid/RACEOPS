@@ -80,7 +80,7 @@
 - [x] Verificar que la procedencia quede recuperable después de persistir.
 - [x] Separar evidencia de artefacto, evidencia técnica e hipótesis de usuario.
 - [x] Actualizar matriz de evidencia, supuestos y requisitos preliminares.
-- [ ] Aprobación del propietario.
+- [x] Aprobación del propietario.
 
 ### 9.6 — Cierre de Fase 9
 
@@ -96,3 +96,7 @@ Los Bloques 9.1–9.3 están aprobados. El Bloque 9.4 puede comenzar únicamente
 con consentimiento, el escenario sintético congelado y registros individuales
 fuera de Git. Ningún comentario aislado modificará el producto antes de
 consolidar los hallazgos en el Bloque 9.5, salvo un defecto P0 reproducible.
+
+El propietario aprobó 9.5A el 13 de noviembre de 2026. La Fase 9 permanece
+abierta por el aplazamiento de 9.4; el trabajo técnico posterior no se contará
+como evidencia externa de usabilidad o adopción.

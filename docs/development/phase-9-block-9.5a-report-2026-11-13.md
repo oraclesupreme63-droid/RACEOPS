@@ -1,8 +1,7 @@
 # Fase 9 — Reporte del Bloque 9.5A
 
 **Fecha:** 13 de noviembre de 2026
-**Estado:** verificación dirigida terminada; pendiente de CI global y
-aprobación del propietario
+**Estado:** aprobado por el propietario
 
 ## Resultado
 
@@ -43,4 +42,10 @@ carrera automático.
 - Ruff y MyPy aprobados en los archivos modificados;
 - Alembic no detectó nuevas operaciones de migración.
 
-La suite global se ejecutará una sola vez mediante CI al cerrar el bloque.
+La suite global se ejecutó una sola vez mediante CI al cerrar el bloque.
+
+## Cierre
+
+- CI global `43472740689`: aprobado;
+- commit verificado: `31e07f7`;
+- aprobación del propietario: 13 de noviembre de 2026.

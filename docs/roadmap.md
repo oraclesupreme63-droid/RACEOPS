@@ -398,6 +398,10 @@ usabilidad o adopción.
 **Objetivo:** conectar observaciones y acciones mecánicas con el historial
 del vehículo.
 
+**Estado:** contrato técnico en preparación. La entrada es provisional porque
+la validación externa de Fase 9 está aplazada; mantenimiento continúa como
+hipótesis P1 y no como necesidad de mercado demostrada.
+
 **Incluye:**
 
 - MaintenanceRecord;
