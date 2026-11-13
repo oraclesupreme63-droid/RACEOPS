@@ -1,14 +1,17 @@
 """Unit tests for the frozen validation scenario and safe CLI input."""
 
 from unittest.mock import Mock
+from uuid import uuid4
 
 import pytest
 from pydantic import SecretStr
 
 from raceops.core.config import Settings
 from raceops.sessions.enums import LapClassification, SectorStatus
+from raceops.sessions.models import Lap
+from raceops.sessions.result_services import LapMetrics, calculate_lap_metrics
 from raceops.validation import seed_scenario
-from raceops.validation.scenario import load_validation_scenario
+from raceops.validation.scenario import LapSeed, load_validation_scenario
 from raceops.validation.seed_scenario import ValidationScenarioError
 
 
@@ -52,6 +55,21 @@ def test_public_dataset_preserves_source_boundary_and_exact_sector_totals() -> N
     assert source_best == 50_368_000
     assert evaluation_best == 50_348_000
     assert evaluation_best - source_best == -20_000
+
+
+def test_public_dataset_exposes_conflicting_session_metrics_without_causality() -> None:
+    scenario = load_validation_scenario("public-kristianstad-2025")
+
+    source_metrics = _metrics_for(scenario.source_session.laps)
+    evaluation_metrics = _metrics_for(scenario.evaluation_session.laps)
+
+    assert source_metrics.average_lap_us == 51_162_231
+    assert evaluation_metrics.average_lap_us == 51_233_280
+    assert source_metrics.consistency_us == 887_217
+    assert evaluation_metrics.consistency_us == 1_252_891
+    assert evaluation_metrics.best_lap_us == 50_348_000
+    assert evaluation_metrics.average_lap_us > source_metrics.average_lap_us
+    assert evaluation_metrics.consistency_us > source_metrics.consistency_us
 
 
 def test_public_dataset_is_available_from_cli() -> None:
@@ -123,3 +141,19 @@ def test_cli_refuses_production_before_reading_password(
 
     assert seed_scenario.main(["--scenario-id", "round-1"]) == 1
     read_password.assert_not_called()
+
+
+def _metrics_for(laps: list[LapSeed]) -> LapMetrics:
+    canonical_laps = [
+        Lap(
+            lap_id=uuid4(),
+            team_id=uuid4(),
+            session_id=uuid4(),
+            lap_number=lap.lap_number,
+            duration_us=lap.duration_us,
+            source=lap.source,
+            classification=lap.classification,
+        )
+        for lap in laps
+    ]
+    return calculate_lap_metrics(canonical_laps)

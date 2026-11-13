@@ -18,12 +18,12 @@
 | A-005 | El historial por pista ayuda cuando el equipo regresa meses después | Hipótesis | Alto | Alta |
 | A-006 | Los distintos roles requieren información y permisos diferentes | Parcialmente respaldado | Alto | Alta |
 | A-007 | La configuración técnica necesita protección especial | Hipótesis importante | Alto | Alta |
-| A-008 | Referenciar o importar datos será más práctico que capturarlos nuevamente | Hipótesis | Alto | Alta |
+| A-008 | Referenciar o importar datos será más práctico que capturarlos nuevamente | Señal técnica por artefacto público; preferencia no validada | Alto | Alta |
 | A-009 | El mantenimiento debe relacionarse con la sesión desde el primer MVP | Evidencia insuficiente | Medio | Media |
 | A-010 | El registro principal puede completarse en aproximadamente dos minutos | Hipótesis de usabilidad | Crítico | Alta |
 | A-011 | Los equipos aceptarían modificar su proceso actual | Evidencia insuficiente | Crítico | Alta |
 | A-012 | Existe disposición a pagar por RaceOps | Evidencia insuficiente | Alto comercialmente | Baja por ahora |
-| A-013 | Un frontend web pequeño es suficiente para validar el MVP | Supuesto técnico | Medio | Media |
+| A-013 | Un frontend web pequeño es suficiente para validar el MVP | Demostrado técnicamente; usabilidad externa pendiente | Medio | Media |
 | A-014 | Las métricas deben ser configurables según vehículo y categoría | Parcialmente respaldado | Medio | Media |
 | A-015 | La telemetría en vivo no es necesaria para demostrar el valor inicial | Parcialmente respaldado | Bajo | Alta |
 

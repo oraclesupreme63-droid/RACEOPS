@@ -49,6 +49,9 @@
 - ¿Qué dispositivo registra la telemetría?
 - ¿Qué software se utiliza para analizarla?
 - ¿Qué formatos pueden exportarse?
+- ¿El equipo puede exportar un formato estructurado o sólo PDF/impresión?
+- ¿Qué autorización y términos permiten reutilizar cada fuente publicada?
+- ¿Cómo se corrigen importaciones sin perder la referencia al original?
 - ¿Qué información se registra fuera del logger?
 - ¿Se utiliza papel, hojas de cálculo o mensajes?
 - ¿Se captura alguna información más de una vez?
@@ -200,6 +203,7 @@ Actualmente existen:
 - un registro de hipótesis;
 - contraevidencia;
 - análisis de alternativas;
+- un artefacto público de timing reproducido con procedencia;
 - una dirección de producto delimitada.
 
 Todavía falta evidencia de:

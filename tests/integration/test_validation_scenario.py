@@ -16,6 +16,7 @@ from raceops.iam.credentials import verify_password
 from raceops.iam.enums import Role
 from raceops.iam.models import TeamMembership, User
 from raceops.learning.models import Observation
+from raceops.operations.models import Event
 from raceops.sessions.enums import LapClassification, ResultsStatus, SectorStatus
 from raceops.sessions.models import ConditionSnapshot, Lap, RaceSession, Sector
 from raceops.validation.scenario import load_validation_scenario
@@ -146,6 +147,7 @@ def test_public_timing_dataset_is_seeded_with_provenance_preserved(
     )
 
     with Session(database_engine) as session:
+        event = session.scalar(select(Event).where(Event.team_id == result.team_id))
         sessions = list(
             session.scalars(
                 select(RaceSession)
@@ -169,5 +171,7 @@ def test_public_timing_dataset_is_seeded_with_provenance_preserved(
         )
 
     assert result.version == "phase-9-public-v1"
+    assert event is not None
+    assert "https://nocache.fiakarting.com/" in (event.description or "")
     assert lap_counts == [13, 25]
     assert sector_count == 114

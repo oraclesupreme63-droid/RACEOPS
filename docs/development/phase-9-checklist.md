@@ -73,6 +73,15 @@
 - [ ] Actualizar requisitos, dominio, backlog y roadmap.
 - [ ] Aprobación del propietario.
 
+### 9.5A — Hallazgos técnicos con timing público
+
+- [x] Calcular métricas con las reglas productivas de RaceOps.
+- [x] Comparar mejor vuelta, promedio y consistencia sin inferir causalidad.
+- [x] Verificar que la procedencia quede recuperable después de persistir.
+- [x] Separar evidencia de artefacto, evidencia técnica e hipótesis de usuario.
+- [x] Actualizar matriz de evidencia, supuestos y requisitos preliminares.
+- [ ] Aprobación del propietario.
+
 ### 9.6 — Cierre de Fase 9
 
 - [ ] Publicar síntesis anonimizada y Validation Report.

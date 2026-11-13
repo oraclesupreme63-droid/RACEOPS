@@ -139,7 +139,7 @@ como necesidades técnicas aunque no provengan directamente de entrevistas.
 | RF-046 | Cada vuelta deberá tener un número positivo y único dentro de la sesión. | P0 | Integridad |
 | RF-047 | El tiempo de vuelta deberá ser mayor que cero. | P0 | Regla de negocio |
 | RF-048 | El sistema conservará la precisión disponible del tiempo registrado. | P1 | Calidad de datos |
-| RF-049 | Cada vuelta podrá indicar su origen: manual, importado u otro origen autorizado. | P1 | Trazabilidad |
+| RF-049 | Cada vuelta podrá indicar su origen: manual, importado u otro origen autorizado. | P1 | Respaldado por artefacto público y trazabilidad |
 | RF-050 | Una vuelta podrá clasificarse para indicar si es válida para estadísticas. | P0 | Análisis correcto |
 | RF-051 | Las vueltas no elegibles no se incluirán en los cálculos principales. | P0 | Análisis correcto |
 | RF-052 | El sistema permitirá conservar una vuelta inválida sin eliminarla del historial. | P1 | Evidencia histórica |
@@ -153,7 +153,7 @@ Clasificaciones candidatas de vuelta: `VALID`, `INVALID`, `OUT_LAP`,
 
 | ID | Requerimiento | Prioridad | Fundamento |
 |---|---|---:|---|
-| RF-055 | Una vuelta podrá contener resultados de sectores cuando estén disponibles. | P0 | Respaldado |
+| RF-055 | Una vuelta podrá contener resultados de sectores cuando estén disponibles. | P0 | Respaldado por entrevistas y artefacto público |
 | RF-056 | Cada sector tendrá un número u orden único dentro de la vuelta. | P0 | Integridad |
 | RF-057 | El tiempo de un sector deberá ser mayor que cero. | P0 | Regla de negocio |
 | RF-058 | La ausencia de sectores no impedirá registrar una vuelta completa. | P0 | Baja fricción |
@@ -166,11 +166,11 @@ Clasificaciones candidatas de vuelta: `VALID`, `INVALID`, `OUT_LAP`,
 
 | ID | Requerimiento | Prioridad | Fundamento |
 |---|---|---:|---|
-| RF-063 | El sistema calculará la mejor vuelta elegible de una sesión. | P0 | Respaldado |
+| RF-063 | El sistema calculará la mejor vuelta elegible de una sesión. | P0 | Respaldado por artefacto público |
 | RF-064 | El sistema calculará el promedio de vueltas elegibles. | P0 | Respaldado |
 | RF-065 | El sistema calculará la peor vuelta elegible. | P1 | Parcialmente respaldado |
 | RF-066 | El sistema mostrará la cantidad total de vueltas y la cantidad utilizada en estadísticas. | P0 | Transparencia |
-| RF-067 | El sistema calculará una medida básica de consistencia cuya fórmula deberá documentarse. | P1 | Parcialmente respaldado |
+| RF-067 | El sistema calculará la desviación estándar poblacional de las vueltas elegibles como medida básica de consistencia y documentará su alcance. | P1 | Implementado; utilidad contextual pendiente |
 | RF-068 | El sistema no mostrará una métrica como válida cuando no existan datos suficientes. | P0 | Honestidad de datos |
 | RF-069 | Los cálculos deberán poder reproducirse a partir de los datos almacenados. | P0 | Trazabilidad |
 
@@ -178,12 +178,12 @@ Clasificaciones candidatas de vuelta: `VALID`, `INVALID`, `OUT_LAP`,
 
 | ID | Requerimiento | Prioridad | Fundamento |
 |---|---|---:|---|
-| RF-070 | Un usuario autorizado podrá registrar manualmente condiciones asociadas a una sesión. | P0 | Parcialmente respaldado |
-| RF-071 | Las condiciones podrán incluir temperatura ambiente, temperatura de pista, clima y condición general de la pista. | P1 | Parcialmente respaldado |
+| RF-070 | Un usuario autorizado podrá registrar manualmente condiciones asociadas a una sesión. | P0 | Parcialmente respaldado; artefacto público aporta campos reales |
+| RF-071 | Las condiciones podrán incluir temperatura ambiente, temperatura de pista, clima y condición general de la pista. | P1 | Respaldado por entrevistas y artefacto público |
 | RF-072 | Los campos de condiciones serán opcionales cuando la información no esté disponible. | P0 | Baja fricción |
 | RF-073 | Cada valor numérico deberá conservar su unidad de medida. | P0 | Integridad |
 | RF-074 | Las condiciones representarán un snapshot relacionado con la sesión. | P1 | Contexto histórico |
-| RF-075 | El sistema conservará el origen de las condiciones cuando sea conocido. | P1 | Trazabilidad |
+| RF-075 | El sistema conservará el origen de las condiciones cuando sea conocido. | P1 | Respaldado por artefacto público y trazabilidad |
 | RF-076 | RaceOps funcionará aunque no exista una integración meteorológica externa. | P0 | Resiliencia y alcance |
 | RF-077 | La integración automática con clima será condicionada y no bloqueará el MVP. | P2 | Hipótesis |
 | RF-078 | Los campos especializados variarán según categoría y no serán obligatorios universalmente. | P0 | Contraevidencia a esquema rígido |
@@ -361,6 +361,7 @@ Clasificaciones candidatas de vuelta: `VALID`, `INVALID`, `OUT_LAP`,
 | RNF-REL-006 | El fallo de una integración opcional no impedirá utilizar el flujo principal. |
 | RNF-REL-007 | Antes de cualquier uso real deberá documentarse una estrategia de respaldo y recuperación. |
 | RNF-REL-008 | Las fechas se almacenarán de manera consistente y su zona horaria se tratará explícitamente. |
+| RNF-REL-009 | Los datos importados conservarán una referencia suficiente a su procedencia y distinguirán campos publicados, transformados y sintéticos. |
 
 ## 5.3 Rendimiento
 

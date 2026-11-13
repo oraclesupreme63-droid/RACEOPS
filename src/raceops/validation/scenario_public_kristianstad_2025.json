@@ -7,7 +7,7 @@
   "event_name": "Mondokart.com FIA Karting World Championship — OK",
   "event_date": "2025-09-11",
   "event_end_date": "2025-09-14",
-  "event_description": "Public timing facts from FIA Karting/Apex Timing. Participant identity is pseudonymized in RaceOps; workflow context is a labeled exercise.",
+  "event_description": "Public timing facts from FIA Karting/Apex Timing. Source: https://nocache.fiakarting.com/sites/default/files/xml_folder/2025/Kristianstad/Booklet_OK.pdf. Participant identity is pseudonymized in RaceOps; workflow context is a labeled exercise.",
   "driver_name": "Public Driver 027",
   "vehicle_identifier": "PUBLIC-KART-027",
   "source_session": {

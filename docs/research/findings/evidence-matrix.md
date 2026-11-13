@@ -2,9 +2,10 @@
 
 ## 1. Información del documento
 
-- **Versión:** 0.2 pública
+- **Versión:** 0.3 pública
 - **Estado:** Aprobado
-- **Fuentes:** tres conversaciones de descubrimiento anonimizadas
+- **Fuentes:** tres conversaciones de descubrimiento anonimizadas y un
+  artefacto público FIA Karting/Apex Timing
 - **Privacidad:** registros individuales conservados en archivo privado
 - **Propósito:** separar evidencia, contraevidencia e incertidumbre sin
   publicar información atribuible a participantes individuales
@@ -15,6 +16,7 @@
 |---|---|---|---|
 | Telemetría y feedback | Pueden utilizarse de forma complementaria | La telemetría puede ser suficiente para coaching puro | Parcialmente respaldado |
 | Contexto de sesión | Clima, vehículo, neumáticos y rendimiento pueden aportar contexto | La información necesaria cambia entre equipos | Parcialmente respaldado |
+| Timing real publicado | Un evento público contiene vueltas, tres sectores, hora, clima, temperatura ambiente y estado de pista | Un solo evento no demuestra un esquema universal ni el proceso del equipo | Evidencia observada de artefacto |
 | Información fragmentada | Diferentes roles producen y consumen información | Usar varias herramientas no demuestra un problema | Hipótesis |
 | Decisiones accionables | El análisis puede producir prioridades y acciones | Más software no garantiza mejores decisiones | Parcialmente respaldado |
 | Prioridades limitadas | Reducir el análisis puede facilitar la siguiente sesión | El número exacto todavía no es un patrón validado | Hipótesis prioritaria |
@@ -73,6 +75,15 @@ El flujo deberá probarse con usuarios antes de considerarlo validado.
 - **Clasificación:** Hypothesis with significant security impact.
 - **Decisión:** distinguir información del equipo, información restringida por
   rol e información técnica confidencial sin construir ABAC complejo.
+
+### P-007 — Timing real no demuestra causalidad
+
+- **Clasificación:** Supported by public artifact and technical replay.
+- **Observación:** en el dataset de Kristianstad la mejor vuelta mejora 0.020 s,
+  mientras el promedio empeora 0.071 s y la dispersión aumenta 0.366 s.
+- **Decisión:** RaceOps podrá mostrar métricas reproducibles, pero no declarará
+  automáticamente que una sesión o acción produjo una mejora. La explicación
+  requiere feedback, cambios registrados y contexto comparable.
 
 ## 4. Contraevidencia consolidada
 
