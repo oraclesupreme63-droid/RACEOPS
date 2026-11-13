@@ -69,8 +69,20 @@ Resultado esperado de readiness:
 ```
 
 El cliente requiere una cuenta local y datos preparados. En la Fase 9 esos
-datos se crearán mediante el escenario reproducible del Bloque 9.3; no se
-deben introducir credenciales ni información privada reales para probarlo.
+datos se crean mediante el escenario reproducible del Bloque 9.3; no se deben
+introducir credenciales ni información privada reales para probarlo.
+
+Crear una instancia nueva sin sobrescribir otra:
+
+```powershell
+.\.venv\Scripts\python.exe -m raceops.validation.seed_scenario `
+  --scenario-id pilot-round-2
+```
+
+El comando pide una contraseña compartida de prueba dos veces y después
+muestra los cinco correos locales. Sólo funciona en entorno `local` o `test`.
+Consultar la guía
+`docs/validation/scenario-phase-9-v1.md` antes de una sesión observada.
 
 ## 5. Logs y diagnóstico básico
 

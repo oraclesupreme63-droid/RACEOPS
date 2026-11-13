@@ -35,7 +35,7 @@ package-dir = { "" = "src" }
 where = ["src"]
 
 [tool.setuptools.package-data]
-raceops = ["web/*.html", "web/*.css", "web/*.js"]
+raceops = ["validation/*.json", "web/*.html", "web/*.css", "web/*.js"]
 
 [tool.pytest.ini_options]
 minversion = "9.1"

@@ -16,6 +16,9 @@ Loop was approved and published as `v0.4.0`. Phase 9 now validates that flow
 with representative data and users before expanding the product. A minimal,
 responsive validation client is available at `/app/`; its purpose is to test
 the workflow, not to pre-empt the full frontend planned for Phase 12.
+Phase 9 also includes a frozen synthetic scenario and a local-only command
+that prepares one account for each Role without storing participant
+credentials.
 RaceOps exposes
 operational APIs for Drivers, Vehicles, Tracks, Events, Sessions, timing
 results, conditions, feedback, observations, analyses and hypotheses
@@ -96,6 +99,16 @@ docker compose up -d --wait db
 Then open the validation client at `http://127.0.0.1:8000/app/`, the health
 endpoint at `http://127.0.0.1:8000/health` or the generated API documentation
 at `http://127.0.0.1:8000/docs`.
+
+Create an isolated Phase 9 validation scenario when needed:
+
+```powershell
+.\.venv\Scripts\python.exe -m raceops.validation.seed_scenario `
+  --scenario-id pilot-round-2
+```
+
+The command is local/test-only, prompts for a shared disposable password and
+never prints or accepts that password as a command-line argument.
 
 Available system endpoints:
 
@@ -408,6 +421,8 @@ including both the Python quality job and the container smoke test.
 - [Phase 9 checklist](docs/development/phase-9-checklist.md)
 - [Phase 9 validation protocol](docs/validation/validation-protocol.md)
 - [Phase 9 Block 9.2 report](docs/development/phase-9-block-9.2-report-2026-11-12.md)
+- [Phase 9 scenario `phase-9-v1`](docs/validation/scenario-phase-9-v1.md)
+- [Phase 9 Block 9.3 report](docs/development/phase-9-block-9.3-report-2026-11-13.md)
 - [Session Learning Loop contract](docs/sessions/session-learning-loop-contract.md)
 - [Identity and authorization contract](docs/identity/identity-contract.md)
 - [Technical learning roadmap](docs/development/learning-roadmap.md)

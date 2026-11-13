@@ -1,0 +1,156 @@
+{
+  "version": "phase-9-v1",
+  "title": "T4 rear instability with incomplete tire context",
+  "team_name": "RaceOps Validation Team",
+  "track_name": "Kartodromo Sierra Synthetic",
+  "track_location": "Mexico — synthetic location",
+  "event_name": "RaceOps Evidence Weekend",
+  "event_date": "2026-11-09",
+  "event_description": "Synthetic, anonymous and intentionally incomplete Phase 9 scenario.",
+  "driver_name": "Alex Synthetic",
+  "vehicle_identifier": "KART-SYN-27",
+  "source_session": {
+    "session_type": "Practice 1 — source",
+    "scheduled_at": "2026-11-09T09:00:00-06:00",
+    "started_at": "2026-11-09T09:03:00-06:00",
+    "ended_at": "2026-11-09T09:15:00-06:00",
+    "conditions": {
+      "ambient_temperature": 22.5,
+      "ambient_temperature_unit": "C",
+      "track_temperature": null,
+      "track_temperature_unit": null,
+      "weather": "Dry",
+      "track_condition": null,
+      "source": "Manual note; track probe unavailable"
+    },
+    "laps": [
+      {
+        "lap_number": 1,
+        "duration_us": 68000000,
+        "source": "MANUAL",
+        "classification": "OUT_LAP",
+        "sectors": []
+      },
+      {
+        "lap_number": 2,
+        "duration_us": 64800000,
+        "source": "MANUAL",
+        "classification": "VALID",
+        "sectors": [
+          {"sector_order": 1, "duration_us": 31900000, "status": "VALID"},
+          {"sector_order": 2, "duration_us": 32900000, "status": "VALID"}
+        ]
+      },
+      {
+        "lap_number": 3,
+        "duration_us": 64200000,
+        "source": "MANUAL",
+        "classification": "VALID",
+        "sectors": [
+          {"sector_order": 1, "duration_us": 31700000, "status": "VALID"}
+        ]
+      },
+      {
+        "lap_number": 4,
+        "duration_us": 63900000,
+        "source": "MANUAL",
+        "classification": "INVALID",
+        "sectors": [
+          {"sector_order": 1, "duration_us": 31400000, "status": "VALID"},
+          {"sector_order": 2, "duration_us": 32500000, "status": "INCOMPLETE"}
+        ]
+      }
+    ]
+  },
+  "evaluation_session": {
+    "session_type": "Practice 2 — evaluation",
+    "scheduled_at": "2026-11-09T10:30:00-06:00",
+    "started_at": "2026-11-09T10:33:00-06:00",
+    "ended_at": "2026-11-09T10:45:00-06:00",
+    "conditions": {
+      "ambient_temperature": 23.0,
+      "ambient_temperature_unit": "C",
+      "track_temperature": 29.0,
+      "track_temperature_unit": "C",
+      "weather": "Dry",
+      "track_condition": "Light rubber",
+      "source": "Manual synthetic reading"
+    },
+    "laps": [
+      {
+        "lap_number": 1,
+        "duration_us": 63500000,
+        "source": "MANUAL",
+        "classification": "VALID",
+        "sectors": [
+          {"sector_order": 1, "duration_us": 31200000, "status": "VALID"},
+          {"sector_order": 2, "duration_us": 32300000, "status": "VALID"}
+        ]
+      },
+      {
+        "lap_number": 2,
+        "duration_us": 63100000,
+        "source": "MANUAL",
+        "classification": "VALID",
+        "sectors": [
+          {"sector_order": 1, "duration_us": 31000000, "status": "VALID"},
+          {"sector_order": 2, "duration_us": 32100000, "status": "VALID"}
+        ]
+      },
+      {
+        "lap_number": 3,
+        "duration_us": 62900000,
+        "source": "MANUAL",
+        "classification": "INCOMPLETE",
+        "sectors": [
+          {"sector_order": 1, "duration_us": 30900000, "status": "VALID"}
+        ]
+      }
+    ]
+  },
+  "seed_observation": {
+    "description": "Right-rear pressure was not preserved. Do not infer tire balance from the available record.",
+    "category": "DATA_QUALITY",
+    "visibility_level": "ROLE_RESTRICTED"
+  },
+  "rehearsal": {
+    "driver_feedback": {
+      "description": "Rear instability under braking at T4; confidence is medium because tire pressure is missing.",
+      "corner_or_zone": "T4",
+      "driving_phase": "Entrada",
+      "severity": "MEDIUM",
+      "confidence": "MEDIUM"
+    },
+    "engineer_observation": {
+      "description": "Rear movement appears after abrupt brake release, but tire-pressure context is incomplete.",
+      "category": "HANDLING",
+      "visibility_level": "ROLE_RESTRICTED"
+    },
+    "analysis": {
+      "technical_detail": "Valid laps and driver feedback point to T4 brake release; the invalid fastest lap and missing tire pressure limit certainty.",
+      "authorized_summary": "The team will test a more progressive brake release at T4."
+    },
+    "hypothesis": {
+      "description": "Abrupt brake release may amplify rear instability at T4.",
+      "cause_classification": "DRIVER_TECHNIQUE",
+      "confidence": "MEDIUM"
+    },
+    "priority": {
+      "description": "Release the brake progressively at T4.",
+      "recipient_role": "DRIVER",
+      "rank": 1
+    },
+    "action": {
+      "assignee_role": "MECHANIC",
+      "action_type": "MECHANICAL",
+      "public_summary": "Verify and record all four cold tire pressures before the next run.",
+      "confidential_detail": "Compare the right-rear reading with the team's authorized baseline."
+    },
+    "outcome": {
+      "classification": "INCONCLUSIVE",
+      "public_conclusion": "Practice 2 was faster, but the available evidence cannot isolate one cause.",
+      "confidential_conclusion": "A 1.3 s best-lap improvement coexists with changed conditions; repeat the test.",
+      "concluded_hypothesis_status": "INCONCLUSIVE"
+    }
+  }
+}

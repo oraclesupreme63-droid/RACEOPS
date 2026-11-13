@@ -29,15 +29,15 @@
 - [x] Permitir captura rápida desde computadora y teléfono.
 - [x] Añadir estados de carga, error y confirmación suficientes para la prueba.
 - [x] Pruebas técnicas al final del bloque.
-- [ ] Aprobación del propietario.
+- [x] Aprobación del propietario.
 
 ### 9.3 — Dataset y ensayo interno
 
-- [ ] Convertir un caso autorizado o representativo a datos anonimizados.
-- [ ] Incluir datos parciales, incertidumbre y orden no ideal.
-- [ ] Preparar cuentas locales por Role sin credenciales reales.
-- [ ] Ejecutar un ensayo completo y corregir bloqueos de la prueba.
-- [ ] Congelar escenario y versión de validación.
+- [x] Convertir un caso autorizado o representativo a datos anonimizados.
+- [x] Incluir datos parciales, incertidumbre y orden no ideal.
+- [x] Preparar cuentas locales por Role sin credenciales reales.
+- [x] Ejecutar un ensayo completo y corregir bloqueos de la prueba.
+- [x] Congelar escenario y versión de validación.
 - [ ] Aprobación del propietario.
 
 ### 9.4 — Pruebas con participantes

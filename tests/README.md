@@ -40,6 +40,12 @@ package and that the access token is confined to `sessionStorage`. Usability
 itself is measured with participants in Phase 9 and is not claimed by these
 technical tests.
 
+Phase 9 scenario coverage validates the packaged `phase-9-v1` definition,
+unsafe scenario identifiers, production refusal, password confirmation,
+atomic Role-account creation, Argon2id authentication data, locked historical
+Sessions and deliberately missing, invalid and incomplete evidence. It does
+not treat the internal rehearsal as user validation.
+
 Driver HTTP coverage exercises create, list, read, update, activate and
 deactivate; stable pagination; status filtering; same-Team User links; all
 five Roles; Driver self-scope; cross-Team hiding; safe link conflicts; request
