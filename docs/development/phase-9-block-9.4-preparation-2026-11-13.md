@@ -1,7 +1,7 @@
 # Fase 9 — Preparación del Bloque 9.4
 
 **Fecha:** 13 de noviembre de 2026
-**Estado:** preparado; pendiente de primera sesión con participante
+**Estado:** preparado; pruebas con participantes aplazadas por el propietario
 
 ## Resultado
 
@@ -33,7 +33,11 @@ sesiones reales con consentimiento.
 
 ## Próximo punto de control
 
-Confirmar el primer participante y su fecha. Se recomienda comenzar con uno de
-los Drivers ya entrevistados, usando datos sintéticos y una sesión de 30–40
-minutos. Después de la primera prueba se revisará únicamente si hubo un P0 o si
-el guion necesita una corrección metodológica antes de continuar la ronda.
+Cuando se retome la validación externa, confirmar el primer participante y su
+fecha. Se recomienda comenzar con uno de los Drivers ya entrevistados, usando
+datos sintéticos y una sesión de 30–40 minutos. Después de la primera prueba se
+revisará únicamente si hubo un P0 o si el guion necesita una corrección
+metodológica antes de continuar la ronda.
+
+Hasta entonces, `phase-9-v1` podrá utilizarse para pruebas técnicas y desarrollo
+controlado. Esas ejecuciones no sustituirán la conducta observada de usuarios.

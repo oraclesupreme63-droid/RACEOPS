@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- **Fase:** en progreso
+- **Fase:** en progreso; validación externa aplazada por el propietario
 - **Inicio:** 12 de noviembre de 2026
 - **Entrada:** `v0.4.0 — Session Learning Loop`, Gate G6 aprobado
 - **Objetivo:** confrontar el flujo con datos representativos y conducta
@@ -41,6 +41,10 @@
 - [x] Aprobación del propietario.
 
 ### 9.4 — Pruebas con participantes
+
+> Aplazadas el 13 de noviembre de 2026. Mientras tanto sólo se utilizará el
+> escenario sintético `phase-9-v1`. Las pruebas técnicas no contarán como
+> evidencia de usabilidad, adopción ni ajuste al trabajo real.
 
 - [ ] Obtener consentimiento antes de cada sesión.
 - [ ] Observar tareas sin enseñar el flujo durante la medición.

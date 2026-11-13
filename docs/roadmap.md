@@ -363,9 +363,11 @@ aprobado y Fase 9 queda habilitada.
 **Objetivo:** confrontar el flujo construido con información real o
 representativa.
 
-**Estado:** En progreso. El Bloque 9.1 define protocolo, privacidad, métricas,
-umbrales y límites de evidencia antes de construir el cliente mínimo de
-validación o invitar participantes.
+**Estado:** En progreso. Los Bloques 9.1–9.3 están aprobados y existe un cliente
+mínimo con el escenario sintético congelado `phase-9-v1`. Las pruebas con
+participantes fueron aplazadas por el propietario el 13 de noviembre de 2026;
+por ello la fase permanece abierta y no existe todavía evidencia externa de
+usabilidad o adopción.
 
 **Actividades:**
 
