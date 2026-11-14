@@ -4,7 +4,7 @@ from datetime import datetime
 from typing import Self
 from uuid import UUID
 
-from pydantic import BaseModel, ConfigDict, Field, field_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 from raceops.maintenance.enums import MaintenanceStatus, MaintenanceType
 from raceops.maintenance.models import MaintenanceRecord
@@ -26,6 +26,67 @@ class MaintenanceCreateRequest(BaseModel):
         normalized = value.strip()
         if not normalized:
             raise ValueError("description must not be blank")
+        return normalized
+
+
+class MaintenanceUpdateRequest(BaseModel):
+    """Editable OPEN-record fields; lifecycle and ownership stay server-owned."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    responsible_user_id: UUID | None = None
+    maintenance_type: MaintenanceType | None = None
+    description: str | None = Field(default=None, min_length=1, max_length=2000)
+
+    @field_validator("description")
+    @classmethod
+    def normalize_description(cls, value: str | None) -> str | None:
+        if value is None:
+            return None
+        normalized = value.strip()
+        if not normalized:
+            raise ValueError("description must not be blank")
+        return normalized
+
+    @model_validator(mode="after")
+    def validate_changes(self) -> Self:
+        if not self.model_fields_set:
+            raise ValueError("at least one field must be supplied")
+        for field_name in self.model_fields_set:
+            if getattr(self, field_name) is None:
+                raise ValueError(f"{field_name} cannot be null")
+        return self
+
+
+class MaintenanceCompleteRequest(BaseModel):
+    """Required conclusion for a completed intervention."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    completion_notes: str = Field(min_length=1, max_length=2000)
+
+    @field_validator("completion_notes")
+    @classmethod
+    def normalize_completion_notes(cls, value: str) -> str:
+        normalized = value.strip()
+        if not normalized:
+            raise ValueError("completion_notes must not be blank")
+        return normalized
+
+
+class MaintenanceCancelRequest(BaseModel):
+    """Required reason for ending an intervention without completion."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    cancellation_reason: str = Field(min_length=1, max_length=1000)
+
+    @field_validator("cancellation_reason")
+    @classmethod
+    def normalize_cancellation_reason(cls, value: str) -> str:
+        normalized = value.strip()
+        if not normalized:
+            raise ValueError("cancellation_reason must not be blank")
         return normalized
 
 

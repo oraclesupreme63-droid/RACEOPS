@@ -2,7 +2,9 @@
 
 import os
 from collections.abc import Iterator
+from concurrent.futures import ThreadPoolExecutor
 from datetime import UTC, date, datetime
+from threading import Barrier
 from uuid import uuid4
 
 import pytest
@@ -16,11 +18,17 @@ from sqlalchemy.orm import Session
 from raceops.core.config import Settings
 from raceops.iam.authorization import Visibility
 from raceops.iam.enums import Role
+from raceops.iam.identity import CurrentIdentity
 from raceops.iam.models import Team, TeamMembership, User
 from raceops.learning.enums import ActionType, TargetIntent
 from raceops.learning.models import Action, Observation
 from raceops.maintenance.enums import MaintenanceStatus, MaintenanceType
+from raceops.maintenance.errors import InvalidMaintenanceStatusTransitionError
 from raceops.maintenance.models import MaintenanceRecord
+from raceops.maintenance.services import (
+    cancel_maintenance_record,
+    complete_maintenance_record,
+)
 from raceops.operations.enums import VehicleStatus
 from raceops.operations.models import Driver, Event, Track, Vehicle
 from raceops.sessions.models import RaceSession
@@ -215,6 +223,90 @@ def test_maintenance_lifecycle_fields_are_database_enforced(
         )
         with pytest.raises(IntegrityError):
             session.commit()
+
+
+@pytest.mark.integration
+@requires_database
+def test_concurrent_terminal_commands_allow_exactly_one_winner(
+    database_engine: Engine,
+) -> None:
+    with Session(database_engine) as session, session.begin():
+        team = Team(name=_unique("Concurrent Maintenance Team"))
+        mechanic = _user("concurrent-mechanic")
+        membership = TeamMembership(user=mechanic, team=team, role=Role.MECHANIC)
+        session.add(membership)
+        session.flush()
+        vehicle = Vehicle(team_id=team.team_id, identifier=_unique("Concurrent Kart"))
+        session.add(vehicle)
+        session.flush()
+        record = MaintenanceRecord(
+            team_id=team.team_id,
+            vehicle_id=vehicle.vehicle_id,
+            responsible_user_id=mechanic.user_id,
+            created_by_user_id=mechanic.user_id,
+            maintenance_type=MaintenanceType.REPAIR,
+            description="Resolve concurrent lifecycle command safely.",
+        )
+        session.add(record)
+        session.flush()
+        maintenance_id = record.maintenance_id
+        vehicle_id = vehicle.vehicle_id
+        actor = CurrentIdentity(
+            user_id=mechanic.user_id,
+            email=mechanic.email,
+            membership_id=membership.membership_id,
+            team_id=team.team_id,
+            team_name=team.name,
+            role=membership.role,
+        )
+
+    barrier = Barrier(2)
+
+    def complete() -> str:
+        with Session(database_engine) as session:
+            barrier.wait()
+            try:
+                complete_maintenance_record(
+                    session,
+                    actor,
+                    maintenance_id,
+                    completion_notes="Concurrent completion won.",
+                )
+            except InvalidMaintenanceStatusTransitionError:
+                return "rejected"
+            return "completed"
+
+    def cancel() -> str:
+        with Session(database_engine) as session:
+            barrier.wait()
+            try:
+                cancel_maintenance_record(
+                    session,
+                    actor,
+                    maintenance_id,
+                    cancellation_reason="Concurrent cancellation won.",
+                )
+            except InvalidMaintenanceStatusTransitionError:
+                return "rejected"
+            return "cancelled"
+
+    with ThreadPoolExecutor(max_workers=2) as executor:
+        results = [executor.submit(complete), executor.submit(cancel)]
+        outcomes = [future.result(timeout=10) for future in results]
+
+    assert outcomes.count("rejected") == 1
+    assert len({*outcomes, "rejected"}) == 2
+    with Session(database_engine) as session:
+        persisted = session.get_one(MaintenanceRecord, maintenance_id)
+        vehicle = session.get_one(Vehicle, vehicle_id)
+        assert persisted.status in {
+            MaintenanceStatus.COMPLETED,
+            MaintenanceStatus.CANCELLED,
+        }
+        assert (persisted.completion_notes is None) != (
+            persisted.cancellation_reason is None
+        )
+        assert vehicle.status is VehicleStatus.READY
 
 
 def _user(prefix: str) -> User:

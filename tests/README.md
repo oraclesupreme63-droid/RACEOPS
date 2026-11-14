@@ -64,10 +64,12 @@ location, same-Team Track links, date validation, filtering, the complete
 Event transition matrix, terminal states, all five Roles, Driver relationship
 deferral, cross-Team hiding, request validation and the absence of DELETE.
 
-Maintenance HTTP coverage exercises minimal creation, list and detail;
-filtering by Vehicle, type and status; active responsible Membership; all five
-Roles; cross-Team hiding; forbidden server-controlled fields and the absence
-of lifecycle commands until their dedicated block.
+Maintenance HTTP coverage exercises creation, list, detail and OPEN-only
+editing; filtering by Vehicle, type and status; active responsible Membership;
+all five Roles; cross-Team hiding; explicit start, complete and cancel
+commands; required terminal evidence; server timestamps and immutable terminal
+records. PostgreSQL integration also verifies row-lock serialization under
+competing terminal commands and that completion never releases the Vehicle.
 
 Database integration tests are opt-in so the ordinary unit suite remains
 usable without Docker. With the PostgreSQL service healthy, run:

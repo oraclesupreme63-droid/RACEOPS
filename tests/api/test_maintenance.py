@@ -265,6 +265,7 @@ async def test_cross_team_resources_are_hidden_and_responsible_is_validated(
     own_vehicle_id = _seed_vehicle(database_engine, actor.team_id, "Own Kart")
     foreign_vehicle_id = _seed_vehicle(database_engine, foreign.team_id, "Foreign Kart")
     foreign_record_id = _seed_record(database_engine, foreign, foreign_vehicle_id)
+    own_record_id = _seed_record(database_engine, actor, own_vehicle_id)
     headers = _headers(actor)
     transport = ASGITransport(app=application)
 
@@ -309,6 +310,16 @@ async def test_cross_team_resources_are_hidden_and_responsible_is_validated(
                 "description": "Must reject inactive user",
             },
         )
+        foreign_responsible_update = await client.patch(
+            f"/api/v1/maintenance-records/{own_record_id}",
+            headers=headers,
+            json={"responsible_user_id": str(foreign.user_id)},
+        )
+        inactive_responsible_update = await client.patch(
+            f"/api/v1/maintenance-records/{own_record_id}",
+            headers=headers,
+            json={"responsible_user_id": str(inactive.user_id)},
+        )
         hidden = await client.get(
             f"/api/v1/maintenance-records/{foreign_record_id}", headers=headers
         )
@@ -320,12 +331,14 @@ async def test_cross_team_resources_are_hidden_and_responsible_is_validated(
         foreign_responsible,
         inactive_responsible,
         inactive_user_responsible,
+        foreign_responsible_update,
+        inactive_responsible_update,
     ):
         assert response.status_code == 409
         assert response.json()["code"] == "maintenance_responsible_conflict"
     assert hidden.status_code == 404
     assert hidden.json()["code"] == "resource_not_found"
-    assert listed.json()["total"] == 0
+    assert listed.json()["total"] == 1
 
 
 @pytest.mark.anyio
@@ -379,6 +392,180 @@ async def test_maintenance_requests_reject_client_controlled_fields(
         assert response.json()["code"] == "REQUEST_VALIDATION_ERROR"
 
 
+@pytest.mark.anyio
+@pytest.mark.integration
+@requires_database
+async def test_open_record_can_be_updated_started_and_completed_without_release(
+    application: FastAPI,
+    database_engine: Engine,
+) -> None:
+    manager = _seed_identity(database_engine, role=Role.TEAM_MANAGER)
+    mechanic = _seed_identity(
+        database_engine,
+        role=Role.MECHANIC,
+        team_id=manager.team_id,
+    )
+    vehicle_id = _seed_vehicle(database_engine, manager.team_id, "Lifecycle Kart")
+    maintenance_id = _seed_record(database_engine, manager, vehicle_id)
+    headers = _headers(manager)
+    transport = ASGITransport(app=application)
+
+    async with AsyncClient(transport=transport, base_url="http://testserver") as client:
+        updated = await client.patch(
+            f"/api/v1/maintenance-records/{maintenance_id}",
+            headers=headers,
+            json={
+                "responsible_user_id": str(mechanic.user_id),
+                "maintenance_type": "REPAIR",
+                "description": "  Replace left rear wheel bearing.  ",
+            },
+        )
+        started = await client.post(
+            f"/api/v1/maintenance-records/{maintenance_id}/start",
+            headers=headers,
+        )
+        locked_edit = await client.patch(
+            f"/api/v1/maintenance-records/{maintenance_id}",
+            headers=headers,
+            json={"description": "Must remain unchanged after start."},
+        )
+        completed = await client.post(
+            f"/api/v1/maintenance-records/{maintenance_id}/complete",
+            headers=headers,
+            json={"completion_notes": "  Bearing replaced; play eliminated.  "},
+        )
+
+    assert updated.status_code == 200
+    assert updated.json()["responsible_user_id"] == str(mechanic.user_id)
+    assert updated.json()["maintenance_type"] == "REPAIR"
+    assert updated.json()["description"] == "Replace left rear wheel bearing."
+    assert started.status_code == 200
+    assert started.json()["status"] == "IN_PROGRESS"
+    assert started.json()["started_at"] is not None
+    assert locked_edit.status_code == 409
+    assert locked_edit.json()["code"] == "maintenance_record_locked"
+    assert completed.status_code == 200
+    assert completed.json()["status"] == "COMPLETED"
+    assert completed.json()["started_at"] == started.json()["started_at"]
+    assert completed.json()["completed_at"] is not None
+    assert completed.json()["completion_notes"] == (
+        "Bearing replaced; play eliminated."
+    )
+
+    with Session(database_engine) as session:
+        vehicle = session.get_one(Vehicle, vehicle_id)
+        assert vehicle.status is VehicleStatus.READY
+
+
+@pytest.mark.anyio
+@pytest.mark.integration
+@requires_database
+async def test_open_record_can_complete_directly_or_cancel_with_server_time(
+    application: FastAPI,
+    database_engine: Engine,
+) -> None:
+    manager = _seed_identity(database_engine, role=Role.TEAM_MANAGER)
+    vehicle_id = _seed_vehicle(database_engine, manager.team_id, "Terminal Kart")
+    completed_id = _seed_record(database_engine, manager, vehicle_id)
+    cancelled_id = _seed_record(database_engine, manager, vehicle_id)
+    headers = _headers(manager)
+    transport = ASGITransport(app=application)
+
+    async with AsyncClient(transport=transport, base_url="http://testserver") as client:
+        completed = await client.post(
+            f"/api/v1/maintenance-records/{completed_id}/complete",
+            headers=headers,
+            json={"completion_notes": "Inspection passed."},
+        )
+        cancelled = await client.post(
+            f"/api/v1/maintenance-records/{cancelled_id}/cancel",
+            headers=headers,
+            json={"cancellation_reason": "Duplicate record."},
+        )
+
+    assert completed.status_code == 200
+    assert completed.json()["status"] == "COMPLETED"
+    assert completed.json()["started_at"] is None
+    assert completed.json()["completed_at"] is not None
+    assert cancelled.status_code == 200
+    assert cancelled.json()["status"] == "CANCELLED"
+    assert cancelled.json()["cancelled_at"] is not None
+    assert cancelled.json()["cancellation_reason"] == "Duplicate record."
+
+
+@pytest.mark.anyio
+@pytest.mark.integration
+@requires_database
+async def test_terminal_records_reject_transitions_and_normal_edits(
+    application: FastAPI,
+    database_engine: Engine,
+) -> None:
+    manager = _seed_identity(database_engine, role=Role.TEAM_MANAGER)
+    vehicle_id = _seed_vehicle(database_engine, manager.team_id, "Locked Kart")
+    maintenance_id = _seed_record(database_engine, manager, vehicle_id)
+    headers = _headers(manager)
+    transport = ASGITransport(app=application)
+
+    async with AsyncClient(transport=transport, base_url="http://testserver") as client:
+        first = await client.post(
+            f"/api/v1/maintenance-records/{maintenance_id}/cancel",
+            headers=headers,
+            json={"cancellation_reason": "Work no longer required."},
+        )
+        repeated = await client.post(
+            f"/api/v1/maintenance-records/{maintenance_id}/start",
+            headers=headers,
+        )
+        edited = await client.patch(
+            f"/api/v1/maintenance-records/{maintenance_id}",
+            headers=headers,
+            json={"description": "Forbidden terminal edit."},
+        )
+
+    assert first.status_code == 200
+    assert repeated.status_code == 409
+    assert repeated.json()["code"] == "invalid_maintenance_status_transition"
+    assert edited.status_code == 409
+    assert edited.json()["code"] == "maintenance_record_locked"
+
+
+@pytest.mark.anyio
+@pytest.mark.integration
+@requires_database
+async def test_lifecycle_commands_enforce_role_and_team_boundaries(
+    application: FastAPI,
+    database_engine: Engine,
+) -> None:
+    manager = _seed_identity(database_engine, role=Role.TEAM_MANAGER)
+    administrator = _seed_identity(database_engine, role=Role.ADMINISTRATOR)
+    driver = _seed_identity(
+        database_engine,
+        role=Role.DRIVER,
+        team_id=manager.team_id,
+    )
+    vehicle_id = _seed_vehicle(database_engine, manager.team_id, "Boundary Kart")
+    maintenance_id = _seed_record(database_engine, manager, vehicle_id)
+    transport = ASGITransport(app=application)
+
+    async with AsyncClient(transport=transport, base_url="http://testserver") as client:
+        admin_write = await client.post(
+            f"/api/v1/maintenance-records/{maintenance_id}/start",
+            headers=_headers(administrator),
+        )
+        driver_write = await client.post(
+            f"/api/v1/maintenance-records/{maintenance_id}/start",
+            headers=_headers(driver),
+        )
+        hidden = await client.post(
+            f"/api/v1/maintenance-records/{maintenance_id}/start",
+            headers=_headers(_seed_identity(database_engine, role=Role.TEAM_MANAGER)),
+        )
+
+    assert admin_write.status_code == 403
+    assert driver_write.status_code == 403
+    assert hidden.status_code == 404
+
+
 def test_openapi_documents_minimal_maintenance_contract() -> None:
     schema = create_app().openapi()
     paths = schema["paths"]
@@ -386,7 +573,14 @@ def test_openapi_documents_minimal_maintenance_contract() -> None:
     item = paths["/api/v1/maintenance-records/{maintenance_id}"]
 
     assert set(collection) == {"get", "post"}
-    assert set(item) == {"get"}
+    start = paths["/api/v1/maintenance-records/{maintenance_id}/start"]
+    complete = paths["/api/v1/maintenance-records/{maintenance_id}/complete"]
+    cancel = paths["/api/v1/maintenance-records/{maintenance_id}/cancel"]
+
+    assert set(item) == {"get", "patch"}
+    assert set(start) == {"post"}
+    assert set(complete) == {"post"}
+    assert set(cancel) == {"post"}
     assert collection["get"]["security"] == [{"HTTPBearer": []}]
     assert collection["post"]["security"] == [{"HTTPBearer": []}]
     create_properties = schema["components"]["schemas"]["MaintenanceCreateRequest"][

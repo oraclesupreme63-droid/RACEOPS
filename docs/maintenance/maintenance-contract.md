@@ -288,3 +288,23 @@ El Bloque 10.3 expuso únicamente la frontera mínima autorizada:
 
 Las transiciones, edición y referencias causales continúan ausentes de la API
 hasta que sus reglas se implementen en los Bloques 10.4 y 10.5.
+
+## 16. Evidencia del ciclo de intervención
+
+El Bloque 10.4 implementa la máquina de estados acordada mediante comandos
+explícitos:
+
+- `OPEN → IN_PROGRESS`, `COMPLETED` o `CANCELLED`;
+- `IN_PROGRESS → COMPLETED` o `CANCELLED`;
+- `COMPLETED` y `CANCELLED` son terminales;
+- `PATCH` sólo permite responsable, tipo y descripción mientras está `OPEN`;
+- completar exige `completion_notes` y cancelar exige `cancellation_reason`;
+- los timestamps se generan en el servidor;
+- cada decisión de transición bloquea la fila en PostgreSQL;
+- una intervención completada nunca cambia por sí sola la disponibilidad del
+  Vehicle.
+
+Una prueba concurrente ejecuta completar y cancelar contra el mismo registro.
+El bloqueo serializa ambos comandos: exactamente uno persiste y el segundo
+recibe `invalid_maintenance_status_transition`, sin estado híbrido ni escritura
+parcial. Las relaciones causales permanecen reservadas para el Bloque 10.5.

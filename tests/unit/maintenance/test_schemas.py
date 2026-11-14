@@ -6,7 +6,12 @@ import pytest
 from pydantic import ValidationError
 
 from raceops.maintenance.enums import MaintenanceType
-from raceops.maintenance.schemas import MaintenanceCreateRequest
+from raceops.maintenance.schemas import (
+    MaintenanceCancelRequest,
+    MaintenanceCompleteRequest,
+    MaintenanceCreateRequest,
+    MaintenanceUpdateRequest,
+)
 
 
 def test_create_request_normalizes_description() -> None:
@@ -32,3 +37,48 @@ def test_create_request_forbids_server_controlled_fields(field: str) -> None:
 
     with pytest.raises(ValidationError):
         MaintenanceCreateRequest.model_validate(data)
+
+
+def test_update_and_terminal_requests_normalize_text() -> None:
+    update = MaintenanceUpdateRequest(description="  Inspect steering column.  ")
+    complete = MaintenanceCompleteRequest(
+        completion_notes="  Bearing replaced and verified.  "
+    )
+    cancel = MaintenanceCancelRequest(cancellation_reason="  Duplicate work order.  ")
+
+    assert update.description == "Inspect steering column."
+    assert complete.completion_notes == "Bearing replaced and verified."
+    assert cancel.cancellation_reason == "Duplicate work order."
+
+
+@pytest.mark.parametrize(
+    "payload",
+    [
+        {},
+        {"description": None},
+        {"maintenance_type": None},
+        {"responsible_user_id": None},
+        {"description": "   "},
+        {"status": "COMPLETED"},
+    ],
+)
+def test_update_request_requires_non_null_allowed_changes(
+    payload: dict[str, object],
+) -> None:
+    with pytest.raises(ValidationError):
+        MaintenanceUpdateRequest.model_validate(payload)
+
+
+@pytest.mark.parametrize(
+    ("schema", "field"),
+    [
+        (MaintenanceCompleteRequest, "completion_notes"),
+        (MaintenanceCancelRequest, "cancellation_reason"),
+    ],
+)
+def test_terminal_requests_require_non_blank_text(
+    schema: type[MaintenanceCompleteRequest] | type[MaintenanceCancelRequest],
+    field: str,
+) -> None:
+    with pytest.raises(ValidationError):
+        schema.model_validate({field: "   "})

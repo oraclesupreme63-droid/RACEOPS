@@ -2,8 +2,7 @@
 
 **Fecha:** 13 de noviembre de 2026
 
-**Estado:** implementación y verificación dirigida terminadas; pendiente de
-CI global y aprobación del propietario
+**Estado:** aprobado por el propietario; CI global aprobada
 
 ## Resultado
 
@@ -49,5 +48,6 @@ visibilidad, timestamps ni relaciones causales controladas por el cliente.
 
 ## Siguiente bloque condicionado
 
-Con aprobación comienza 10.4 — ciclo de intervención, edición controlada,
-conclusión/cancelación obligatoria, timestamps server-side y concurrencia.
+El propietario aprobó el bloque. El commit `da32f78` superó la ejecución CI
+`43532136973` con 255 pruebas, cobertura de 92.00 %, migraciones y contenedor
+saludable. Continúa 10.4 — ciclo de intervención.

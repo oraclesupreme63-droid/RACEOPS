@@ -42,15 +42,15 @@ autorizada.
 - [x] Aplicar filtros por Vehicle, tipo y estado antes del conteo.
 - [x] Ocultar recursos ajenos como no encontrados.
 - [x] Probar todos los Roles y aislamiento entre Teams.
-- [ ] Aprobación del propietario.
+- [x] Aprobación del propietario.
 
 ### 10.4 — Ciclo de intervención
 
-- [ ] Iniciar, completar y cancelar mediante comandos explícitos.
-- [ ] Exigir notas de terminación o motivo de cancelación.
-- [ ] Mantener estados terminales inmutables por la API normal.
-- [ ] No cambiar automáticamente el Vehicle a `READY`.
-- [ ] Probar transiciones, timestamps y concurrencia.
+- [x] Iniciar, completar y cancelar mediante comandos explícitos.
+- [x] Exigir notas de terminación o motivo de cancelación.
+- [x] Mantener estados terminales inmutables por la API normal.
+- [x] No cambiar automáticamente el Vehicle a `READY`.
+- [x] Probar transiciones, timestamps y concurrencia.
 - [ ] Aprobación del propietario.
 
 ### 10.5 — Cadena causal
