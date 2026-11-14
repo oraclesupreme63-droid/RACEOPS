@@ -6,8 +6,14 @@ from uuid import UUID
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
+from raceops.iam.enums import Role
+from raceops.learning.decision_schemas import ActionResponse
+from raceops.learning.models import Action, Observation
+from raceops.learning.schemas import ObservationResponse
 from raceops.maintenance.enums import MaintenanceStatus, MaintenanceType
 from raceops.maintenance.models import MaintenanceRecord
+from raceops.sessions.models import RaceSession
+from raceops.sessions.schemas import SessionResponse
 
 
 class MaintenanceCreateRequest(BaseModel):
@@ -17,6 +23,9 @@ class MaintenanceCreateRequest(BaseModel):
 
     vehicle_id: UUID
     responsible_user_id: UUID
+    session_id: UUID | None = None
+    observation_id: UUID | None = None
+    action_id: UUID | None = None
     maintenance_type: MaintenanceType
     description: str = Field(min_length=1, max_length=2000)
 
@@ -141,3 +150,40 @@ class MaintenancePageResponse(BaseModel):
     total: int = Field(ge=0)
     limit: int = Field(ge=1, le=100)
     offset: int = Field(ge=0)
+
+
+class MaintenanceCausalChainResponse(BaseModel):
+    """Authorized context from one Session symptom to its intervention."""
+
+    session: SessionResponse | None
+    observation: ObservationResponse | None
+    action: ActionResponse | None
+    maintenance: MaintenanceResponse
+
+    @classmethod
+    def from_models(
+        cls,
+        record: MaintenanceRecord,
+        race_session: RaceSession | None,
+        observation: Observation | None,
+        action: Action | None,
+        actor_role: Role,
+    ) -> Self:
+        return cls(
+            session=(
+                SessionResponse.from_model(race_session)
+                if race_session is not None
+                else None
+            ),
+            observation=(
+                ObservationResponse.from_model(observation)
+                if observation is not None
+                else None
+            ),
+            action=(
+                ActionResponse.from_model(action, actor_role)
+                if action is not None
+                else None
+            ),
+            maintenance=MaintenanceResponse.from_model(record),
+        )

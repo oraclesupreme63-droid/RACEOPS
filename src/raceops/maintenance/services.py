@@ -12,14 +12,21 @@ from raceops.iam.enums import IdentityStatus
 from raceops.iam.errors import ResourceNotFoundError
 from raceops.iam.identity import CurrentIdentity
 from raceops.iam.models import TeamMembership, User
+from raceops.learning.decision_services import get_action
+from raceops.learning.enums import ActionType
+from raceops.learning.models import Action, Observation
+from raceops.learning.services import get_observation
 from raceops.maintenance.enums import MaintenanceStatus, MaintenanceType
 from raceops.maintenance.errors import (
     InvalidMaintenanceStatusTransitionError,
+    MaintenanceContextConflictError,
     MaintenanceRecordLockedError,
     MaintenanceResponsibleConflictError,
 )
 from raceops.maintenance.models import MaintenanceRecord
 from raceops.operations.models import Vehicle
+from raceops.sessions.models import RaceSession
+from raceops.sessions.services import get_race_session
 
 
 def create_maintenance_record(
@@ -28,6 +35,9 @@ def create_maintenance_record(
     *,
     vehicle_id: UUID,
     responsible_user_id: UUID,
+    session_id: UUID | None,
+    observation_id: UUID | None,
+    action_id: UUID | None,
     maintenance_type: MaintenanceType,
     description: str,
 ) -> MaintenanceRecord:
@@ -41,6 +51,15 @@ def create_maintenance_record(
     if vehicle is None:
         raise ResourceNotFoundError
 
+    _validate_maintenance_context(
+        session,
+        actor,
+        vehicle_id=vehicle.vehicle_id,
+        session_id=session_id,
+        observation_id=observation_id,
+        action_id=action_id,
+    )
+
     responsible_membership = _require_active_responsible(
         session, actor.team_id, responsible_user_id
     )
@@ -50,6 +69,9 @@ def create_maintenance_record(
         vehicle_id=vehicle.vehicle_id,
         responsible_user_id=responsible_membership.user_id,
         created_by_user_id=actor.user_id,
+        session_id=session_id,
+        observation_id=observation_id,
+        action_id=action_id,
         maintenance_type=maintenance_type,
         description=description,
     )
@@ -143,6 +165,7 @@ def list_maintenance_records(
     actor: CurrentIdentity,
     *,
     vehicle_id: UUID | None,
+    session_id: UUID | None,
     maintenance_type: MaintenanceType | None,
     status: MaintenanceStatus | None,
     limit: int,
@@ -152,6 +175,8 @@ def list_maintenance_records(
     filters = [MaintenanceRecord.team_id == actor.team_id]
     if vehicle_id is not None:
         filters.append(MaintenanceRecord.vehicle_id == vehicle_id)
+    if session_id is not None:
+        filters.append(MaintenanceRecord.session_id == session_id)
     if maintenance_type is not None:
         filters.append(MaintenanceRecord.maintenance_type == maintenance_type)
     if status is not None:
@@ -188,6 +213,117 @@ def get_maintenance_record(
     if record is None:
         raise ResourceNotFoundError
     return record
+
+
+def get_maintenance_causal_chain(
+    session: Session,
+    actor: CurrentIdentity,
+    maintenance_id: UUID,
+) -> tuple[
+    MaintenanceRecord,
+    RaceSession | None,
+    Observation | None,
+    Action | None,
+]:
+    """Return only context explicitly attached to one authorized record."""
+    record = get_maintenance_record(session, actor, maintenance_id)
+    race_session = (
+        get_race_session(session, actor, record.session_id)
+        if record.session_id is not None
+        else None
+    )
+    observation = _get_visible_observation(session, actor, record.observation_id)
+    action = _get_visible_action(session, actor, record.action_id)
+    return record, race_session, observation, action
+
+
+def _validate_maintenance_context(
+    session: Session,
+    actor: CurrentIdentity,
+    *,
+    vehicle_id: UUID,
+    session_id: UUID | None,
+    observation_id: UUID | None,
+    action_id: UUID | None,
+) -> None:
+    session_ids: set[UUID] = set()
+    if session_id is not None:
+        race_session = _get_context_session_for_update(
+            session, actor.team_id, session_id
+        )
+        if race_session.vehicle_id != vehicle_id:
+            raise MaintenanceContextConflictError
+        session_ids.add(race_session.session_id)
+
+    if observation_id is not None:
+        observation = get_observation(session, actor, observation_id)
+        if observation.vehicle_id is not None and observation.vehicle_id != vehicle_id:
+            raise MaintenanceContextConflictError
+        if observation.session_id is not None:
+            observation_session = _get_context_session_for_update(
+                session, actor.team_id, observation.session_id
+            )
+            if observation_session.vehicle_id != vehicle_id:
+                raise MaintenanceContextConflictError
+            session_ids.add(observation_session.session_id)
+
+    if action_id is not None:
+        action = get_action(session, actor, action_id)
+        if action.action_type is not ActionType.MECHANICAL:
+            raise MaintenanceContextConflictError
+        action_session = _get_context_session_for_update(
+            session, actor.team_id, action.source_session_id
+        )
+        if action_session.vehicle_id != vehicle_id:
+            raise MaintenanceContextConflictError
+        session_ids.add(action_session.session_id)
+
+    if len(session_ids) > 1:
+        raise MaintenanceContextConflictError
+
+
+def _get_context_session_for_update(
+    session: Session,
+    team_id: UUID,
+    session_id: UUID,
+) -> RaceSession:
+    race_session = session.scalar(
+        select(RaceSession)
+        .where(
+            RaceSession.session_id == session_id,
+            RaceSession.team_id == team_id,
+        )
+        .with_for_update()
+    )
+    if race_session is None:
+        raise ResourceNotFoundError
+    return race_session
+
+
+def _get_visible_observation(
+    session: Session,
+    actor: CurrentIdentity,
+    observation_id: UUID | None,
+) -> Observation | None:
+    if observation_id is None:
+        return None
+    try:
+        return get_observation(session, actor, observation_id)
+    except ResourceNotFoundError:
+        return None
+
+
+def _get_visible_action(
+    session: Session,
+    actor: CurrentIdentity,
+    action_id: UUID | None,
+) -> Action | None:
+    if action_id is None:
+        return None
+    try:
+        return get_action(session, actor, action_id)
+    except ResourceNotFoundError:
+        return None
 
 
 def _get_maintenance_for_update(

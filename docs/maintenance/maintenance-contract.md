@@ -197,6 +197,7 @@ conteos o errores.
 POST  /api/v1/maintenance-records
 GET   /api/v1/maintenance-records
 GET   /api/v1/maintenance-records/{maintenance_id}
+GET   /api/v1/maintenance-records/{maintenance_id}/causal-chain
 PATCH /api/v1/maintenance-records/{maintenance_id}
 
 POST /api/v1/maintenance-records/{maintenance_id}/start
@@ -286,8 +287,8 @@ El Bloque 10.3 expuso únicamente la frontera mínima autorizada:
 - detalle y listados que ocultan recursos de otros Teams;
 - Driver sin acceso al módulo técnico.
 
-Las transiciones, edición y referencias causales continúan ausentes de la API
-hasta que sus reglas se implementen en los Bloques 10.4 y 10.5.
+Las transiciones, edición y referencias causales se incorporaron de forma
+incremental en los Bloques 10.4 y 10.5.
 
 ## 16. Evidencia del ciclo de intervención
 
@@ -307,4 +308,32 @@ explícitos:
 Una prueba concurrente ejecuta completar y cancelar contra el mismo registro.
 El bloqueo serializa ambos comandos: exactamente uno persiste y el segundo
 recibe `invalid_maintenance_status_transition`, sin estado híbrido ni escritura
-parcial. Las relaciones causales permanecen reservadas para el Bloque 10.5.
+parcial. En ese punto, las relaciones causales permanecían reservadas para el
+Bloque 10.5.
+
+## 17. Evidencia de la cadena causal
+
+El Bloque 10.5 permite proporcionar `session_id`, `observation_id` y
+`action_id` al crear una intervención. Las referencias siguen siendo
+opcionales y no se derivan a partir de otras tablas.
+
+La validación transaccional exige:
+
+- recursos visibles y pertenecientes al Team activo;
+- la misma Session cuando más de una referencia aporta contexto temporal;
+- el mismo Vehicle en Session, Observation, Action e intervención;
+- una Action clasificada exclusivamente como `MECHANICAL`;
+- bloqueo de las filas Session mientras se decide y persiste la relación;
+- ausencia total de escritura si cualquier nodo es incompatible.
+
+`GET /api/v1/maintenance-records/{maintenance_id}/causal-chain` recupera sólo
+los nodos almacenados explícitamente. La representación de Action reutiliza
+la proyección por Role, por lo que el detalle confidencial continúa reservado
+a Engineering. Los filtros existentes de Observation y Action también se
+aplican: un nodo no visible se omite sin revelar su contenido. Driver permanece
+fuera de toda la API de mantenimiento.
+
+El listado acepta además `session_id` y aplica el filtro antes del conteo. Las
+pruebas cubren referencias extranjeras, Vehicle incompatible, Action no
+mecánica, Sessions contradictorias, autorización y ausencia de escrituras
+parciales.

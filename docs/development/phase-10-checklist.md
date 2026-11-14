@@ -51,14 +51,14 @@ autorizada.
 - [x] Mantener estados terminales inmutables por la API normal.
 - [x] No cambiar automáticamente el Vehicle a `READY`.
 - [x] Probar transiciones, timestamps y concurrencia.
-- [ ] Aprobación del propietario.
+- [x] Aprobación del propietario.
 
 ### 10.5 — Cadena causal
 
-- [ ] Validar referencias opcionales a Session, Observation y Action.
-- [ ] Rechazar relaciones entre Teams o Vehicles incompatibles.
-- [ ] Exigir Action de tipo `MECHANICAL` cuando se relacione.
-- [ ] Recuperar la cadena síntoma → acción → intervención.
+- [x] Validar referencias opcionales a Session, Observation y Action.
+- [x] Rechazar relaciones entre Teams o Vehicles incompatibles.
+- [x] Exigir Action de tipo `MECHANICAL` cuando se relacione.
+- [x] Recuperar la cadena síntoma → acción → intervención.
 - [ ] Aprobación del propietario.
 
 ### 10.6 — Disponibilidad segura

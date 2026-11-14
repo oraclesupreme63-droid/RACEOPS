@@ -70,6 +70,10 @@ all five Roles; cross-Team hiding; explicit start, complete and cancel
 commands; required terminal evidence; server timestamps and immutable terminal
 records. PostgreSQL integration also verifies row-lock serialization under
 competing terminal commands and that completion never releases the Vehicle.
+The causal-context coverage validates optional Session, Observation and
+Mechanical Action links; same-Team, same-Session and same-Vehicle consistency;
+foreign-resource hiding; atomic rejection; Session filtering and authorized
+retrieval of the explicit symptom-to-intervention chain.
 
 Database integration tests are opt-in so the ordinary unit suite remains
 usable without Docker. With the PostgreSQL service healthy, run:

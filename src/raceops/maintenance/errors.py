@@ -11,3 +11,7 @@ class InvalidMaintenanceStatusTransitionError(RuntimeError):
 
 class MaintenanceRecordLockedError(RuntimeError):
     """Raised when normal editing targets a record that is no longer OPEN."""
+
+
+class MaintenanceContextConflictError(RuntimeError):
+    """Raised when optional causal references contradict one another."""

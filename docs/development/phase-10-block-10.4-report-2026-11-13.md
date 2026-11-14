@@ -2,8 +2,7 @@
 
 **Fecha:** 13 de noviembre de 2026
 
-**Estado:** implementación y verificación dirigida terminadas; pendiente de
-CI global y aprobación del propietario
+**Estado:** aprobado por el propietario; CI global aprobada
 
 ## Resultado
 
@@ -55,8 +54,9 @@ acepta estado o timestamps elegidos por el cliente.
 - Ruff format, Ruff check y MyPy estricto aprobados;
 - `alembic check` sin operaciones pendientes.
 
-La construcción y prueba de humo del contenedor corresponden a CI después del
-commit del bloque.
+El commit `b4a234a` superó la ejecución CI `43536323037`: calidad, pruebas,
+cobertura, migraciones, construcción de imagen y smoke test del stack fueron
+aprobados. El propietario aprobó el bloque y autorizó continuar con 10.5.
 
 ## Límite conservado
 
@@ -66,6 +66,6 @@ causal corresponde al Bloque 10.5.
 
 ## Siguiente bloque condicionado
 
-Con aprobación comienza 10.5 — cadena causal: validar y recuperar la relación
+Continúa 10.5 — cadena causal: validar y recuperar la relación
 Session/Observation/Action/intervención sin permitir cruces de Team, Session o
 Vehicle.

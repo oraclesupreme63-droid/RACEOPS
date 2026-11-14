@@ -15,12 +15,14 @@ from raceops.iam.identity import CurrentIdentity
 from raceops.maintenance.enums import MaintenanceStatus, MaintenanceType
 from raceops.maintenance.errors import (
     InvalidMaintenanceStatusTransitionError,
+    MaintenanceContextConflictError,
     MaintenanceRecordLockedError,
     MaintenanceResponsibleConflictError,
 )
 from raceops.maintenance.models import MaintenanceRecord
 from raceops.maintenance.schemas import (
     MaintenanceCancelRequest,
+    MaintenanceCausalChainResponse,
     MaintenanceCompleteRequest,
     MaintenanceCreateRequest,
     MaintenancePageResponse,
@@ -31,6 +33,7 @@ from raceops.maintenance.services import (
     cancel_maintenance_record,
     complete_maintenance_record,
     create_maintenance_record,
+    get_maintenance_causal_chain,
     get_maintenance_record,
     list_maintenance_records,
     start_maintenance_record,
@@ -61,6 +64,12 @@ RECORD_LOCKED_PROBLEM = ProblemDefinition(
     "maintenance_record_locked",
     "A maintenance record can only be edited while it is open.",
 )
+CONTEXT_CONFLICT_PROBLEM = ProblemDefinition(
+    "maintenance-context-conflict",
+    "Maintenance context conflict",
+    "maintenance_context_conflict",
+    "The Session, Observation, Action, and Vehicle do not form one valid context.",
+)
 
 COMMON_RESPONSES: dict[int | str, dict[str, Any]] = {
     401: {"model": ProblemDetails, "description": "Invalid access token."},
@@ -78,7 +87,10 @@ COMMON_RESPONSES: dict[int | str, dict[str, Any]] = {
     summary="Create a maintenance record in the active Team",
     responses={
         **COMMON_RESPONSES,
-        409: {"model": ProblemDetails, "description": "Responsible conflict."},
+        409: {
+            "model": ProblemDetails,
+            "description": "Responsible or causal context conflict.",
+        },
     },
 )
 def create_maintenance_record_endpoint(
@@ -93,6 +105,9 @@ def create_maintenance_record_endpoint(
             actor,
             vehicle_id=payload.vehicle_id,
             responsible_user_id=payload.responsible_user_id,
+            session_id=payload.session_id,
+            observation_id=payload.observation_id,
+            action_id=payload.action_id,
             maintenance_type=payload.maintenance_type,
             description=payload.description,
         )
@@ -101,6 +116,8 @@ def create_maintenance_record_endpoint(
             status_code=409,
             definition=RESPONSIBLE_CONFLICT_PROBLEM,
         ) from error
+    except MaintenanceContextConflictError as error:
+        raise _context_conflict() from error
     logger.info(
         "maintenance record created",
         extra={
@@ -124,6 +141,7 @@ def list_maintenance_records_endpoint(
     session: Annotated[Session, Depends(get_db_session)],
     actor: Annotated[CurrentIdentity, Depends(read_maintenance)],
     vehicle_id: Annotated[UUID | None, Query()] = None,
+    session_id: Annotated[UUID | None, Query()] = None,
     maintenance_type: Annotated[MaintenanceType | None, Query()] = None,
     maintenance_status: Annotated[
         MaintenanceStatus | None, Query(alias="status")
@@ -136,6 +154,7 @@ def list_maintenance_records_endpoint(
         session,
         actor,
         vehicle_id=vehicle_id,
+        session_id=session_id,
         maintenance_type=maintenance_type,
         status=maintenance_status,
         limit=limit,
@@ -164,6 +183,31 @@ def get_maintenance_record_endpoint(
     """Return one authorized record without revealing foreign resources."""
     return MaintenanceResponse.from_model(
         get_maintenance_record(session, actor, maintenance_id)
+    )
+
+
+@router.get(
+    "/maintenance-records/{maintenance_id}/causal-chain",
+    tags=["maintenance"],
+    response_model=MaintenanceCausalChainResponse,
+    summary="Read the explicit causal context of one maintenance record",
+    responses=COMMON_RESPONSES,
+)
+def get_maintenance_causal_chain_endpoint(
+    maintenance_id: UUID,
+    session: Annotated[Session, Depends(get_db_session)],
+    actor: Annotated[CurrentIdentity, Depends(read_maintenance)],
+) -> MaintenanceCausalChainResponse:
+    """Traverse only references explicitly stored on an authorized record."""
+    record, race_session, observation, action = get_maintenance_causal_chain(
+        session, actor, maintenance_id
+    )
+    return MaintenanceCausalChainResponse.from_models(
+        record,
+        race_session,
+        observation,
+        action,
+        actor.role,
     )
 
 
@@ -313,6 +357,10 @@ def _invalid_status_transition() -> ApiProblemError:
 
 def _record_locked() -> ApiProblemError:
     return ApiProblemError(status_code=409, definition=RECORD_LOCKED_PROBLEM)
+
+
+def _context_conflict() -> ApiProblemError:
+    return ApiProblemError(status_code=409, definition=CONTEXT_CONFLICT_PROBLEM)
 
 
 def _log_lifecycle_event(

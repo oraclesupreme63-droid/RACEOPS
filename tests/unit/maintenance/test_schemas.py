@@ -25,7 +25,7 @@ def test_create_request_normalizes_description() -> None:
     assert payload.description == "Inspect brake assembly."
 
 
-@pytest.mark.parametrize("field", ["team_id", "status", "session_id"])
+@pytest.mark.parametrize("field", ["team_id", "status", "created_by_user_id"])
 def test_create_request_forbids_server_controlled_fields(field: str) -> None:
     data = {
         "vehicle_id": uuid4(),
@@ -37,6 +37,26 @@ def test_create_request_forbids_server_controlled_fields(field: str) -> None:
 
     with pytest.raises(ValidationError):
         MaintenanceCreateRequest.model_validate(data)
+
+
+def test_create_request_accepts_explicit_optional_causal_references() -> None:
+    session_id = uuid4()
+    observation_id = uuid4()
+    action_id = uuid4()
+
+    payload = MaintenanceCreateRequest(
+        vehicle_id=uuid4(),
+        responsible_user_id=uuid4(),
+        session_id=session_id,
+        observation_id=observation_id,
+        action_id=action_id,
+        maintenance_type=MaintenanceType.REPAIR,
+        description="Investigate recorded symptom.",
+    )
+
+    assert payload.session_id == session_id
+    assert payload.observation_id == observation_id
+    assert payload.action_id == action_id
 
 
 def test_update_and_terminal_requests_normalize_text() -> None:
