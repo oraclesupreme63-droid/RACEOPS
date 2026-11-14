@@ -273,3 +273,18 @@ La consistencia semántica entre Vehicle, Session, Observation y Action se
 validará en servicios durante el Bloque 10.5. Las FKs actuales garantizan
 pertenencia al Team, pero deliberadamente no simulan reglas entre tablas que
 PostgreSQL no puede expresar mediante un `CHECK` local.
+
+## 15. Evidencia de creación y consulta
+
+El Bloque 10.3 expuso únicamente la frontera mínima autorizada:
+
+- `READ_MAINTENANCE` para Administrator, Team Manager, Engineer y Mechanic;
+- `WRITE_MAINTENANCE` para Team Manager, Engineer y Mechanic;
+- creación sin campos de ownership, lifecycle, visibilidad o contexto causal;
+- responsable con User y Membership activos dentro del Team;
+- listados filtrables por Vehicle, tipo y estado antes del conteo;
+- detalle y listados que ocultan recursos de otros Teams;
+- Driver sin acceso al módulo técnico.
+
+Las transiciones, edición y referencias causales continúan ausentes de la API
+hasta que sus reglas se implementen en los Bloques 10.4 y 10.5.

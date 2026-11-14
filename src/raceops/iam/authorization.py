@@ -47,6 +47,8 @@ class Permission(StrEnum):
     CREATE_ACTIONS = "CREATE_ACTIONS"
     UPDATE_ASSIGNED_ACTIONS = "UPDATE_ASSIGNED_ACTIONS"
     WRITE_ACTION_OUTCOMES = "WRITE_ACTION_OUTCOMES"
+    READ_MAINTENANCE = "READ_MAINTENANCE"
+    WRITE_MAINTENANCE = "WRITE_MAINTENANCE"
     READ_HISTORY = "READ_HISTORY"
 
 
@@ -81,6 +83,7 @@ _ADMINISTRATOR_PERMISSIONS = frozenset(
         Permission.READ_ANALYSIS_SUMMARIES,
         Permission.READ_PRIORITIES,
         Permission.READ_ACTIONS,
+        Permission.READ_MAINTENANCE,
         Permission.READ_HISTORY,
     }
 )
@@ -111,6 +114,8 @@ _TEAM_MANAGER_PERMISSIONS = frozenset(
         Permission.CREATE_ACTIONS,
         Permission.UPDATE_ASSIGNED_ACTIONS,
         Permission.WRITE_ACTION_OUTCOMES,
+        Permission.READ_MAINTENANCE,
+        Permission.WRITE_MAINTENANCE,
         Permission.READ_HISTORY,
     }
 )
@@ -143,6 +148,8 @@ _ENGINEER_PERMISSIONS = frozenset(
         Permission.CREATE_ACTIONS,
         Permission.UPDATE_ASSIGNED_ACTIONS,
         Permission.WRITE_ACTION_OUTCOMES,
+        Permission.READ_MAINTENANCE,
+        Permission.WRITE_MAINTENANCE,
         Permission.READ_HISTORY,
     }
 )
@@ -167,6 +174,8 @@ _MECHANIC_PERMISSIONS = frozenset(
         Permission.CREATE_ACTIONS,
         Permission.UPDATE_ASSIGNED_ACTIONS,
         Permission.WRITE_ACTION_OUTCOMES,
+        Permission.READ_MAINTENANCE,
+        Permission.WRITE_MAINTENANCE,
         Permission.READ_HISTORY,
     }
 )

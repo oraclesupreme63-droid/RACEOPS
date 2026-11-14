@@ -33,15 +33,15 @@ autorizada.
 - [x] Añadir checks, índices y relaciones restrictivas.
 - [x] Crear migración Alembic reversible.
 - [x] Probar invariantes y round-trip.
-- [ ] Aprobación del propietario.
+- [x] Aprobación del propietario.
 
 ### 10.3 — Creación y consulta
 
-- [ ] Añadir permisos explícitos de mantenimiento.
-- [ ] Crear, listar y consultar registros del Team.
-- [ ] Aplicar filtros por Vehicle, tipo y estado antes del conteo.
-- [ ] Ocultar recursos ajenos como no encontrados.
-- [ ] Probar todos los Roles y aislamiento entre Teams.
+- [x] Añadir permisos explícitos de mantenimiento.
+- [x] Crear, listar y consultar registros del Team.
+- [x] Aplicar filtros por Vehicle, tipo y estado antes del conteo.
+- [x] Ocultar recursos ajenos como no encontrados.
+- [x] Probar todos los Roles y aislamiento entre Teams.
 - [ ] Aprobación del propietario.
 
 ### 10.4 — Ciclo de intervención

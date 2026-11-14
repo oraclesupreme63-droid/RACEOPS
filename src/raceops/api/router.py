@@ -6,6 +6,7 @@ from raceops.iam.router import router as identity_router
 from raceops.learning.decision_router import router as decision_router
 from raceops.learning.outcome_router import router as outcome_router
 from raceops.learning.router import router as learning_router
+from raceops.maintenance.router import router as maintenance_router
 from raceops.operations.context_router import router as context_router
 from raceops.operations.router import router as operations_router
 from raceops.sessions.conditions_router import router as conditions_router
@@ -24,3 +25,4 @@ api_router.include_router(feedback_router)
 api_router.include_router(learning_router)
 api_router.include_router(decision_router)
 api_router.include_router(outcome_router)
+api_router.include_router(maintenance_router)
